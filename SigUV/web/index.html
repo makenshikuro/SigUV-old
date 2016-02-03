@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>        
+        <title>Leaflet</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- jQuery -->
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>    
+        
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <!-- Estilos  -->
+        <link rel="stylesheet" href="css/estilos.css" />
+
+        <!-- Lealflet  -->
+        <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+        
+        <!-- Mapbox  -->
+        <script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+        <link href='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+
+        <!-- Javascript  -->
+        <script src="js/mapas.js"></script>
+        <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+        <script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>
+        <style>
+            
+        </style>
+        <script>
+      
+    </script>
+    </head>
+
+    <body onload="init()">
+
+        <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+
+
+
+        </div>
+
+        <div id="map" ></div>
+        <!--<script>
+
+            var map = new L.Map('map', {
+                center: new L.LatLng(39.512859, -0.4244782),
+                zoom: 20,
+                maxZoom: 25
+            });
+            
+            var googleLayer = new L.Google('ROADMAP');
+            
+            var PB = new L.TileLayer('http://www.adretse.es/mapEtse/{z}/{x}/{y}.png', {
+                minZoom: 11,
+                maxZoom: 25,
+                attribution: 'Abuspaz/ETSE/UV',
+                tms: true,
+                transparent: true,
+                unloadInvisibleTiles: true});
+            
+            var PB_D_TEMA = L.tileLayer('http://www.sigua.ua.es/cache/tms/1.0.0/PB_D_TEMA/webmercator_mod/{z}/{x}/{y}.png', {
+			 tms: true,
+			 transparent: true,
+			 unloadInvisibleTiles: true	
+		});
+            /*var PB = new L.TileLayer('http://.www.adretse.es/mapEtse/{z}/{x}/{y}.png', {
+                minZoom: 0,
+                maxZoom: 25,
+                attribution: 'ESO/INAF-VST/OmegaCAM',
+                tms: true,
+                transparent: true
+            
+            });*/
+            
+            map.addLayer(PB);
+            
+            map.addControl(new L.Control.Layers({"GO":googleLayer, "PB": PB, "PDTEMA": PB_D_TEMA}, {}));
+  
+            
+            
+            /*var coolPlaces = new L.LayerGroup();
+
+        L.marker([39.51, -0.42])
+            .bindPopup('Te Papa').addTo(coolPlaces),
+        L.marker([-41.29437, 174.78405])
+            .bindPopup('Embassy Theatre').addTo(coolPlaces),
+        L.marker([-41.2895, 174.77803])
+            .bindPopup('Michael Fowler Centre').addTo(coolPlaces),
+        L.marker([-41.28313, 174.77736])
+            .bindPopup('Leuven Belgin Beer Cafe').addTo(coolPlaces),
+        L.polyline([
+            [-41.28313, 174.77736],
+            [-41.2895, 174.77803],
+            [-41.29042, 174.78219],
+            [-41.29437, 174.78405]
+            ]
+            ).addTo(coolPlaces);*/
+
+            
+            //var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+           
+
+            
+
+		
+
+
+            
+
+
+
+
+        </script>-->
+
+    </body>
+</html>
