@@ -47,5 +47,6 @@ function init() {
     });
 
     map.addControl(new L.Control.Layers({'OSM': osm, 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': custom}));
-
+    
+    var sidebar = $('#sidebar').sidebar();
 }
