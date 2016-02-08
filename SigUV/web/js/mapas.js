@@ -45,8 +45,16 @@ function init() {
         bounds: mapBounds,
         zIndex: 7
     });
-
+    
     map.addControl(new L.Control.Layers({'OSM': osm, 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': custom}));
     
-    var sidebar = $('#sidebar').sidebar();
+    sidebar = L.control.sidebar('sidebar', {
+            closeButton: true,
+            position: 'left'
+        });
+    map.addControl(sidebar);
+
+}
+function hdd(){
+    sidebar.show();
 }
