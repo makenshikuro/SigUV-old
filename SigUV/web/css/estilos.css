@@ -10,16 +10,22 @@ and open the template in the editor.
 
 html, body {
     height: 100%;
-    overflow: hidden;
-    width: 100%;
-    padding-top: 26px;
 }
 #map {
-    height: 100%;
-    position: relative;
+    /* Firefox */
+    height: -moz-calc(100% - 50px);
+    /* WebKit */
+    height: -webkit-calc(100% - 50px);
+    /* Opera */
+    height: -o-calc(100% - 50px);
+    /* Standard */
+    height: calc(100% - 50px);
 }
 .header-text {
     padding-left: 0.3em;
+}
+.opciones{
+    right: 0;
 }
 .logoUV {
     background: rgba(0, 0, 0, 0) url("../image/logoUV.png") no-repeat scroll 0 0 / 100% 100%;
@@ -29,4 +35,11 @@ html, body {
     top: -20px;
     vertical-align: middle;
     width: 210px;
+}
+
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0px;
+    border: 0px solid transparent;
 }

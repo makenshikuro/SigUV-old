@@ -31,7 +31,7 @@ function init() {
     });
 
     var googleLayer = new L.Google('ROADMAP');
-    map.addLayer(googleLayer);
+    map.addLayer(mapboxTiles);
 
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         minZoom: mapMinZoom,

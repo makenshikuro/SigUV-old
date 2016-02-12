@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>        
-        <title>Leaflet</title>
+        <title>SigUV</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Favicons -->
@@ -58,29 +58,44 @@ and open the template in the editor.
         <script src="js/mapas.js"></script>
 
 
-
     </head>
 
     <body onload="init()">
 
-        <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+        <div role="navigation" class="navbar navbar-inverse">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><div class="logoUV"></div></a>
             </div>
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a onclick="hdd();" href="#"><span class="fa fa-search"></span><span class="header-text">Buscador</span></a></li>
-                    <li><a data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-user"></span><span class="header-text">Usuarios</span></a></li>
-                    <li><a href="#"><span class="fa fa-building"></span><span class="header-text">Edificios</span></a></li>
-
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="header-text">Buscador</span></a></li>
+                    <li><a onclick="hdd();" href="#"><span class="fa fa-list-ul"></span></span><span class="header-text">Capas</span></a></li>
+                    <li><a onclick="hdd();" href="#"><span class="fa fa-building"></span><span class="header-text">Edificios</span></a></li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="fa fa-cog"></span></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><span class="fa fa-location-arrow"></span><span class="header-text"></span>GPS</a></li>
+                            <li><a href="#"><span class="fa fa-info-circle"></span><span class="header-text"></span>Leyenda</a></li>
+                            <li><a href="#"><span class="fa fa-life-saver"></span><span class="header-text"></span>Ayuda</a></li> 
+                        </ul>
+                    </li>
+                </ul>
+
+
+
+
+
             </div>
         </div>
 
         <div id="map" ></div>
         <div id="sidebar">
-            <h1>leaflet-sidebar</h1>   
+            <h1>leaflet-sidebar</h1>
+
         </div>
 
         <!-- Modal -->
@@ -95,6 +110,26 @@ and open the template in the editor.
                     </div>
                     <div class="modal-body">
                         <p>Some text in the modal.</p>
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+                            <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane fade in active">
+                                <h3>HOME</h3>
+                                <p>Some content.</p>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <h3>Menu 1</h3>
+                                <p>Some content in menu 1.</p>
+                            </div>
+                            <div id="menu2" class="tab-pane fade">
+                                <h3>Menu 2</h3>
+                                <p>Some content in menu 2.</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
