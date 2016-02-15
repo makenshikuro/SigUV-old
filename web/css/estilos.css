@@ -28,7 +28,7 @@ html, body {
     right: 0;
 }
 .logoUV {
-    background: rgba(0, 0, 0, 0) url("../image/logoUV.png") no-repeat scroll 0 0 / 100% 100%;
+    background: rgba(0, 0, 0, 0) url("../images/logoUV.png") no-repeat scroll 0 0 / 100% 100%;
     height: 60px;
     left: 6px;
     position: relative;

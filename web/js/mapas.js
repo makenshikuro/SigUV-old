@@ -13,7 +13,7 @@ function init() {
     var mapBounds = new L.LatLngBounds(
             new L.LatLng(39.511948, -0.425012),
             new L.LatLng(39.513769, -0.422732));
-    var mapMinZoom = 10;
+    var mapMinZoom = 5;
     var mapMaxZoom = 25;
 
 
@@ -32,6 +32,8 @@ function init() {
 
     var googleLayer = new L.Google('ROADMAP');
     map.addLayer(mapboxTiles);
+    
+    
 
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         minZoom: mapMinZoom,
@@ -53,6 +55,37 @@ function init() {
             position: 'left'
         });
     map.addControl(sidebar);
+    
+     // Add markers to map
+    // Font-Awesome markers
+   /* L.marker([39.512877, -0.423967], {
+        icon: L.AwesomeMarkers.icon({
+            icon: 'graduation-cap', markerColor: 'red', prefix: 'fa' , iconColor: 'black'
+        }) 
+    }).addTo(map);*/
+       
+    
+    
+    //////////////////////////////////
+   
+
+//L.geoJson(geojsonFeature).addTo(map);
+
+L.geoJson(Facultades, {
+    pointToLayer: function (feature, coordinates) {
+        return L.marker(coordinates, {
+        icon: L.AwesomeMarkers.icon({
+            icon: 'graduation-cap', 
+            markerColor: 'red', 
+            prefix: 'fa' , 
+            iconColor: 'black'
+        }) 
+    });
+    }
+}).addTo(map);
+
+
+   
 
 }
 function hdd(){
