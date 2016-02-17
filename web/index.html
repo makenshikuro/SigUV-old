@@ -47,11 +47,11 @@ and open the template in the editor.
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
         <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-        
+
 
         <!-- Mapbox  -->
         <script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
-        <link href='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+        <!-- <link href='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />-->
 
         <!-- Javascript  -->
 
@@ -61,7 +61,7 @@ and open the template in the editor.
         <script src="js/leaflet.awesome-markers.min.js"></script>
         <script src="js/poi.js"></script>
         <script src="js/mapas.js"></script>
-        
+
 
 
     </head>
@@ -75,18 +75,18 @@ and open the template in the editor.
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="header-text">Buscador</span></a></li>
-                    <li><a onclick="hdd();" href="#"><span class="fa fa-list-ul"></span></span><span class="header-text">Capas</span></a></li>
-                    <li><a onclick="hdd();" href="#"><span class="fa fa-building"></span><span class="header-text">Edificios</span></a></li>
+                    <li><a data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
+                    <li><a onclick="hdd();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
+                    <li><a onclick="hdd2();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <span class="fa fa-cog"></span></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><span class="fa fa-location-arrow"></span><span class="header-text"></span>GPS</a></li>
-                            <li><a href="#"><span class="fa fa-info-circle"></span><span class="header-text"></span>Leyenda</a></li>
-                            <li><a href="#"><span class="fa fa-life-saver"></span><span class="header-text"></span>Ayuda</a></li> 
+                            <li><a href="#"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS</a></li>
+                            <li><a href="#"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
+                            <li><a href="#"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
                         </ul>
                     </li>
                 </ul>
@@ -99,10 +99,86 @@ and open the template in the editor.
         </div>
 
         <div id="map" ></div>
-        <div id="sidebar">
-            <h1>leaflet-sidebar</h1>
 
+
+        <!-- Sidebar de Capas -->
+        <div id="sidebarLayers">
+            <div class="sidebar-header">
+                <div class="sidebar-header-img"><img src="images/layers-icon.png" alt="Icono Capas"/></div>
+                <div class="sidebar-header-text" >Capas</div>
+            </div>
+            <div class="clearM2"></div>
+            <div class="sidebar-toggle-group">
+                <div class="sidebar-toggle-text" >Fondo</div>
+                <div class="btn-group" data-toggle="buttons"> 
+                    <label class="btn btn-primary active" id="fondoON">
+                        <input type="radio" name="fondo" value="on" checked > Plano
+                    </label>
+
+                    <label class="btn btn-primary" id="fondoOFF">
+                        <input type="radio" name="fondo" value="off"  > Satélite
+                    </label>
+                </div>
+
+            </div>
+            <div class="clearM2"></div>
+            <div class="sidebar-toggle-group">
+                <div class="sidebar-toggle-text" >Tema</div>
+                <div class="btn-group" data-toggle="buttons"> 
+                    <label class="btn btn-primary active" id="temaON">
+                        <input type="radio" name="tipologia" value="on"  checked > Categoría
+                    </label>
+
+                    <label class="btn btn-primary" id="temaOFF">
+                        <input type="radio" name="tipologia" value="off"  > B/N
+                    </label>
+                </div>
+
+            </div>
+            <div class="clearM2"></div>
+            <div class="sidebar-toggle-group">
+                <div class="sidebar-toggle-text" >Iconos</div>
+                <div class="btn-group" data-toggle="buttons"> 
+                    <label class="btn btn-primary ON active" id="iconsON">
+                        <input type="radio" name="icons" value="on" checked > I
+                    </label>
+
+                    <label class="btn btn-primary OFF" id="iconsOFF">
+                        <input type="radio" name="icons" value="off"> O
+                    </label>
+                </div>
+
+            </div>
+            <div class="clearM2"></div>
         </div>
+
+        <!-- Sidebar de Facultades -->
+        <div id="sidebarFacultades">
+            <div class="sidebar-header">
+                <div class="sidebar-header-icon"><span class="fa fa-university"></span></div>
+                <div class="sidebar-header-text">Facultades</div>
+            </div>
+            <div class="clearM1"></div>
+
+            <table class="table table-hover">
+
+                <tbody>
+                    <tr>
+                        <td>Escola Tècnica Superior d'Enginyeria</td>
+
+                    </tr>
+                    <tr>
+                        <td>Facultat de Matemàtiques</td>
+
+                    </tr>
+                    <tr>
+                        <td>Facultat de Ciències Biològiques</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
 
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
@@ -117,23 +193,23 @@ and open the template in the editor.
                     <div class="modal-body">
                         <p>Some text in the modal.</p>
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-                            <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-                            <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+                            <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span>Todo</a></li>
+                            <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span>Profesor</a></li>
+                            <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span>Asignatura</a></li>
                         </ul>
 
                         <div class="tab-content">
-                            <div id="home" class="tab-pane fade in active">
-                                <h3>HOME</h3>
-                                <p>Some content.</p>
+                            <div id="busqueda-tab-todo" class="tab-pane fade in active">
+                                <div class='clearM1'></div>
+                                <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
                             </div>
-                            <div id="menu1" class="tab-pane fade">
-                                <h3>Menu 1</h3>
-                                <p>Some content in menu 1.</p>
+                            <div id="busqueda-tab-profesor" class="tab-pane fade">
+                                <div class='clearM1'></div>
+                                <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
                             </div>
-                            <div id="menu2" class="tab-pane fade">
-                                <h3>Menu 2</h3>
-                                <p>Some content in menu 2.</p>
+                            <div id="busqueda-tab-asignatura" class="tab-pane fade">
+                                <div class='clearM1'></div>
+                                <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
                             </div>
                         </div>
                     </div>
@@ -144,7 +220,7 @@ and open the template in the editor.
             </div>
         </div>
         <script>
-     </script>
+        </script>
 
     </body>
 </html>

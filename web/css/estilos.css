@@ -21,11 +21,23 @@ html, body {
     /* Standard */
     height: calc(100% - 50px);
 }
-.header-text {
+.navbar-header-text {
     padding-left: 0.3em;
 }
 .opciones{
     right: 0;
+}
+
+.clear {
+    clear: both;
+}
+.clearM1 {
+    clear: both;
+    padding-bottom: 10px;
+}
+.clearM2 {
+    clear: both;
+    padding-bottom: 20px;
 }
 .logoUV {
     background: rgba(0, 0, 0, 0) url("../images/logoUV.png") no-repeat scroll 0 0 / 100% 100%;
@@ -37,9 +49,68 @@ html, body {
     width: 210px;
 }
 
+
+/**  Bootstrap  **/
+
+
+.active[class~="ON"] { 
+    background-image: -webkit-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Safari 5.1 to 6.0 */
+    background-image: -o-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Opera 11.1 to 12.0 */
+    background-image: -moz-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Firefox 3.6 to 15 */
+    background-image: linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* Standard syntax */
+    border-color: #000; 
+}
+.active[class~="OFF"] { 
+
+    /* For browsers that do not support gradients */
+    background-image: -webkit-linear-gradient(top,#d2322d 0,#ac2925 100%); /* For Safari 5.1 to 6.0 */
+    background-image: -o-linear-gradient(top,#d2322d 0,#ac2925 100%); /* For Opera 11.1 to 12.0 */
+    background-image: -moz-linear-gradient(top,#d2322d 0,#ac2925 100%); /* For Firefox 3.6 to 15 */
+    background-image: linear-gradient(top,#d2322d 0,#ac2925 100%); /* Standard syntax */
+    border-color: #000; 
+}
+
+.btn-primary:focus, .btn-primary:hover{
+    background-position: 0px;
+}
+.btn-primary{
+    width: 50px;
+}
 .navbar {
     position: relative;
     min-height: 50px;
     margin-bottom: 0px;
     border: 0px solid transparent;
+}
+
+/**  Leaflet   **/
+
+.sidebar-header {
+    padding: 15px 10px;
+    line-height: 64px;
+}
+.sidebar-header-text {
+    /*width: 100px;*/
+    float: left;
+    font-size: 2em;
+    line-height: 64px;
+    padding-left: 15px;
+}
+
+.sidebar-header-img {
+    float: left;
+    
+}
+.sidebar-header-icon {
+    font-size: 2em;
+    float: left;
+    
+}
+.sidebar-toggle-group {
+    /*line-height: 36px;*/
+    font-size: 1.5em;
+}
+
+.sidebar-toggle-text {
+   /* float: left;*/
 }

@@ -8,7 +8,8 @@ var Facultades = [{
     "type": "Feature",
     "properties": {
         "name": "Escola Tècnica Superior d'Enginyeria",
-        "amenity": "Baseball Stadium",
+        "name_ES": "Escuela Técnica Superior de Ingeniería",
+        "name_EN": "School of Engineering",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -19,7 +20,8 @@ var Facultades = [{
     "type": "Feature",
     "properties": {
         "name": "Facultat de Farmàcia",
-        "amenity": "Baseball Stadium",
+        "name_ES": "Facultad de Farmacia",
+        "name_EN": "Faculty of Pharmacy",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -30,7 +32,8 @@ var Facultades = [{
     "type": "Feature",
     "properties": {
         "name": "Facultat de Matemàtiques",
-        "amenity": "Baseball Stadium",
+        "name_ES": "Facultad de Matemáticas",
+        "name_EN": "Faculty of Mathematics",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -41,7 +44,8 @@ var Facultades = [{
     "type": "Feature",
     "properties": {
         "name": "Facultat de Ciencies Biològiques",
-        "amenity": "Baseball Stadium",
+        "name_ES": "Facultad de Ciencias Biológicas",
+        "name_EN": "Faculty of Biological Sciencies",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -52,7 +56,8 @@ var Facultades = [{
     "type": "Feature",
     "properties": {
         "name": "Facultat de Física",
-        "amenity": "Baseball Stadium",
+        "name_ES": "Facultad de Física",
+        "name_EN": "Faculty of Physics",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -63,7 +68,8 @@ var Facultades = [{
     "type": "Feature",
     "properties": {
         "name": "Facultat de Química",
-        "amenity": "Baseball Stadium",
+        "name_ES": "Facultad de Química",
+        "name_EN": "Faculty of Chemistry",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
