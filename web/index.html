@@ -75,9 +75,9 @@ and open the template in the editor.
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
-                    <li><a onclick="hdd();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
-                    <li><a onclick="hdd2();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
+                    <li><a onclick="closeAllSidebars();" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
+                    <li><a onclick="openSidebarLayers();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
+                    <li><a onclick="openSidebarFacultades();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -193,9 +193,9 @@ and open the template in the editor.
                     <div class="modal-body">
                         <p>Some text in the modal.</p>
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span>Todo</a></li>
-                            <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span>Profesor</a></li>
-                            <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span>Asignatura</a></li>
+                            <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>
+                            <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>
+                            <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>
                         </ul>
 
                         <div class="tab-content">
