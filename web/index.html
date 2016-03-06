@@ -55,9 +55,14 @@ and open the template in the editor.
 
         <!-- Javascript  -->
 
-        <script async defer src="http://maps.google.com/maps/api/js?v=3"></script>
-        <script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>
+        <!--<script async defer src="http://maps.google.com/maps/api/js?v=3"></script>-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCABPLRF1cCUlr2pOSHHa8iYl_gqYvnKFI"
+    async defer></script>
+        <!--<script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>-->
+        <script src="js/Google.js"></script>
         <script src="js/L.Control.Sidebar.js"></script>
+        <script src="js/raphael-min.js"></script>
+        <script src="js/rlayer.js"></script>
         <script src="js/leaflet.awesome-markers.min.js"></script>
         <script src="js/poi.js"></script>
         <script src="js/mapas.js"></script>
@@ -90,6 +95,20 @@ and open the template in the editor.
                         </ul>
                     </li>
                 </ul>
+                <div id="nivel" class="btn-group level" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <input type="radio" name="nivel" value="PB" autocomplete="off" checked> PB
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="nivel" value="P1" autocomplete="off"> P1
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="nivel" value="P2" autocomplete="off"> P2
+                    </label>             
+                    <label class="btn btn-primary">
+                        <input type="radio" name="nivel" value="P3" autocomplete="off"> P3
+                    </label>
+                </div>
 
 
 
