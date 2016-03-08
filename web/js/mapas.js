@@ -12,17 +12,18 @@
 function init() {
     
     /* Variables Globales   */
-    _fondo = true;
-    _tema = true;
+    _fondo = "plano";
+    _tema = "c";
     _iconos = true;
-    _nivel = "PB";
+    _denominacion = "d";
+    _nivel = "0";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.511948, -0.425012);
     var norEste = new L.LatLng(39.513769, -0.422732);
-    var mapBounds = new L.LatLngBounds(surOeste, norEste);
-    var mapMinZoom = 5;
-    var mapMaxZoom = 25;
+    _mapBounds = new L.LatLngBounds(surOeste, norEste);
+    _mapMinZoom = 5;
+    _mapMaxZoom = 25;
     var centro = [39.512859, -0.4244782];
     L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
 
@@ -38,8 +39,8 @@ function init() {
      */
     mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/ubustus.p2c7e9pf/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, {
         attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
-        minZoom: mapMinZoom,
-        maxZoom: mapMaxZoom,
+        minZoom: _mapMinZoom,
+        maxZoom: _mapMaxZoom,
         unloadInvisibleTiles: true,
         opacity: 1.00
     });
@@ -57,28 +58,23 @@ function init() {
     //map.addLayer(new R.Marker(centro));
     
 
-    osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        minZoom: mapMinZoom,
-        maxZoom: mapMaxZoom,
+    /*osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: _mapMinZoom,
+        maxZoom: _mapMaxZoom,
         unloadInvisibleTiles: true,
         opacity: 1.00
-    });
-    /*PB = L.tileLayer('http://www.adretse.es/mapEtse/{z}/{x}/{y}.png', {
-        minZoom: mapMinZoom,
-        maxZoom: mapMaxZoom,
-        bounds: mapBounds,
-        zIndex: 7
     });*/
-    PB = L.tileLayer('http://www.adretse.es/siguv/bc0/{z}/{x}/{y}.png', {
-        minZoom: mapMinZoom,
-        maxZoom: mapMaxZoom,
-        bounds: mapBounds,
+    
+    ETSEmap = L.tileLayer('http://www.adretse.es/siguv/'+ _tema + _denominacion +'0'+'/{z}/{x}/{y}.png', {
+        minZoom: _mapMinZoom,
+        maxZoom: _mapMaxZoom,
+        bounds: _mapBounds,
         zIndex: 7
     });
 
     /* Añadido de Capas */
     map.addLayer(mapboxTiles);
-    map.addLayer(PB);
+    map.addLayer(ETSEmap);
     
 
 
@@ -101,7 +97,7 @@ function init() {
     layerGroup = L.layerGroup().addTo(map);
     layerGroupC = L.layerGroup().addTo(map);
 
-    map.addControl(new L.Control.Layers({'OSM': osm, 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': PB, "Markers": layerGroup}));
+    map.addControl(new L.Control.Layers({ 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': ETSEmap, "Markers": layerGroup}));
 
     /* Marcadores GeoJSON
      *  Facultades:   Marcadores correspondientes a las facultades de la UV
@@ -209,6 +205,23 @@ function closeAllSidebars() {
     sidebarFacultades.hide();
     sidebarLayers.hide();
 }
+/*
+ * Función que modifica el mapa activo de acuerdo a los valores globales de:
+ * tema, denominacion y nivel
+ * 
+ */
+function ChangeMapLayer(){
+    ETSEmap = L.tileLayer('http://www.adretse.es/siguv/' + _tema + _denominacion + '0' + '/{z}/{x}/{y}.png', {
+        minZoom: _mapMinZoom,
+        maxZoom: _mapMaxZoom,
+        bounds: _mapBounds,
+        zIndex: 7
+    });
+    if (map.hasLayer(ETSEmap)) {
+        map.removeLayer(ETSEmap);
+    }
+    map.addLayer(ETSEmap);
+}
 
  /* Funciones JQuery
   * Disparadores para los cambios de estado de los
@@ -217,7 +230,6 @@ function closeAllSidebars() {
 $(document).ready(function () {
 
     $("input[name=icons]").change(function () {
-
         var iconos = $('input:radio[name=icons]:checked').attr("value");
         if (iconos === "on") {
             map.addLayer(layerGroup);
@@ -228,96 +240,64 @@ $(document).ready(function () {
             _iconos = false;
         }
         //alert("The text has been changed."+iconos);
-
-
-
     });
-    $("input[name=tipologia]").change(function () {
-
-        var iconos = $('input:radio[name=tipologia]:checked').attr("value");
-        if (iconos === "on") {
-            map.addLayer(PB);
-            _tema = true;
+    $("input[name=tema]").change(function () {
+        var tema = $('input:radio[name=tema]:checked').attr("value");
+        if (tema === "c") {
+            _tema = "c";
         } else {
-
-            map.removeLayer(PB);
-            _tema = false;
+            _tema = "b";
         }
+        ChangeMapLayer();
         //alert("The text has been changed."+iconos);
-
-
-
+    });
+    $("input[name=denominacion]").change(function () {
+        var denominacion = $('input:radio[name=denominacion]:checked').attr("value");
+        if (denominacion === "d") {   
+            _denominacion = "d";
+        } else {
+            _denominacion = "c";
+        }
+        ChangeMapLayer();
+        //alert("The text has been changed."+iconos);
     });
     $("input[name=fondo]").change(function () {
-
-        var iconos = $('input:radio[name=fondo]:checked').attr("value");
-        if (iconos === "on") {
-            map.removeLayer(osm);
+        var fondo = $('input:radio[name=fondo]:checked').attr("value");
+        if (fondo === "plano") {
+            map.removeLayer(googleLayer);
+            //map.removeLayer(osm);
             map.addLayer(mapboxTiles);
-            _fondo = true;
+            _fondo = "plano";
         } else {
             map.removeLayer(mapboxTiles);
-            map.addLayer(osm);
-            _fondo = false;
+            //map.addLayer(osm);
+            map.addLayer(googleLayer);
+            _fondo = "sat";
 
         }
         //alert("The text has been changed."+iconos);
-
-
-
     });
     
     
     $("input[name=nivel]").change(function () {
-
-        var iconos = $('input:radio[name=nivel]:checked').attr("value");
-        if (iconos === "PB") {
+        var nivel = $('input:radio[name=nivel]:checked').attr("value");
+        if (nivel === "0") {
             map.addLayer(layerGroup);
-            _nivel = "PB";
+            _nivel = "0";
         }
-        if (iconos === "P1") {
+        if (nivel === "1") {
             map.addLayer(layerGroup);
-            _nivel = "P1";
+            _nivel = "1";
         }
-        if (iconos === "P2") {
+        if (nivel === "2") {
             map.addLayer(layerGroup);
-            _nivel = "P2";
+            _nivel = "2";
         }
-        if (iconos === "P3") {
+        if (nivel === "3") {
             map.addLayer(layerGroup);
-            _nivel = "P3";
+            _nivel = "3";
         }
-        
-        
-        
-        //alert("The text has been changed."+iconos);
-
-
-
+          //alert("The text has been changed."+iconos);
     });
 
 });
-
-/*
- function toogleIcons(){
- 
- 
- 
- $('#iconsOFF').on('click',function (e){
- //$("#building").click(function (event) {
- e.preventDefault();
- 
- alert('hala');
- if (aux) {
- //$(this).removeClass('selected');
- map.removeLayer(layerGroup);
- 
- 
- } else {
- map.addLayer(layerGroup);
- //$(this).addClass('selected');
- 
- }
- });
- aux = !aux;
- }*/

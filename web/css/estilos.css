@@ -69,6 +69,21 @@ html, body {
     background-image: linear-gradient(top,#d2322d 0,#ac2925 100%); /* Standard syntax */
     border-color: #000; 
 }
+.btn{
+    border-radius: 10px;
+}
+.btn.btn-primary.large{
+    width: 150px;
+}
+
+.btn.btn-primary.large div img {
+    margin-top: 4px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    width: 120px;
+}
 
 .btn-group.level{
     margin-top: 7px;

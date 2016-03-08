@@ -57,7 +57,7 @@ and open the template in the editor.
 
         <!--<script async defer src="http://maps.google.com/maps/api/js?v=3"></script>-->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCABPLRF1cCUlr2pOSHHa8iYl_gqYvnKFI"
-    async defer></script>
+        async defer></script>
         <!--<script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>-->
         <script src="js/Google.js"></script>
         <script src="js/L.Control.Sidebar.js"></script>
@@ -97,16 +97,16 @@ and open the template in the editor.
                 </ul>
                 <div id="nivel" class="btn-group level" data-toggle="buttons">
                     <label class="btn btn-primary active">
-                        <input type="radio" name="nivel" value="PB" autocomplete="off" checked> PB
+                        <input type="radio" name="nivel" value="0" autocomplete="off" checked> PB
                     </label>
                     <label class="btn btn-primary">
-                        <input type="radio" name="nivel" value="P1" autocomplete="off"> P1
+                        <input type="radio" name="nivel" value="1" autocomplete="off"> P1
                     </label>
                     <label class="btn btn-primary">
-                        <input type="radio" name="nivel" value="P2" autocomplete="off"> P2
+                        <input type="radio" name="nivel" value="2" autocomplete="off"> P2
                     </label>             
                     <label class="btn btn-primary">
-                        <input type="radio" name="nivel" value="P3" autocomplete="off"> P3
+                        <input type="radio" name="nivel" value="3" autocomplete="off"> P3
                     </label>
                 </div>
 
@@ -124,18 +124,19 @@ and open the template in the editor.
         <div id="sidebarLayers">
             <div class="sidebar-header">
                 <div class="sidebar-header-img"><img src="images/layers-icon.png" alt="Icono Capas"/></div>
+
                 <div class="sidebar-header-text" >Capas</div>
             </div>
             <div class="clearM2"></div>
             <div class="sidebar-toggle-group">
                 <div class="sidebar-toggle-text" >Fondo</div>
                 <div class="btn-group" data-toggle="buttons"> 
-                    <label class="btn btn-primary active" id="fondoON">
-                        <input type="radio" name="fondo" value="on" checked > Plano
+                    <label class="btn btn-primary large active" id="fondoON">
+                        <input type="radio" name="fondo" value="plano" checked > <div><div><img src="images/mapbox.png"></div><div>Plano</div></div>
                     </label>
 
-                    <label class="btn btn-primary" id="fondoOFF">
-                        <input type="radio" name="fondo" value="off"  > Satélite
+                    <label class="btn btn-primary large" id="fondoOFF">
+                        <input type="radio" name="fondo" value="sat"  > <div><div><img src="images/google.png"></div><div> Sat&eacute;lite</div></div>
                     </label>
                 </div>
 
@@ -144,102 +145,118 @@ and open the template in the editor.
             <div class="sidebar-toggle-group">
                 <div class="sidebar-toggle-text" >Tema</div>
                 <div class="btn-group" data-toggle="buttons"> 
-                    <label class="btn btn-primary active" id="temaON">
-                        <input type="radio" name="tipologia" value="on"  checked > Categoría
+                    <label class="btn btn-primary large active" id="temaON">
+                       <input type="radio" name="tema" value="c"  checked > <div><div><img src="images/cd.png"></div><div> Categor&iacute;a</div></div>
+                       
                     </label>
 
-                    <label class="btn btn-primary" id="temaOFF">
-                        <input type="radio" name="tipologia" value="off"  > B/N
-                    </label>
-                </div>
-
-            </div>
-            <div class="clearM2"></div>
-            <div class="sidebar-toggle-group">
-                <div class="sidebar-toggle-text" >Iconos</div>
-                <div class="btn-group" data-toggle="buttons"> 
-                    <label class="btn btn-primary ON active" id="iconsON">
-                        <input type="radio" name="icons" value="on" checked > I
-                    </label>
-
-                    <label class="btn btn-primary OFF" id="iconsOFF">
-                        <input type="radio" name="icons" value="off"> O
+                    <label class="btn btn-primary large" id="temaOFF">
+                       <input type="radio" name="tema" value="b"  > <div><div><img src="images/bd.png"></div><div> B&aacute;sico</div></div>
+                       
                     </label>
                 </div>
 
             </div>
-            <div class="clearM2"></div>
-        </div>
+        <div class="clearM2"></div>
+        <div class="sidebar-toggle-group">
+            <div class="sidebar-toggle-text" >Denominacion</div>
+            <div class="btn-group" data-toggle="buttons"> 
+                <label class="btn btn-primary large active" id="temaON">
+                    <input type="radio" name="denominacion" value="d" checked > <div><div><img src="images/bd.png"></div><div> Descripci&oacute;n</div></div>
+                </label>
 
-        <!-- Sidebar de Facultades -->
-        <div id="sidebarFacultades">
-            <div class="sidebar-header">
-                <div class="sidebar-header-icon"><span class="fa fa-university"></span></div>
-                <div class="sidebar-header-text">Facultades</div>
+                <label class="btn btn-primary large" id="temaOFF">
+                    <input type="radio" name="denominacion" value="c"> <div><div><img src="images/bc.png"></div><div> C&oacute;digo</div></div> 
+                </label>
             </div>
-            <div class="clearM1"></div>
 
-            <table class="table table-hover">
-
-                <tbody>
-                    <tr>
-                        <td>Escola Tècnica Superior d'Enginyeria</td>
-
-                    </tr>
-                    <tr>
-                        <td>Facultat de Matemàtiques</td>
-
-                    </tr>
-                    <tr>
-                        <td>Facultat de Ciències Biològiques</td>
-
-                    </tr>
-                </tbody>
-            </table>
         </div>
+        <div class="clearM2"></div>
+        <div class="sidebar-toggle-group">
+            <div class="sidebar-toggle-text" >Iconos</div>
+            <div class="btn-group" data-toggle="buttons"> 
+                <label class="btn btn-primary ON active" id="iconsON">
+                    <input type="radio" name="icons" value="on" checked > I
+                </label>
+
+                <label class="btn btn-primary OFF" id="iconsOFF">
+                    <input type="radio" name="icons" value="off"> O
+                </label>
+            </div>
+
+        </div>
+        <div class="clearM2"></div>
+    </div>
+
+    <!-- Sidebar de Facultades -->
+    <div id="sidebarFacultades">
+        <div class="sidebar-header">
+            <div class="sidebar-header-icon"><span class="fa fa-university"></span></div>
+            <div class="sidebar-header-text">Facultades</div>
+        </div>
+        <div class="clearM1"></div>
+
+        <table class="table table-hover">
+
+            <tbody>
+                <tr>
+                    <td>Escola T&eacute;cnica Superior d&OpenCurlyQuote;Enginyeria</td>
+
+                </tr>
+                <tr>
+                    <td>Facultat de Matem&agrave;tiques</td>
+
+                </tr>
+                <tr>
+                    <td>Facultat de Ci&eacute;ncies Biol&ograve;giques</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 
-        <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Some text in the modal.</p>
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>
-                            <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>
-                            <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>
-                        </ul>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>
+                        <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>
+                        <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>
+                    </ul>
 
-                        <div class="tab-content">
-                            <div id="busqueda-tab-todo" class="tab-pane fade in active">
-                                <div class='clearM1'></div>
-                                <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
-                            </div>
-                            <div id="busqueda-tab-profesor" class="tab-pane fade">
-                                <div class='clearM1'></div>
-                                <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
-                            </div>
-                            <div id="busqueda-tab-asignatura" class="tab-pane fade">
-                                <div class='clearM1'></div>
-                                <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
-                            </div>
+                    <div class="tab-content">
+                        <div id="busqueda-tab-todo" class="tab-pane fade in active">
+                            <div class='clearM1'></div>
+                            <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
+                        </div>
+                        <div id="busqueda-tab-profesor" class="tab-pane fade">
+                            <div class='clearM1'></div>
+                            <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
+                        </div>
+                        <div id="busqueda-tab-asignatura" class="tab-pane fade">
+                            <div class='clearM1'></div>
+                            <p><input type="text" class="form-control" placeholder="Campo de texto"></p>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-        <script>
-        </script>
+    </div>
+    <script>
+    </script>
 
-    </body>
+</body>
 </html>
