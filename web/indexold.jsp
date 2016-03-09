@@ -64,7 +64,6 @@ and open the template in the editor.
         <script src="js/raphael-min.js"></script>
         <script src="js/rlayer.js"></script>
         <script src="js/leaflet.awesome-markers.min.js"></script>
-        <script src="js/typeahead.bundle.js"></script>
         <script src="js/poi.js"></script>
         <script src="js/mapas.js"></script>
         <script src="js/webservice.js"></script>
@@ -197,7 +196,28 @@ and open the template in the editor.
             <div class="sidebar-header-text">Facultades</div>
         </div>
         <div class="clearM1"></div>
-        <div id="facultades"></div>
+
+        <table class="table table-hover">
+
+            <tbody>
+                <%
+                    jqxhr
+                %>
+                
+                <tr>
+                    <td>Escola T&eacute;cnica Superior d&OpenCurlyQuote;Enginyeria</td>
+
+                </tr>
+                <tr>
+                    <td>Facultat de Matem&agrave;tiques</td>
+
+                </tr>
+                <tr>
+                    <td>Facultat de Ci&eacute;ncies Biol&ograve;giques</td>
+
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 

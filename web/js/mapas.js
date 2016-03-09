@@ -180,6 +180,10 @@ function init() {
 
 /* Funciones */
 
+function setPosition(lat, long){
+    map.panTo(new L.LatLng(lat, long),{animation: true});
+    //alert(lat, long);
+}
 
  /* Funcion openSidebarLayers
   * Abre un módulo lateral con opciónes 
