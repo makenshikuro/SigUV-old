@@ -38,12 +38,14 @@ $(document).ready(function () {
   .always(function() {
     console.log( "complete" );
   });*/
+    
+  //profesores = $.getJSON("http://localhost:8080/siguvServer/webresources/profesores");
   
   jqxhr = $.getJSON( "http://localhost:8080/siguvServer/webresources/edificios", function(v) {
       
       var html = '<table class="table table-hover"><tbody>';
       $.each(v, function(i,data){
-          html += '<tr onclick="setPosition('+data.idcoordenada.latitud +','+ data.idcoordenada.longitud +');"><td>'+data.nombre+'</td></tr>';
+          html += '<tr onclick="setPosition('+data.idcoordenada.latitud +','+ data.idcoordenada.longitud +');"><td><img width= "50px" src=" http://www.adretse.es/'+ data.chano +'">'+data.nombre+'</td></tr>';
           
           //alert(data.nombre);
           

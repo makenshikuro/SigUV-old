@@ -17,6 +17,7 @@ function init() {
     _iconos = true;
     _denominacion = "d";
     _nivel = "0";
+    _server = "http://www.adretse.es/";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.511948, -0.425012);
