@@ -1,4 +1,4 @@
-/* global Bloodhound */
+/* global Bloodhound, Handlebars */
 $(document).ready(function () {
     
   /*  var engine = new Bloodhound({
@@ -54,29 +54,115 @@ $(document).ready(function () {
         source: engine2.ttAdapter()
     });
     */
-   var states = [{"correo":"inmaculada.coma@uv.es","idespacio":{
-               "bloque":"1","descripcion":"Sala ReuniÃ³n IEEE","idcoordenada":{
-                   "descripcion":"1.0.2A","idcoordenada":"ETSE102A","latitud":"39.51255","longitud":"-0.42416"},
-               "idedificio":{"chano":"siguv/recursos/chanos/etse.svg","direccion":"Avinguda de la Universitat s/n\n46100 Burjassot, ValÃ¨ncia (SPAIN)","enlace":"http://www.uv.es/etse","idcoordenada":{"descripcion":"escuela IngenierÃ­a","idcoordenada":"ETSE","latitud":"39.512877","longitud":"-0.423967"},"idedificio":"ETSE","nombre":"Escola TÃ¨cnica Superior d'Enginyeria","telefono":"963543210"},"idespacio":"ETSE01PB102A","nombre":"1.0.2A","piso":"0","tipo":"Asociacion","visibilidad":"1"},"idprofesor":"4","nombre":"Inmaculada Coma Tatay","visibilidad":"1"},{"correo":"antonio.boluda@uv.es","idespacio":{"bloque":"1","descripcion":"Sede IEEE","idcoordenada":{"descripcion":"1.0.2B","idcoordenada":"ETSE102B","latitud":"39.51252","longitud":"-0.42412"},"idedificio":{"chano":"siguv/recursos/chanos/etse.svg","direccion":"Avinguda de la Universitat s/n\n46100 Burjassot, ValÃ¨ncia (SPAIN)","enlace":"http://www.uv.es/etse","idcoordenada":{"descripcion":"escuela IngenierÃ­a","idcoordenada":"ETSE","latitud":"39.512877","longitud":"-0.423967"},"idedificio":"ETSE","nombre":"Escola TÃ¨cnica Superior d'Enginyeria","telefono":"963543210"},"idespacio":"ETSE01PB102B","nombre":"1.0.2B","piso":"0","tipo":"Asociacion","visibilidad":"1"},"idprofesor":"5","nombre":"Jose Antonio Boluda","visibilidad":"1"}];
    
    
-    var states = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  // `states` is an array of state names defined in "The Basics"
-  local: states
-});
+    var profesores = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: "http://localhost:8080/siguvServer/webresources/profesores"
+    });
+    var asignaturas = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: "http://localhost:8080/siguvServer/webresources/asignaturas"
+    });
 
-$('.typeahead').typeahead({
-  hint: true,
-  highlight: true,
-  minLength: 1
-},
-{
-  name: 'states',
-  displayKey: 'nombre',
-  source: states
+    $('#busqueda-tab-profesor .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1,
+        classNames: {
+            input: 'Typeahead-input',
+            hint: 'Typeahead-hint',
+            selectable: 'Typeahead-selectable',
+            menu: 'Typeahead-menu',
+            dataset: 'Typeahead-dataset',
+            suggestion: 'Typeahead-suggestion',
+            empty: 'Typeahead-empty',
+            open: 'Typeahead-open',
+            cursor: 'Typeahead-cursor'
+                   
+  }
+    },
+            {
+                name: 'profesores',
+                displayKey: 'nombre',
+                source: profesores,
+                templates: {
+                    
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-profesores">{{nombre}} &#45; <span class="label label-primary">{{idespacio.idespacio}}</span></div>')
+                }
+                
+                
+            });
+
+    $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function(evt, item) {
+    var myVal = item.idespacio.idespacio;
+    $('#busqueda-tab-profesor .typeahead').typeahead('val', myVal);
 });
+    
+    $('#busqueda-tab-asignatura .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1,
+        classNames: {
+            input: 'Typeahead-input',
+            hint: 'Typeahead-hint',
+            selectable: 'Typeahead-selectable',
+            menu: 'Typeahead-menu',
+            dataset: 'Typeahead-dataset',
+            suggestion: 'Typeahead-suggestion',
+            empty: 'Typeahead-empty',
+            open: 'Typeahead-open',
+            cursor: 'Typeahead-cursor'
+
+        }
+    },
+            {
+                name: 'asignaturas',
+                displayKey: 'nombre',
+                source: asignaturas,
+                templates: {
+                    
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-asignaturas">{{nombre}} </div>')
+                }
+            });
+            
+    $('#busqueda-tab-todo .typeahead').typeahead({
+        highlight: true,
+        hint: true,
+        minLength: 1,
+        classNames: {
+            input: 'Typeahead-input',
+            hint: 'Typeahead-hint',
+            selectable: 'Typeahead-selectable',
+            menu: 'Typeahead-menu',
+            dataset: 'Typeahead-dataset',
+            suggestion: 'Typeahead-suggestion',
+            empty: 'Typeahead-empty',
+            open: 'Typeahead-open',
+            cursor: 'Typeahead-cursor'
+
+        }
+    },
+            {
+                name: 'profesores',
+                display: 'nombre',
+                source: profesores,
+                templates: {
+                    header: '<div class="typeahead-header-resultados"><span class="fa fa-users"></span>Profesores</h3>',
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-profesores">{{nombre}} </div>')
+                }
+            },
+            {
+                name: 'asignaturas',
+                display: 'nombre',
+                source: asignaturas,
+                templates: {
+                    header: '<div class="typeahead-header-resultados"><span class="fa fa-graduation-cap"></span>Asignaturas</h3>',
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-asignaturas">{{nombre}} </div>')
+                }
+            });
     
 
 });

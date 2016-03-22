@@ -10,23 +10,23 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Favicons -->
-        <!-- <link rel="apple-touch-icon" sizes="57x57" href="/css/favicon/apple-icon-57x57.png">
-         <link rel="apple-touch-icon" sizes="60x60" href="/css/favicon/apple-icon-60x60.png">
-         <link rel="apple-touch-icon" sizes="72x72" href="/css/favicon/apple-icon-72x72.png">
-         <link rel="apple-touch-icon" sizes="76x76" href="/css/favicon/apple-icon-76x76.png">
-         <link rel="apple-touch-icon" sizes="114x114" href="/css/favicon/apple-icon-114x114.png">
-         <link rel="apple-touch-icon" sizes="120x120" href="/css/favicon/apple-icon-120x120.png">
-         <link rel="apple-touch-icon" sizes="144x144" href="/css/favicon/apple-icon-144x144.png">
-         <link rel="apple-touch-icon" sizes="152x152" href="/css/favicon/apple-icon-152x152.png">
-         <link rel="apple-touch-icon" sizes="180x180" href="/css/favicon/apple-icon-180x180.png">
-         <link rel="icon" type="image/png" sizes="192x192"  href="/css/favicon/android-icon-192x192.png">
-         <link rel="icon" type="image/png" sizes="32x32" href="/css/favicon/favicon-32x32.png">
-         <link rel="icon" type="image/png" sizes="96x96" href="/css/favicon/favicon-96x96.png">
-         <link rel="icon" type="image/png" sizes="16x16" href="/css/favicon/favicon-16x16.png">
-         <link rel="manifest" href="/css/favicon/manifest.json">
+         <link rel="apple-touch-icon" sizes="57x57" href="css/favicon/apple-icon-57x57.png">
+         <link rel="apple-touch-icon" sizes="60x60" href="css/favicon/apple-icon-60x60.png">
+         <link rel="apple-touch-icon" sizes="72x72" href="css/favicon/apple-icon-72x72.png">
+         <link rel="apple-touch-icon" sizes="76x76" href="css/favicon/apple-icon-76x76.png">
+         <link rel="apple-touch-icon" sizes="114x114" href="css/favicon/apple-icon-114x114.png">
+         <link rel="apple-touch-icon" sizes="120x120" href="css/favicon/apple-icon-120x120.png">
+         <link rel="apple-touch-icon" sizes="144x144" href="css/favicon/apple-icon-144x144.png">
+         <link rel="apple-touch-icon" sizes="152x152" href="css/favicon/apple-icon-152x152.png">
+         <link rel="apple-touch-icon" sizes="180x180" href="css/favicon/apple-icon-180x180.png">
+         <link rel="icon" type="image/png" sizes="192x192"  href="css/favicon/android-icon-192x192.png">
+         <link rel="icon" type="image/png" sizes="32x32" href="css/favicon/favicon-32x32.png">
+         <link rel="icon" type="image/png" sizes="96x96" href="css/favicon/favicon-96x96.png">
+         <link rel="icon" type="image/png" sizes="16x16" href="css/favicon/favicon-16x16.png">
+         <link rel="manifest" href="css/favicon/manifest.json">
          <meta name="msapplication-TileColor" content="#ffffff">
-         <meta name="msapplication-TileImage" content="/css/favicon/ms-icon-144x144.png">
-         <meta name="theme-color" content="#ffffff">-->
+         <meta name="msapplication-TileImage" content="css/favicon/ms-icon-144x144.png">
+         <meta name="theme-color" content="#ffffff">
 
         <!-- jQuery -->
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -64,7 +64,7 @@ and open the template in the editor.
         <script src="js/raphael-min.js"></script>
         <script src="js/rlayer.js"></script>
         <script src="js/leaflet.awesome-markers.min.js"></script>
-        <script src="js/typeahead.bundle.min.js"></script>
+        <script src="js/typeahead.bundle.js"></script>
         <script src="js/typeahead.js"></script>
         <script src="js/handlebars-v4.0.5.js"></script>
         <script src="js/underscore-min.js"></script>
@@ -212,10 +212,10 @@ and open the template in the editor.
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title">Buscador</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
+                    <p> Buscador que nos permite localizar cualquier estancia de la ETSE, desde el punto de vista de las personas, las estancias, las denominaciones de espacios, o las aulas .</p>
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>
                         <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>
@@ -230,6 +230,8 @@ and open the template in the editor.
                         <div id="busqueda-tab-profesor" class="tab-pane fade">
                             <div class='clearM1'></div>
                             <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
+                            <input type="hidden" id="todo">
+                            <div id = "resultados-profesor"></div>
                         </div>
                         <div id="busqueda-tab-asignatura" class="tab-pane fade">
                             <div class='clearM1'></div>
