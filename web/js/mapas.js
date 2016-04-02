@@ -17,12 +17,14 @@ function init() {
     _iconos = true;
     _denominacion = "d";
     _nivel = "0";
-    _server = "http://www.adretse.es/";
+    _server = "http://www.adretse.es/siguv/";
+    _serverDB = "http://147.156.82.219:8080/siguvServer";
     
     /* Variables  */
-    var surOeste = new L.LatLng(39.511948, -0.425012);
-    var norEste = new L.LatLng(39.513769, -0.422732);
+    var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
+    var norEste = new L.LatLng(39.51349371255555, -0.422447919845581);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
+    //console.log("hola"+_mapBounds);
     _mapMinZoom = 5;
     _mapMaxZoom = 25;
     var centro = [39.512859, -0.4244782];
@@ -42,6 +44,7 @@ function init() {
         attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
+        
         unloadInvisibleTiles: true,
         opacity: 1.00
     });
@@ -50,10 +53,15 @@ function init() {
     
     var points = [];
     //points.push(centro);
-    points.push(new L.LatLng(39.51259, -0.42414));
-    points.push(new L.LatLng(39.51256, -0.42409));
-    points.push(new L.LatLng(39.51251, -0.42416));
-    points.push(new L.LatLng(39.51253, -0.42419));
+    points.push(new L.LatLng(39.512596166727214, -0.42413838207721705));
+    points.push(new L.LatLng(39.51255788497585, -0.42409479618072504));
+    points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
+    points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
+    
+    points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
+    points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
+    points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
+    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));
     var p = new R.Polygon(points);
     map.addLayer(p);
     //map.addLayer(new R.Marker(centro));
@@ -66,7 +74,7 @@ function init() {
         opacity: 1.00
     });*/
     
-    ETSEmap = L.tileLayer('http://www.adretse.es/siguv/'+ _tema + _denominacion +'0'+'/{z}/{x}/{y}.png', {
+    ETSEmap = L.tileLayer(_server+ _tema + _denominacion +'0'+'/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         bounds: _mapBounds,
@@ -76,6 +84,7 @@ function init() {
     /* Añadido de Capas */
     map.addLayer(mapboxTiles);
     map.addLayer(ETSEmap);
+    
     
 
 
@@ -91,6 +100,11 @@ function init() {
         position: 'left'
     });
     map.addControl(sidebarFacultades);
+    sidebarInfo = L.control.sidebar('sidebarInfo', {
+        closeButton: true,
+        position: 'left'
+    });
+    map.addControl(sidebarInfo);
 
     /*
      * Grupos de capas de Marcadores JSON
@@ -141,9 +155,9 @@ function init() {
     }
 
 
-    /*map.on('click', function(e) {
-     alert(e.latlng);
-     });*/
+    map.on('click', function(e) {
+     console.log(e.latlng);
+     });
 
     /*
      * Función tras cambiar zoom en el mapa
@@ -182,7 +196,9 @@ function init() {
 /* Funciones */
 
 function setPosition(lat, long){
-    map.panTo(new L.LatLng(lat, long),{animation: true});
+    //map.panTo(new L.LatLng(lat, long),{animation: true});
+    map.setView(new L.LatLng(lat, long),21,{animation: true});
+    
     //alert(lat, long);
 }
 
@@ -191,6 +207,7 @@ function setPosition(lat, long){
   */
 function openSidebarLayers() {
     sidebarFacultades.hide();
+    
     sidebarLayers.toggle();
     }
 
@@ -199,8 +216,30 @@ function openSidebarLayers() {
   * Abre un módulo lateral con listado de Facultades 
   */
 function openSidebarFacultades() {
+    
+    
     sidebarLayers.hide();
     sidebarFacultades.toggle();
+}
+/* Funcion openSidebarFacultades
+  * Abre un módulo lateral con Información de profesores 
+  */
+function openSidebarInfo(data) {
+    console.log(data);
+    var html = '<div >'+data.nombre+'</div>';
+
+    html += '<div>' + data.idespacio.idespacio + '</div>';
+    html += '<div>' + data.correo + '</div>';
+    html += '<div>' + data.idespacio.nombre + '</div>';
+    html += '<div>' + data.idespacio.descripcion + '</div>';
+    html += '<div><img width= "50px" src=" ' + _server + data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';
+    console.log(_server+data.chano);
+    //alert(data.nombre);
+
+    //html += "</tbody></table>";
+    $(html).appendTo('#profesor-info');
+    sidebarLayers.hide();
+    sidebarInfo.toggle();
 }
 
  /* Funcion closeAllSidebars

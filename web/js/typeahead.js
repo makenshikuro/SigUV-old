@@ -59,12 +59,12 @@ $(document).ready(function () {
     var profesores = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: "http://localhost:8080/siguvServer/webresources/profesores"
+        prefetch: "http://147.156.82.219:8080/siguvServer/webresources/profesores"
     });
     var asignaturas = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: "http://localhost:8080/siguvServer/webresources/asignaturas"
+        prefetch: "http://147.156.82.219:8080/siguvServer/webresources/asignaturas"
     });
 
     $('#busqueda-tab-profesor .typeahead').typeahead({
@@ -96,10 +96,7 @@ $(document).ready(function () {
                 
             });
 
-    $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function(evt, item) {
-    var myVal = item.idespacio.idespacio;
-    $('#busqueda-tab-profesor .typeahead').typeahead('val', myVal);
-});
+    
     
     $('#busqueda-tab-asignatura .typeahead').typeahead({
         hint: true,
@@ -151,7 +148,7 @@ $(document).ready(function () {
                 source: profesores,
                 templates: {
                     header: '<div class="typeahead-header-resultados"><span class="fa fa-users"></span>Profesores</h3>',
-                    suggestion: Handlebars.compile('<div class="typeahead-resultados-profesores">{{nombre}} </div>')
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-profesores">{{nombre}} &#45; <span class="label label-primary">{{idespacio.idespacio}}</span></div>')
                 }
             },
             {
@@ -163,6 +160,38 @@ $(document).ready(function () {
                     suggestion: Handlebars.compile('<div class="typeahead-resultados-asignaturas">{{nombre}} </div>')
                 }
             });
+
+    //update al seleccionar profesor
+    $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function (evt, item) {
+        //var idEspacio = item.idespacio.idespacio;
+        //$('#busqueda-tab-profesor .typeahead').typeahead('val', idEspacio);
+        $('#localizar-profesor').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+')').attr('data-dismiss','modal');
+        
+    });
+    //update al seleccionar asignatura
+    $('#busqueda-tab-asignatura .typeahead').on('typeahead:selected', function (evt, item) {
+        //var idEspacio = item.idespacio.idespacio;
+        //$('#busqueda-tab-profesor .typeahead').typeahead('val', idEspacio);
+        $('#localizar-asignatura').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')').attr('data-dismiss','modal');
+        
+    });
+    //update al seleccionar profesor
+    $('#busqueda-tab-todo .typeahead').on('typeahead:selected', function (evt, item) {
+        if ( typeof(item.idprofesor) !== 'undefined'){
+        //var idEspacio = item.idespacio.idespacio;
+        /*console.log(evt);
+        console.log(item);*/
+        /*$('#busqueda-tab-todo .typeahead').typeahead('val', idEspacio );*/
+        $('#localizar-all').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+')').attr('data-dismiss','modal');
+    }
+    else{
+        //var asignatura = item.nombre;
+        /*$('#busqueda-tab-todo .typeahead').typeahead('val', asig);*/
+        //console.log(item);
+        $('#localizar-all').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')');
+    }
+        
+    });
     
 
 });

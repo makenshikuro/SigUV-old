@@ -12,6 +12,8 @@
  * 
  */
 
+/* global _serverDB, _server */
+
 $(document).ready(function () {
           /*      $("#getData").click(function(){
                     var data = $.ajax({
@@ -40,30 +42,53 @@ $(document).ready(function () {
   });*/
     
   //profesores = $.getJSON("http://localhost:8080/siguvServer/webresources/profesores");
+  //jqxhr = $.getJSON( "http://localhost:8080/siguvServer/webresources/edificios", function(v) {
   
-  jqxhr = $.getJSON( "http://localhost:8080/siguvServer/webresources/edificios", function(v) {
-      
-      var html = '<table class="table table-hover"><tbody>';
-      $.each(v, function(i,data){
-          html += '<tr onclick="setPosition('+data.idcoordenada.latitud +','+ data.idcoordenada.longitud +');"><td><img width= "50px" src=" http://www.adretse.es/'+ data.chano +'">'+data.nombre+'</td></tr>';
-          
-          //alert(data.nombre);
-          
-      });
-      html += "</tbody></table>";
-      $(html).appendTo('#facultades');
-      
-  //console.log( "success"+v[0].nombre );
-  
-});
+    $.getJSON("http://147.156.82.219:8080/siguvServer/webresources/edificios", function (v) {
+
+        var html = '<table class="table table-hover"><tbody>';
+        $.each(v, function (i, data) {
+            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud + ');"><td><img width= "50px" src="'+ _server + data.chano + '">' + data.nombre + '</td></tr>';
+            //alert(data.nombre);
+        });
+        html += "</tbody></table>";
+        $(html).appendTo('#facultades');
+
+        //console.log( "success"+v[0].nombre );
+
+    });
 
 
 //$("#facultades");
-    
-           
 
-        
+
+
+
+});
+
+function LocalizarProfesor(id) {
+    $.getJSON(_serverDB + '/webresources/profesores/' + id, function (data) {
+        //console.log(data);
+
+        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+        $('#busqueda-tab-todo .typeahead').typeahead('val', '');
+        $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
+        openSidebarInfo(data);
+
     });
+}
+
+function ListarDocentesAsignatura(id) {
+    $.getJSON(_serverDB + '/webresources/asignaturas/' + id, function (data) {
+        console.log(data);
+
+        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+        $('#busqueda-tab-todo .typeahead').typeahead('val', '');
+        $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
+
+    });
+}
+
     
 function ajaxCallSucceed(response) {
         console.log(response[0].nombre);

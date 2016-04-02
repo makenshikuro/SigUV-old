@@ -202,6 +202,16 @@ and open the template in the editor.
         <div class="clearM1"></div>
         <div id="facultades"></div>
     </div>
+    
+    <!-- Sidebar de Información -->
+    <div id="sidebarInfo">
+        <div class="sidebar-header">
+            <div class="sidebar-header-icon"><span class="fa fa-university"></span></div>
+            <div class="sidebar-header-text">¿?</div>
+        </div>
+        <div class="clearM1"></div>
+        <div id="profesor-info"></div>
+    </div>
 
 
     <!-- Modal -->
@@ -226,16 +236,22 @@ and open the template in the editor.
                         <div id="busqueda-tab-todo" class="tab-pane fade in active">
                             <div class='clearM1'></div>
                             <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
+                            <button id="localizar-all" type="button" class="btn btn-default" >Localizar</button>
                         </div>
+                        
                         <div id="busqueda-tab-profesor" class="tab-pane fade">
                             <div class='clearM1'></div>
                             <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
                             <input type="hidden" id="todo">
                             <div id = "resultados-profesor"></div>
+                            <button id="localizar-profesor" type="button" class="btn btn-default"  >Localizar</button>
+                            
                         </div>
                         <div id="busqueda-tab-asignatura" class="tab-pane fade">
                             <div class='clearM1'></div>
                             <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
+                            <button id="localizar-asignatura" type="button" class="btn btn-default"  >Localizar</button>
+                            <div id="listaDocentes"></div>
                         </div>
                     </div>
                 </div>
