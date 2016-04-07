@@ -5,11 +5,29 @@
  */
 
 
-/* global L, Facultades, restaurants, map */
+/* global L, Facultades, restaurants, map, Campus, query */
 
 
 
 function init() {
+   
+    /* Recogemos variable de query String */
+    queryString = GetQueryStringParams("id");
+    //console.log(queryString);
+    
+    
+    /*$.getJSON(_serverDB + 'webresources/espacios/'+ queryString , function (data) {
+        console.log(data);
+    });*/
+    
+    if (typeof (queryString) !== 'undefined'){
+        var query = BuscarEspacio(queryString);
+        console.log("query");
+        console.log(query);
+    }
+    
+    //console.log(queryString);
+    
     
     /* Variables Globales   */
     _fondo = "plano";
@@ -18,7 +36,8 @@ function init() {
     _denominacion = "d";
     _nivel = "0";
     _server = "http://www.adretse.es/siguv/";
-    _serverDB = "http://147.156.82.219:8080/siguvServer";
+    //_serverDB = "http://147.156.82.219:8080/siguvServer/";
+    _serverDB = "http://localhost:8080/siguvServer/";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
@@ -51,7 +70,7 @@ function init() {
 
     googleLayer = new L.Google('SATELLITE');
     
-    var points = [];
+    /*var points = [];
     //points.push(centro);
     points.push(new L.LatLng(39.512596166727214, -0.42413838207721705));
     points.push(new L.LatLng(39.51255788497585, -0.42409479618072504));
@@ -63,7 +82,7 @@ function init() {
     points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
     points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));
     var p = new R.Polygon(points);
-    map.addLayer(p);
+    map.addLayer(p);*/
     //map.addLayer(new R.Marker(centro));
     
 
@@ -233,7 +252,8 @@ function openSidebarInfo(data) {
     html += '<div>' + data.idespacio.nombre + '</div>';
     html += '<div>' + data.idespacio.descripcion + '</div>';
     html += '<div><img width= "50px" src=" ' + _server + data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';
-    console.log(_server+data.chano);
+    console.log(data.idespacio.boundingbox);
+    //console.log(_server+data.chano);
     //alert(data.nombre);
 
     //html += "</tbody></table>";

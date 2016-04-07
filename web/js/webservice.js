@@ -12,7 +12,15 @@
  * 
  */
 
-/* global _serverDB, _server */
+/* global _serverDB, _server, data */
+
+
+
+
+server = "http://www.adretse.es/siguv/";
+_serverDB = "http://localhost:8080/siguvServer/";
+
+
 
 $(document).ready(function () {
           /*      $("#getData").click(function(){
@@ -42,14 +50,14 @@ $(document).ready(function () {
   });*/
     
   //profesores = $.getJSON("http://localhost:8080/siguvServer/webresources/profesores");
-  //jqxhr = $.getJSON( "http://localhost:8080/siguvServer/webresources/edificios", function(v) {
+  $.getJSON( "http://localhost:8080/siguvServer/webresources/edificios", function(v) {
   
-    $.getJSON("http://147.156.82.219:8080/siguvServer/webresources/edificios", function (v) {
+    //$.getJSON("http://147.156.82.219:8080/siguvServer/webresources/edificios", function (v) {
 
         var html = '<table class="table table-hover"><tbody>';
         $.each(v, function (i, data) {
-            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud + ');"><td><img width= "50px" src="'+ _server + data.chano + '">' + data.nombre + '</td></tr>';
-            //alert(data.nombre);
+            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud + ');"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
+            console.log('http://www.adretse.es/siguv/'+data.chano);
         });
         html += "</tbody></table>";
         $(html).appendTo('#facultades');
@@ -67,7 +75,7 @@ $(document).ready(function () {
 });
 
 function LocalizarProfesor(id) {
-    $.getJSON(_serverDB + '/webresources/profesores/' + id, function (data) {
+    $.getJSON(_serverDB + 'webresources/profesores/' + id, function (data) {
         //console.log(data);
 
         setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
@@ -79,8 +87,8 @@ function LocalizarProfesor(id) {
 }
 
 function ListarDocentesAsignatura(id) {
-    $.getJSON(_serverDB + '/webresources/asignaturas/' + id, function (data) {
-        console.log(data);
+    $.getJSON(_serverDB + 'webresources/asignaturas/' + id, function (data) {
+        //console.log(data);
 
         setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         $('#busqueda-tab-todo .typeahead').typeahead('val', '');
@@ -89,8 +97,58 @@ function ListarDocentesAsignatura(id) {
     });
 }
 
+
+
+function GetQueryStringParams(sParam)
+{
+    /*var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) 
+        {
+            return sParameterName[1];
+        }
+    }*/
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) 
+        {
+            if ( typeof(sParameterName[1]) !== 'undefined'){
+                 
+            }
+            return sParameterName[1];
+        }
+    }
     
-function ajaxCallSucceed(response) {
-        console.log(response[0].nombre);
-        alert(response[0].nombre);
+    
 }
+function BuscarEspacio(id){
+    var json;
+    $.getJSON(_serverDB + 'webresources/espacios/' + id , function(j){
+        console.log("primer");
+        console.log(j);
+    })
+            .done(function(data){
+                console.log("done");
+                console.log(data);
+                return data;
+                
+    })
+            .fail(function(doto){
+                console.log("fail");
+                console.log(doto);
+    });
+    console.log("fuera");
+    
+}
+function CallSucceed(json){
+    console.log("dentro");
+    query = json;
+}
+    
+
