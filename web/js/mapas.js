@@ -5,53 +5,71 @@
  */
 
 
-/* global L, Facultades, restaurants, map, Campus, query */
+function showPosition(position){
+    console.log(position.coords.latitude);
+}
+function showError(error){
+    console.log(error.code);
+}
 
+/* global _serverDB */
 
+function DefaultMap(){
+    _nivel = "2";
+    centro = [39.512859, -0.4244782];
+    _zoom = 18;
+}
 
 function init() {
-   
     /* Recogemos variable de query String */
     queryString = GetQueryStringParams("id");
-    //console.log(queryString);
     
-    
-    /*$.getJSON(_serverDB + 'webresources/espacios/'+ queryString , function (data) {
-        console.log(data);
-    });*/
-    
+    /* Consulta de Query */
     if (typeof (queryString) !== 'undefined'){
-        var query = BuscarEspacio(queryString);
-        console.log("query");
-        console.log(query);
+        var req = $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/espacios/' + queryString,
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    console.log("done");
+                    _nivel = response.piso;
+                    //console.log(response.idcoordenada.latitud);
+                    centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
+                    _zoom = 22;
+                }
+                /* Respuesta errónea */
+                else{
+                    console.log("fail");
+                    DefaultMap();
+                }
+        },
+        async: false
+    });
+    /* Respuesta por defecto sin queryString */
     }
-    
-    //console.log(queryString);
-    
+    else{
+        DefaultMap();
+    }
     
     /* Variables Globales   */
     _fondo = "plano";
     _tema = "c";
     _iconos = true;
     _denominacion = "d";
-    _nivel = "0";
-    _server = "http://www.adretse.es/siguv/";
-    //_serverDB = "http://147.156.82.219:8080/siguvServer/";
-    _serverDB = "http://localhost:8080/siguvServer/";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
     var norEste = new L.LatLng(39.51349371255555, -0.422447919845581);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
-    //console.log("hola"+_mapBounds);
     _mapMinZoom = 5;
-    _mapMaxZoom = 25;
-    var centro = [39.512859, -0.4244782];
-    L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
-
+    _mapMaxZoom = 23;
+    
+    //navigator.geolocation.getCurrentPosition(showPosition,showError);
 
     /* Inicialización Mapa */
-    map = L.map('map', {center: centro, zoom: 18, zoomControl: false});
+    map = L.map('map', {center: centro, zoom: _zoom, zoomControl: false});
 
     /* Capas 
      * mapboxTiles = Mapbox.com  
@@ -63,7 +81,6 @@ function init() {
         attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
-        
         unloadInvisibleTiles: true,
         opacity: 1.00
     });
@@ -173,10 +190,11 @@ function init() {
         layer.bindPopup(popupContent);
     }
 
-
+    /*
     map.on('click', function(e) {
      console.log(e.latlng);
      });
+    */
 
     /*
      * Función tras cambiar zoom en el mapa
@@ -214,11 +232,9 @@ function init() {
 
 /* Funciones */
 
-function setPosition(lat, long){
-    //map.panTo(new L.LatLng(lat, long),{animation: true});
-    map.setView(new L.LatLng(lat, long),21,{animation: true});
-    
-    //alert(lat, long);
+
+function setPosition(lat, long, zoom){
+    map.setView(new L.LatLng(lat, long), 22,{animation: true});
 }
 
  /* Funcion openSidebarLayers
@@ -226,9 +242,8 @@ function setPosition(lat, long){
   */
 function openSidebarLayers() {
     sidebarFacultades.hide();
-    
     sidebarLayers.toggle();
-    }
+}
 
 
  /* Funcion openSidebarFacultades
@@ -244,7 +259,8 @@ function openSidebarFacultades() {
   * Abre un módulo lateral con Información de profesores 
   */
 function openSidebarInfo(data) {
-    console.log(data);
+    //console.log(data);
+    $('#profesor-info').empty();
     var html = '<div >'+data.nombre+'</div>';
 
     html += '<div>' + data.idespacio.idespacio + '</div>';
@@ -268,6 +284,7 @@ function openSidebarInfo(data) {
 function closeAllSidebars() {
     sidebarFacultades.hide();
     sidebarLayers.hide();
+    sidebarInfo.hide();
 }
 /*
  * Función que modifica el mapa activo de acuerdo a los valores globales de:

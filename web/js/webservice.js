@@ -56,7 +56,7 @@ $(document).ready(function () {
 
         var html = '<table class="table table-hover"><tbody>';
         $.each(v, function (i, data) {
-            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud + ');"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
+            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud +', 21);"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
             console.log('http://www.adretse.es/siguv/'+data.chano);
         });
         html += "</tbody></table>";
@@ -78,7 +78,7 @@ function LocalizarProfesor(id) {
     $.getJSON(_serverDB + 'webresources/profesores/' + id, function (data) {
         //console.log(data);
 
-        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21);
         $('#busqueda-tab-todo .typeahead').typeahead('val', '');
         $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
         openSidebarInfo(data);
@@ -90,7 +90,7 @@ function ListarDocentesAsignatura(id) {
     $.getJSON(_serverDB + 'webresources/asignaturas/' + id, function (data) {
         //console.log(data);
 
-        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21);
         $('#busqueda-tab-todo .typeahead').typeahead('val', '');
         $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
 
@@ -127,7 +127,7 @@ function GetQueryStringParams(sParam)
     
     
 }
-function BuscarEspacio(id){
+/*function BuscarEspacio(id){
     var json;
     $.getJSON(_serverDB + 'webresources/espacios/' + id , function(j){
         console.log("primer");
@@ -145,7 +145,7 @@ function BuscarEspacio(id){
     });
     console.log("fuera");
     
-}
+}*/
 function CallSucceed(json){
     console.log("dentro");
     query = json;
