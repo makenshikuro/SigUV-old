@@ -24,6 +24,8 @@ html, body {
 .navbar-header-text {
     padding-left: 0.3em;
 }
+
+
 .opciones{
     right: 0;
 }
@@ -51,8 +53,6 @@ html, body {
 
 
 /**  Bootstrap  **/
-
-
 .active[class~="ON"] { 
     background-image: -webkit-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Safari 5.1 to 6.0 */
     background-image: -o-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Opera 11.1 to 12.0 */
@@ -67,7 +67,10 @@ html, body {
     background-image: -o-linear-gradient(top,#d2322d 0,#ac2925 100%); /* For Opera 11.1 to 12.0 */
     background-image: -moz-linear-gradient(top,#d2322d 0,#ac2925 100%); /* For Firefox 3.6 to 15 */
     background-image: linear-gradient(top,#d2322d 0,#ac2925 100%); /* Standard syntax */
-    border-color: #000; 
+    border-color: #000;
+}
+.activeGPS{
+    background-color: #ECDFC8;
 }
 .btn{
     border-radius: 10px;
@@ -112,6 +115,19 @@ html, body {
     min-height: 50px;
     margin-bottom: 0px;
     border: 0px solid transparent;
+}
+.labelGPS{
+    display: inline-block;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    padding-left: 10px;
+    border-radius: 10px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    padding-right: 10px;
+    margin-top: 0px;
+    margin-left: 10px;
+    vertical-align: top;
 }
 
 /**  Leaflet   **/

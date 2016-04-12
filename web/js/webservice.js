@@ -79,12 +79,17 @@ function LocalizarProfesor(id) {
         //console.log(data);
 
         setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21);
+        addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         $('#busqueda-tab-todo .typeahead').typeahead('val', '');
         $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
         openSidebarInfo(data);
 
     });
 }
+function LocalizarEspacio(id) {
+    
+}
+
 
 function ListarDocentesAsignatura(id) {
     $.getJSON(_serverDB + 'webresources/asignaturas/' + id, function (data) {

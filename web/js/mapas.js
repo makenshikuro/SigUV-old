@@ -5,18 +5,14 @@
  */
 
 
-function showPosition(position){
-    console.log(position.coords.latitude);
-}
-function showError(error){
-    console.log(error.code);
-}
+
 
 /* global _serverDB */
 
 function DefaultMap(){
     _nivel = "2";
     centro = [39.512859, -0.4244782];
+    _currentPosition = centro;
     _zoom = 18;
 }
 
@@ -33,15 +29,17 @@ function init() {
         success: function(response, textStatus, errorThrown) {
                 /* Respuesta correcta */
                 if(textStatus === 'success'){
-                    console.log("done");
+                    //console.log("done");
                     _nivel = response.piso;
                     //console.log(response.idcoordenada.latitud);
                     centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
+                    _currentPosition = centro;
                     _zoom = 22;
+                    
                 }
                 /* Respuesta errónea */
                 else{
-                    console.log("fail");
+                    //console.log("fail");
                     DefaultMap();
                 }
         },
@@ -66,7 +64,7 @@ function init() {
     _mapMinZoom = 5;
     _mapMaxZoom = 23;
     
-    //navigator.geolocation.getCurrentPosition(showPosition,showError);
+    
 
     /* Inicialización Mapa */
     map = L.map('map', {center: centro, zoom: _zoom, zoomControl: false});
@@ -145,10 +143,15 @@ function init() {
     /*
      * Grupos de capas de Marcadores JSON
      */
-    layerGroup = L.layerGroup().addTo(map);
-    layerGroupC = L.layerGroup().addTo(map);
+    layerGroupFac = L.layerGroup().addTo(map);
+    layerGroupCam = L.layerGroup().addTo(map);
+    layerGroupGPS = L.layerGroup();
+    layerGroupSearch = L.layerGroup().addTo(map);
+    
+    
+    
 
-    map.addControl(new L.Control.Layers({ 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': ETSEmap, "Markers": layerGroup}));
+    //map.addControl(new L.Control.Layers({ 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': ETSEmap, "Markers": layerGroup}));
 
     /* Marcadores GeoJSON
      *  Facultades:   Marcadores correspondientes a las facultades de la UV
@@ -158,7 +161,7 @@ function init() {
     L.geoJson(Facultades, {
         pointToLayer: function (feature, coordinates) {
             var geoMarker = (L.marker(coordinates, {icon: L.AwesomeMarkers.icon({icon: 'graduation-cap', markerColor: 'red', prefix: 'fa', iconColor: 'black'})}));
-            layerGroup.addLayer(geoMarker);
+            layerGroupFac.addLayer(geoMarker);
             return geoMarker;
         },
         onEachFeature: onEachFeature
@@ -167,7 +170,7 @@ function init() {
     L.geoJson(Campus, {
         pointToLayer: function (feature, coordinates) {
             var geoMarker = (L.marker(coordinates, {icon: L.AwesomeMarkers.icon({icon: 'university', markerColor: 'green', prefix: 'fa', iconColor: 'black'})}));
-            layerGroupC.addLayer(geoMarker);
+            layerGroupCam.addLayer(geoMarker);
             return geoMarker;
         },
         onEachFeature: onEachFeature
@@ -201,9 +204,7 @@ function init() {
      * Se ocultan y muestran las capas ...... y ....
      */
     map.on('zoomend', function () {
-        // here's where you decided what zoom levels the layer should and should
-        // not be available for: use javascript comparisons like < and > if
-        // you want something other than just one zoom level, like
+
         // (map.getZoom > 10)
         console.log(map.getZoom());
         if (map.getZoom() < 18) {
@@ -227,6 +228,7 @@ function init() {
             //map.featureLayer.setFilter(function() { return false; });
         }
     });
+    //var group = new L.featureGroup([L, marker2]);
 
 }
 
@@ -250,8 +252,6 @@ function openSidebarLayers() {
   * Abre un módulo lateral con listado de Facultades 
   */
 function openSidebarFacultades() {
-    
-    
     sidebarLayers.hide();
     sidebarFacultades.toggle();
 }
@@ -285,7 +285,9 @@ function closeAllSidebars() {
     sidebarFacultades.hide();
     sidebarLayers.hide();
     sidebarInfo.hide();
+    clearMarkerSearch();
 }
+
 /*
  * Función que modifica el mapa activo de acuerdo a los valores globales de:
  * tema, denominacion y nivel
@@ -304,6 +306,96 @@ function ChangeMapLayer(){
     map.addLayer(ETSEmap);
 }
 
+
+/*
+ * Función de retorno GPS
+ *  Recoge valores GPS y los envia a ShowPosition si es correcto
+ *  Dispara showError si el GPS falla
+ * 
+ */
+function getGPS(){
+    navigator.geolocation.getCurrentPosition(showPosition,showError);
+}
+/*
+ * Función que muestra Posicion del GPS y coloca una marca geográfica
+ * en el mapa
+ * @param LatLong position
+ * 
+ */
+function showPosition(position){
+    //console.log(position.coords.latitude);
+    //console.log(position.coords.longitude);
+    
+    
+   
+    if ($('.dropdown-menu li:first-child span.labelGPS').hasClass('label-success')) {
+        console.log("OFF");
+        $('.dropdown-menu li:first-child span.labelGPS').removeClass('label-success');
+        $('.dropdown-menu li:first-child span.labelGPS').addClass('label-danger');
+        $('.dropdown-menu li:first-child span.labelGPS').html("OFF");
+        map.removeLayer(layerGroupGPS);
+
+    } else {
+        console.log("ON");
+        $('.dropdown-menu li:first-child span.labelGPS').removeClass('label-danger');
+        $('.dropdown-menu li:first-child span.labelGPS').addClass('label-success');
+        $('.dropdown-menu li:first-child span.labelGPS').html("ON");
+        var marker = L.marker(new L.LatLng(position.coords.latitude, position.coords.longitude),
+                {icon: L.AwesomeMarkers.icon({
+                        icon: 'location-arrow',
+                        markerColor: 'blue',
+                        prefix: 'fa',
+                        iconColor: 'black'})
+                }
+        );
+        var marker2 = L.marker(new L.LatLng(map.getCenter().lat, map.getCenter().lng));
+        layerGroupGPS.addLayer(marker);
+        
+        var group = new L.featureGroup([marker, marker2]);
+
+        map.fitBounds(group.getBounds());
+        map.addLayer(layerGroupGPS);
+        
+        //console.log(map.getCenter().lat);
+        //console.log(map.getCenter().lng);
+        
+        //setPosition(position.coords.latitude, position.coords.longitude, 21);
+       
+    }
+    
+    
+    
+    
+            
+}
+/*
+ * Añade Marcador al mapa
+ * @returns {undefined}
+ */
+function addMarker(Lat,Lng){
+    var marker = L.marker(new L.LatLng(Lat, Lng),
+                {icon: L.AwesomeMarkers.icon({
+                        icon: 'circle',
+                        markerColor: 'blue',
+                        prefix: 'fa',
+                        iconColor: 'black'})
+                }
+        );
+        layerGroupSearch.addLayer(marker);
+    
+}
+function clearMarkerSearch (){
+    layerGroupSearch.clearLayers();
+      
+}
+/*
+ * Función que muestra en caso de error GPS
+ * 
+ */
+function showError(error){
+    console.log(error.code);
+}
+
  /* Funciones JQuery
   * Disparadores para los cambios de estado de los
   * interruptores de las capas
@@ -313,11 +405,11 @@ $(document).ready(function () {
     $("input[name=icons]").change(function () {
         var iconos = $('input:radio[name=icons]:checked').attr("value");
         if (iconos === "on") {
-            map.addLayer(layerGroup);
+            map.addLayer(layerGroupFac);
             _iconos = true;
         } else {
 
-            map.removeLayer(layerGroup);
+            map.removeLayer(layerGroupFac);
             _iconos = false;
         }
         //alert("The text has been changed."+iconos);
@@ -363,19 +455,19 @@ $(document).ready(function () {
     $("input[name=nivel]").change(function () {
         var nivel = $('input:radio[name=nivel]:checked').attr("value");
         if (nivel === "0") {
-            map.addLayer(layerGroup);
+            map.addLayer(layerGroupFac);
             _nivel = "0";
         }
         if (nivel === "1") {
-            map.addLayer(layerGroup);
+            map.addLayer(layerGroupFac);
             _nivel = "1";
         }
         if (nivel === "2") {
-            map.addLayer(layerGroup);
+            map.addLayer(layerGroupFac);
             _nivel = "2";
         }
         if (nivel === "3") {
-            map.addLayer(layerGroup);
+            map.addLayer(layerGroupFac);
             _nivel = "3";
         }
           //alert("The text has been changed."+iconos);
