@@ -51,7 +51,11 @@ function LocalizarProfesor(id) {
     $.getJSON(_serverDB + 'webresources/profesores/' + id, function (data) {
         //console.log(data);
 
+<<<<<<< HEAD
         setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+=======
+        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21);
+>>>>>>> parent of 9ed79e0... GPS y Markers
         $('#busqueda-tab-todo .typeahead').typeahead('val', '');
         $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
         openSidebarInfo(data);

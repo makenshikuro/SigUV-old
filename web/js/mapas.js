@@ -5,9 +5,26 @@
  */
 
 
+<<<<<<< HEAD
 /* global L, Facultades, restaurants, map, Campus, query */
 
 
+=======
+function showPosition(position){
+    console.log(position.coords.latitude);
+}
+function showError(error){
+    console.log(error.code);
+}
+
+/* global _serverDB */
+
+function DefaultMap(){
+    _nivel = "2";
+    centro = [39.512859, -0.4244782];
+    _zoom = 18;
+}
+>>>>>>> parent of 9ed79e0... GPS y Markers
 
 function init() {
    
@@ -21,9 +38,37 @@ function init() {
     });*/
     
     if (typeof (queryString) !== 'undefined'){
+<<<<<<< HEAD
         var query = BuscarEspacio(queryString);
         console.log("query");
         console.log(query);
+=======
+        var req = $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/espacios/' + queryString,
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    console.log("done");
+                    _nivel = response.piso;
+                    //console.log(response.idcoordenada.latitud);
+                    centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
+                    _zoom = 22;
+                }
+                /* Respuesta errónea */
+                else{
+                    console.log("fail");
+                    DefaultMap();
+                }
+        },
+        async: false
+    });
+    /* Respuesta por defecto sin queryString */
+    }
+    else{
+        DefaultMap();
+>>>>>>> parent of 9ed79e0... GPS y Markers
     }
     
     //console.log(queryString);
@@ -45,10 +90,16 @@ function init() {
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
     //console.log("hola"+_mapBounds);
     _mapMinZoom = 5;
+<<<<<<< HEAD
     _mapMaxZoom = 25;
     var centro = [39.512859, -0.4244782];
     L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
 
+=======
+    _mapMaxZoom = 23;
+    
+    //navigator.geolocation.getCurrentPosition(showPosition,showError);
+>>>>>>> parent of 9ed79e0... GPS y Markers
 
     /* Inicialización Mapa */
     map = L.map('map', {center: centro, zoom: 18, zoomControl: false});
@@ -268,6 +319,10 @@ function openSidebarInfo(data) {
 function closeAllSidebars() {
     sidebarFacultades.hide();
     sidebarLayers.hide();
+<<<<<<< HEAD
+=======
+    sidebarInfo.hide();
+>>>>>>> parent of 9ed79e0... GPS y Markers
 }
 /*
  * Función que modifica el mapa activo de acuerdo a los valores globales de:
