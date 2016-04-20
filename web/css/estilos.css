@@ -10,6 +10,7 @@ and open the template in the editor.
 
 html, body {
     height: 100%;
+    
 }
 #map {
     /* Firefox */
@@ -20,6 +21,7 @@ html, body {
     height: -o-calc(100% - 50px);
     /* Standard */
     height: calc(100% - 50px);
+    cursor: crosshair;
 }
 .navbar-header-text {
     padding-left: 0.3em;
