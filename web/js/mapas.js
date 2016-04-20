@@ -5,69 +5,53 @@
  */
 
 
+/* global L, Facultades, restaurants, map, Campus, query */
 
 
-/* global _serverDB */
-
-function DefaultMap(){
-    _nivel = "2";
-    centro = [39.512859, -0.4244782];
-    _currentPosition = centro;
-    _zoom = 18;
-}
 
 function init() {
+   
     /* Recogemos variable de query String */
     queryString = GetQueryStringParams("id");
+    //console.log(queryString);
     
-    /* Consulta de Query */
+    
+    /*$.getJSON(_serverDB + 'webresources/espacios/'+ queryString , function (data) {
+        console.log(data);
+    });*/
+    
     if (typeof (queryString) !== 'undefined'){
-        var req = $.ajax({
-        type: 'GET',
-        url: _serverDB + 'webresources/espacios/' + queryString,
-        dataType: 'json',
-        success: function(response, textStatus, errorThrown) {
-                /* Respuesta correcta */
-                if(textStatus === 'success'){
-                    //console.log("done");
-                    _nivel = response.piso;
-                    //console.log(response.idcoordenada.latitud);
-                    centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
-                    _currentPosition = centro;
-                    _zoom = 22;
-                    
-                }
-                /* Respuesta errónea */
-                else{
-                    //console.log("fail");
-                    DefaultMap();
-                }
-        },
-        async: false
-    });
-    /* Respuesta por defecto sin queryString */
+        var query = BuscarEspacio(queryString);
+        console.log("query");
+        console.log(query);
     }
-    else{
-        DefaultMap();
-    }
+    
+    //console.log(queryString);
+    
     
     /* Variables Globales   */
     _fondo = "plano";
     _tema = "c";
     _iconos = true;
     _denominacion = "d";
+    _nivel = "0";
+    _server = "http://www.adretse.es/siguv/";
+    //_serverDB = "http://147.156.82.219:8080/siguvServer/";
+    _serverDB = "http://localhost:8080/siguvServer/";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
     var norEste = new L.LatLng(39.51349371255555, -0.422447919845581);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
+    //console.log("hola"+_mapBounds);
     _mapMinZoom = 5;
-    _mapMaxZoom = 23;
-    
-    
+    _mapMaxZoom = 25;
+    var centro = [39.512859, -0.4244782];
+    L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
+
 
     /* Inicialización Mapa */
-    map = L.map('map', {center: centro, zoom: _zoom, zoomControl: false});
+    map = L.map('map', {center: centro, zoom: 18, zoomControl: false});
 
     /* Capas 
      * mapboxTiles = Mapbox.com  
@@ -79,6 +63,7 @@ function init() {
         attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
+        
         unloadInvisibleTiles: true,
         opacity: 1.00
     });
@@ -143,15 +128,10 @@ function init() {
     /*
      * Grupos de capas de Marcadores JSON
      */
-    layerGroupFac = L.layerGroup().addTo(map);
-    layerGroupCam = L.layerGroup().addTo(map);
-    layerGroupGPS = L.layerGroup();
-    layerGroupSearch = L.layerGroup().addTo(map);
-    
-    
-    
+    layerGroup = L.layerGroup().addTo(map);
+    layerGroupC = L.layerGroup().addTo(map);
 
-    //map.addControl(new L.Control.Layers({ 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': ETSEmap, "Markers": layerGroup}));
+    map.addControl(new L.Control.Layers({ 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': ETSEmap, "Markers": layerGroup}));
 
     /* Marcadores GeoJSON
      *  Facultades:   Marcadores correspondientes a las facultades de la UV
@@ -161,7 +141,7 @@ function init() {
     L.geoJson(Facultades, {
         pointToLayer: function (feature, coordinates) {
             var geoMarker = (L.marker(coordinates, {icon: L.AwesomeMarkers.icon({icon: 'graduation-cap', markerColor: 'red', prefix: 'fa', iconColor: 'black'})}));
-            layerGroupFac.addLayer(geoMarker);
+            layerGroup.addLayer(geoMarker);
             return geoMarker;
         },
         onEachFeature: onEachFeature
@@ -170,7 +150,7 @@ function init() {
     L.geoJson(Campus, {
         pointToLayer: function (feature, coordinates) {
             var geoMarker = (L.marker(coordinates, {icon: L.AwesomeMarkers.icon({icon: 'university', markerColor: 'green', prefix: 'fa', iconColor: 'black'})}));
-            layerGroupCam.addLayer(geoMarker);
+            layerGroupC.addLayer(geoMarker);
             return geoMarker;
         },
         onEachFeature: onEachFeature
@@ -193,18 +173,19 @@ function init() {
         layer.bindPopup(popupContent);
     }
 
-    /*
+
     map.on('click', function(e) {
      console.log(e.latlng);
      });
-    */
 
     /*
      * Función tras cambiar zoom en el mapa
      * Se ocultan y muestran las capas ...... y ....
      */
     map.on('zoomend', function () {
-
+        // here's where you decided what zoom levels the layer should and should
+        // not be available for: use javascript comparisons like < and > if
+        // you want something other than just one zoom level, like
         // (map.getZoom > 10)
         console.log(map.getZoom());
         if (map.getZoom() < 18) {
@@ -228,15 +209,16 @@ function init() {
             //map.featureLayer.setFilter(function() { return false; });
         }
     });
-    //var group = new L.featureGroup([L, marker2]);
 
 }
 
 /* Funciones */
 
-
-function setPosition(lat, long, zoom){
-    map.setView(new L.LatLng(lat, long), 22,{animation: true});
+function setPosition(lat, long){
+    //map.panTo(new L.LatLng(lat, long),{animation: true});
+    map.setView(new L.LatLng(lat, long),21,{animation: true});
+    
+    //alert(lat, long);
 }
 
  /* Funcion openSidebarLayers
@@ -244,14 +226,17 @@ function setPosition(lat, long, zoom){
   */
 function openSidebarLayers() {
     sidebarFacultades.hide();
+    
     sidebarLayers.toggle();
-}
+    }
 
 
  /* Funcion openSidebarFacultades
   * Abre un módulo lateral con listado de Facultades 
   */
 function openSidebarFacultades() {
+    
+    
     sidebarLayers.hide();
     sidebarFacultades.toggle();
 }
@@ -259,8 +244,7 @@ function openSidebarFacultades() {
   * Abre un módulo lateral con Información de profesores 
   */
 function openSidebarInfo(data) {
-    //console.log(data);
-    $('#profesor-info').empty();
+    console.log(data);
     var html = '<div >'+data.nombre+'</div>';
 
     html += '<div>' + data.idespacio.idespacio + '</div>';
@@ -284,10 +268,7 @@ function openSidebarInfo(data) {
 function closeAllSidebars() {
     sidebarFacultades.hide();
     sidebarLayers.hide();
-    sidebarInfo.hide();
-    clearMarkerSearch();
 }
-
 /*
  * Función que modifica el mapa activo de acuerdo a los valores globales de:
  * tema, denominacion y nivel
@@ -306,96 +287,6 @@ function ChangeMapLayer(){
     map.addLayer(ETSEmap);
 }
 
-
-/*
- * Función de retorno GPS
- *  Recoge valores GPS y los envia a ShowPosition si es correcto
- *  Dispara showError si el GPS falla
- * 
- */
-function getGPS(){
-    navigator.geolocation.getCurrentPosition(showPosition,showError);
-}
-/*
- * Función que muestra Posicion del GPS y coloca una marca geográfica
- * en el mapa
- * @param LatLong position
- * 
- */
-function showPosition(position){
-    //console.log(position.coords.latitude);
-    //console.log(position.coords.longitude);
-    
-    
-   
-    if ($('.dropdown-menu li:first-child span.labelGPS').hasClass('label-success')) {
-        console.log("OFF");
-        $('.dropdown-menu li:first-child span.labelGPS').removeClass('label-success');
-        $('.dropdown-menu li:first-child span.labelGPS').addClass('label-danger');
-        $('.dropdown-menu li:first-child span.labelGPS').html("OFF");
-        map.removeLayer(layerGroupGPS);
-
-    } else {
-        console.log("ON");
-        $('.dropdown-menu li:first-child span.labelGPS').removeClass('label-danger');
-        $('.dropdown-menu li:first-child span.labelGPS').addClass('label-success');
-        $('.dropdown-menu li:first-child span.labelGPS').html("ON");
-        var marker = L.marker(new L.LatLng(position.coords.latitude, position.coords.longitude),
-                {icon: L.AwesomeMarkers.icon({
-                        icon: 'location-arrow',
-                        markerColor: 'blue',
-                        prefix: 'fa',
-                        iconColor: 'black'})
-                }
-        );
-        var marker2 = L.marker(new L.LatLng(map.getCenter().lat, map.getCenter().lng));
-        layerGroupGPS.addLayer(marker);
-        
-        var group = new L.featureGroup([marker, marker2]);
-
-        map.fitBounds(group.getBounds());
-        map.addLayer(layerGroupGPS);
-        
-        //console.log(map.getCenter().lat);
-        //console.log(map.getCenter().lng);
-        
-        //setPosition(position.coords.latitude, position.coords.longitude, 21);
-       
-    }
-    
-    
-    
-    
-            
-}
-/*
- * Añade Marcador al mapa
- * @returns {undefined}
- */
-function addMarker(Lat,Lng){
-    var marker = L.marker(new L.LatLng(Lat, Lng),
-                {icon: L.AwesomeMarkers.icon({
-                        icon: 'circle',
-                        markerColor: 'blue',
-                        prefix: 'fa',
-                        iconColor: 'black'})
-                }
-        );
-        layerGroupSearch.addLayer(marker);
-    
-}
-function clearMarkerSearch (){
-    layerGroupSearch.clearLayers();
-      
-}
-/*
- * Función que muestra en caso de error GPS
- * 
- */
-function showError(error){
-    console.log(error.code);
-}
-
  /* Funciones JQuery
   * Disparadores para los cambios de estado de los
   * interruptores de las capas
@@ -405,11 +296,11 @@ $(document).ready(function () {
     $("input[name=icons]").change(function () {
         var iconos = $('input:radio[name=icons]:checked').attr("value");
         if (iconos === "on") {
-            map.addLayer(layerGroupFac);
+            map.addLayer(layerGroup);
             _iconos = true;
         } else {
 
-            map.removeLayer(layerGroupFac);
+            map.removeLayer(layerGroup);
             _iconos = false;
         }
         //alert("The text has been changed."+iconos);
@@ -455,19 +346,19 @@ $(document).ready(function () {
     $("input[name=nivel]").change(function () {
         var nivel = $('input:radio[name=nivel]:checked').attr("value");
         if (nivel === "0") {
-            map.addLayer(layerGroupFac);
+            map.addLayer(layerGroup);
             _nivel = "0";
         }
         if (nivel === "1") {
-            map.addLayer(layerGroupFac);
+            map.addLayer(layerGroup);
             _nivel = "1";
         }
         if (nivel === "2") {
-            map.addLayer(layerGroupFac);
+            map.addLayer(layerGroup);
             _nivel = "2";
         }
         if (nivel === "3") {
-            map.addLayer(layerGroupFac);
+            map.addLayer(layerGroup);
             _nivel = "3";
         }
           //alert("The text has been changed."+iconos);
