@@ -1,61 +1,6 @@
 /* global Bloodhound, Handlebars */
 $(document).ready(function () {
-    
-  /*  var engine = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: "http://localhost:8080/siguvServer/webresources/profesores"
-            
-            
-        }
-    });
-    
-    var engine2 = new Bloodhound({
-        datumTokenizer: function (datum) {
-            return Bloodhound.tokenizers.whitespace(datum.value);
-        },
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: "http://localhost:8080/siguvServer/webresources/asignaturas"
-            
-            
-        }
-    });
-
-// initialize the bloodhound suggestion engine
-    engine.initialize();
-    engine2.initialize();
-
-// instantiate the typeahead UI para profesor
-    $('#busqueda-tab-profesor .typeahead').typeahead({
-        hint: true,
-        valueKey: 'nombre',
-        matcher: function () { return true; },
-        highlight: true,
-        minLength: 1
-    }, {
-        name: 'profesores',
-        displayKey: 'nombre',
-        source: engine.ttAdapter()
-        
-    });
-    
-    // instantiate the typeahead UI para profesor
-    $('#busqueda-tab-asignatura .typeahead').typeahead({
-        hint: true,
-        highlight: true,
-        matcher: true,
-        minLength: 1
-        
-    }, {
-        name: 'asignatura',
-        displayKey: 'nombre',
-        source: engine2.ttAdapter()
-    });
-    */
-   
-   
+       
     var profesores = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
