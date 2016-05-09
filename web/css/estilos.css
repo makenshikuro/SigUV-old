@@ -50,9 +50,14 @@ html, body {
     vertical-align: middle;
     width: 210px;
 }
+#map {
+    cursor: crosshair;
+}
 
 
 /**  Bootstrap  **/
+
+
 .active[class~="ON"] { 
     background-image: -webkit-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Safari 5.1 to 6.0 */
     background-image: -o-linear-gradient(top,#5cb85c 0,#4cae4c 100%); /* For Opera 11.1 to 12.0 */

@@ -58,14 +58,19 @@ and open the template in the editor.
         <script>
              _nivel = '';
              _zoom = '';
+             _fondo = '';
+             _tema = '';
+             _toponimo = '';
              _currentPosition = '';
-            _server = "http://www.adretse.es/siguv/";
+            _server = "http://adretse.uv.es/";
+            
+            //_server = "http://www.adretse.es/siguv/";
             _queryMode = false;
             //_serverDB = "http://147.156.82.219:8080/siguvServer/";
             _serverDB = "http://localhost:8080/siguvServer/";
             L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
             
-
+            
         </script>
         <!--<script async defer src="http://maps.google.com/maps/api/js?v=3"></script>-->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCABPLRF1cCUlr2pOSHHa8iYl_gqYvnKFI"
@@ -84,6 +89,7 @@ and open the template in the editor.
         <script src="js/poi.js"></script>
         <script src="js/mapas.js"></script>
         <script src="js/webservice.js"></script>
+        
         
 
 
@@ -114,17 +120,17 @@ and open the template in the editor.
                     </li>
                 </ul>
                 <div id="nivel" class="btn-group level" data-toggle="buttons">
-                    <label class="btn btn-primary active">
-                        <input type="radio" name="nivel" value="0" autocomplete="off" checked> PB
+                    <label id="P0" class="btn btn-primary ON">
+                        <input type="radio" name="nivel" value="0" autocomplete="off"> PB
                     </label>
-                    <label class="btn btn-primary">
+                    <label id="P1" class="btn btn-primary ON">
                         <input type="radio" name="nivel" value="1" autocomplete="off"> P1
                     </label>
-                    <label class="btn btn-primary">
+                    <label id="P2" class="btn btn-primary ON">
                         <input type="radio" name="nivel" value="2" autocomplete="off"> P2
                     </label>             
-                    <label class="btn btn-primary">
-                        <input type="radio" name="nivel" value="3" autocomplete="off"> P3
+                    <label id="P3" class="btn btn-primary ON">
+                        <input  type="radio" name="nivel" value="3" autocomplete="off"> P3
                     </label>
                 </div>
 
@@ -149,11 +155,11 @@ and open the template in the editor.
             <div class="sidebar-toggle-group">
                 <div class="sidebar-toggle-text" >Fondo</div>
                 <div class="btn-group" data-toggle="buttons"> 
-                    <label class="btn btn-primary large active" id="fondoON">
-                        <input type="radio" name="fondo" value="plano" checked > <div><div><img src="images/mapbox.png"></div><div>Plano</div></div>
+                    <label class="btn btn-primary ON large" id="fondoON">
+                        <input type="radio" name="fondo" value="plano" > <div><div><img src="images/mapbox.png"></div><div>Plano</div></div>
                     </label>
 
-                    <label class="btn btn-primary large" id="fondoOFF">
+                    <label class="btn btn-primary ON large" id="fondoOFF">
                         <input type="radio" name="fondo" value="sat"  > <div><div><img src="images/google.png"></div><div> Sat&eacute;lite</div></div>
                     </label>
                 </div>
@@ -163,13 +169,13 @@ and open the template in the editor.
             <div class="sidebar-toggle-group">
                 <div class="sidebar-toggle-text" >Tema</div>
                 <div class="btn-group" data-toggle="buttons"> 
-                    <label class="btn btn-primary large active" id="temaON">
-                       <input type="radio" name="tema" value="c"  checked > <div><div><img src="images/cd.png"></div><div> Categor&iacute;a</div></div>
+                    <label class="btn btn-primary ON large" id="temaON">
+                        <input type="radio" name="tema" value="c" > <div><div><img src="images/cd.png"></div><div> Categor&iacute;a</div></div>
                        
                     </label>
 
-                    <label class="btn btn-primary large" id="temaOFF">
-                       <input type="radio" name="tema" value="b"  > <div><div><img src="images/bd.png"></div><div> B&aacute;sico</div></div>
+                    <label class="btn btn-primary ON large" id="temaOFF">
+                       <input type="radio" name="tema" value="b" checked > <div><div><img src="images/bd.png"></div><div> B&aacute;sico</div></div>
                        
                     </label>
                 </div>
@@ -177,13 +183,13 @@ and open the template in the editor.
             </div>
         <div class="clearM2"></div>
         <div class="sidebar-toggle-group">
-            <div class="sidebar-toggle-text" >Denominacion</div>
+            <div class="sidebar-toggle-text" >Top&oacute;nimos</div>
             <div class="btn-group" data-toggle="buttons"> 
-                <label class="btn btn-primary large active" id="temaON">
-                    <input type="radio" name="denominacion" value="d" checked > <div><div><img src="images/bd.png"></div><div> Descripci&oacute;n</div></div>
+                <label class="btn btn-primary ON large" id="topoON">
+                    <input type="radio" name="denominacion" value="d" > <div><div><img src="images/bd.png"></div><div> Descripci&oacute;n</div></div>
                 </label>
 
-                <label class="btn btn-primary large" id="temaOFF">
+                <label class="btn btn-primary ON large" id="topoOFF">
                     <input type="radio" name="denominacion" value="c"> <div><div><img src="images/bc.png"></div><div> C&oacute;digo</div></div> 
                 </label>
             </div>
@@ -194,7 +200,7 @@ and open the template in the editor.
             <div class="sidebar-toggle-text" >Iconos</div>
             <div class="btn-group" data-toggle="buttons"> 
                 <label class="btn btn-primary ON active" id="iconsON">
-                    <input type="radio" name="icons" value="on" checked > I
+                    <input type="radio" name="icons" value="on"  > I
                 </label>
 
                 <label class="btn btn-primary OFF" id="iconsOFF">
@@ -328,6 +334,7 @@ and open the template in the editor.
         </div>
     </div>
     <script>
+        
     </script>
 
 </body>

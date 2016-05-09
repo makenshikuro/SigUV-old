@@ -10,7 +10,7 @@
 /* global _serverDB */
 
 function DefaultMap(){
-    _nivel = "2";
+    _nivel = "0";
     centro = [39.512859, -0.4244782];
     _currentPosition = centro;
     _zoom = 18;
@@ -56,13 +56,14 @@ function init() {
     
     /* Variables Globales   */
     _fondo = "plano";
-    _tema = "c";
+    _tema = "b";
     _iconos = true;
-    _denominacion = "d";
+    //_nivel = "0";
+    _toponimo = "d";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
-    var norEste = new L.LatLng(39.51349371255555, -0.422447919845581);
+    var norEste = new L.LatLng(39.5138330698016, -0.42219042778015137);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
     _mapMinZoom = 5;
     _mapMaxZoom = 23;
@@ -88,19 +89,19 @@ function init() {
 
     googleLayer = new L.Google('SATELLITE');
     
-    /*var points = [];
+    //var points = [];
     //points.push(centro);
-    points.push(new L.LatLng(39.512596166727214, -0.42413838207721705));
-    points.push(new L.LatLng(39.51255788497585, -0.42409479618072504));
-    points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
+    //points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
+    //points.push(new L.LatLng(39.51349371255555, -0.422447919845581));
+    /*points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
     points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
     
     points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
     points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
     points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
-    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));
-    var p = new R.Polygon(points);
-    map.addLayer(p);*/
+    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
+    //var p = new R.Polygon(points);
+    //map.addLayer(p);
     //map.addLayer(new R.Marker(centro));
     
 
@@ -111,13 +112,13 @@ function init() {
         opacity: 1.00
     });*/
     
-    ETSEmap = L.tileLayer(_server+ _tema + _denominacion +'0'+'/{z}/{x}/{y}.png', {
+    ETSEmap = L.tileLayer(_server+ 'mapas/'+ _tema + _toponimo +_nivel+'/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         bounds: _mapBounds,
         zIndex: 7
     });
-
+    //console.log(_server+_tema + _toponimo +_nivel);
     /* Añadido de Capas */
     map.addLayer(mapboxTiles);
     map.addLayer(ETSEmap);
@@ -196,11 +197,12 @@ function init() {
         layer.bindPopup(popupContent);
     }
 
-    /*
+    
     map.on('click', function(e) {
-     console.log(e.latlng);
+     console.log(e.latlng.lat+","+e.latlng.lng);
+     
      });
-    */
+    
 
     /*
      * Función tras cambiar zoom en el mapa
@@ -209,14 +211,18 @@ function init() {
     map.on('zoomend', function () {
 
         // (map.getZoom > 10)
-        console.log(map.getZoom());
+        
         if (map.getZoom() < 18) {
             $("#nivel").removeClass('level');
             $("#nivel").addClass('levelOFF');
+            map.removeLayer(layerGroupFac);
+            map.addLayer(layerGroupCam);
         } 
         if(map.getZoom() >= 18){
             $("#nivel").addClass('level');
             $("#nivel").removeClass('levelOFF');
+            map.addLayer(layerGroupFac);
+            map.removeLayer(layerGroupCam);
         }
         else {
             //map.featureLayer.setFilter(function() { return false; });
@@ -227,6 +233,9 @@ function init() {
         openSidebarInfo(_data, "espacios");
         
     }
+    
+    SetOptionLayers();
+    
 }
 
 /* Funciones */
@@ -265,7 +274,7 @@ function openSidebarInfo(data,tipo) {
         html += '<div>' + data.correo + '</div>';
         html += '<div>' + data.idespacio.nombre + '</div>';
         html += '<div>' + data.idespacio.descripcion + '</div>';
-        html += '<div><img width= "50px" src=" ' + _server + data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';
+        html += '<div><img width= "50px" src=" ' + _server+ data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');
@@ -300,21 +309,58 @@ function closeAllSidebars() {
     clearMarkerSearch();
 }
 
+/* Funcion MostrarArea
+ * Muestra el area que ocupa el espacio
+ * @param {Blob} data
+ * 
+ */
+function MostrarArea(data){
+    coords = data.split(',');
+    //console.log(data);
+    //console.log(coords);
+    //console.log(coords.length);
+    //console.log(coords.size());
+    var points = [];
+    /*for (i=0; i<coords.length-1;i++){
+        //points.push(coords[i]);
+        //points.push(coords[i+1]);
+        console.log(coords[i]);
+    
+    }*/
+    //points.push(centro);
+    /*points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
+    points.push(new L.LatLng(39.51349371255555, -0.422447919845581));
+    points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
+    points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
+    
+    points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
+    points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
+    points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
+    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
+    var p = new R.Polygon(points);
+    map.addLayer(p);
+    //map.addLayer(new R.Marker(centro));
+    
+    
+}
+
+
 /*
  * Función que modifica el mapa activo de acuerdo a los valores globales de:
  * tema, denominacion y nivel
  * 
  */
 function ChangeMapLayer(){
-    ETSEmap = L.tileLayer('http://www.adretse.es/siguv/' + _tema + _denominacion + '0' + '/{z}/{x}/{y}.png', {
+    if (map.hasLayer(ETSEmap)) {
+        map.removeLayer(ETSEmap);
+    }
+    ETSEmap = L.tileLayer(_server+ 'mapas/' + _tema + _toponimo + _nivel + '/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         bounds: _mapBounds,
         zIndex: 7
     });
-    if (map.hasLayer(ETSEmap)) {
-        map.removeLayer(ETSEmap);
-    }
+    
     map.addLayer(ETSEmap);
 }
 
@@ -370,12 +416,7 @@ function showPosition(position){
         
         //setPosition(position.coords.latitude, position.coords.longitude, 21);
        
-    }
-    
-    
-    
-    
-            
+    }    
 }
 /*
  * Añade Marcador al mapa
@@ -397,6 +438,27 @@ function clearMarkerSearch (){
     layerGroupSearch.clearLayers();
       
 }
+
+function ShowArea(data){
+    console.log();
+    //var points = [];
+    //points.push(centro);
+    //points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
+    //points.push(new L.LatLng(39.51349371255555, -0.422447919845581));
+    /*points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
+    points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
+    
+    points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
+    points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
+    points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
+    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
+    //var p = new R.Polygon(points);
+    //map.addLayer(p);
+    //map.addLayer(new R.Marker(centro));
+}
+
+
+
 /*
  * Función que muestra en caso de error GPS
  * 
@@ -421,6 +483,7 @@ $(document).ready(function () {
             map.removeLayer(layerGroupFac);
             _iconos = false;
         }
+        ChangeMapLayer();
         //alert("The text has been changed."+iconos);
     });
     $("input[name=tema]").change(function () {
@@ -436,9 +499,9 @@ $(document).ready(function () {
     $("input[name=denominacion]").change(function () {
         var denominacion = $('input:radio[name=denominacion]:checked').attr("value");
         if (denominacion === "d") {   
-            _denominacion = "d";
+            _toponimo = "d";
         } else {
-            _denominacion = "c";
+            _toponimo = "c";
         }
         ChangeMapLayer();
         //alert("The text has been changed."+iconos);
@@ -457,12 +520,14 @@ $(document).ready(function () {
             _fondo = "sat";
 
         }
+        ChangeMapLayer();
         //alert("The text has been changed."+iconos);
     });
     
     
     $("input[name=nivel]").change(function () {
         var nivel = $('input:radio[name=nivel]:checked').attr("value");
+        
         if (nivel === "0") {
             map.addLayer(layerGroupFac);
             _nivel = "0";
@@ -479,7 +544,44 @@ $(document).ready(function () {
             map.addLayer(layerGroupFac);
             _nivel = "3";
         }
+        ChangeMapLayer();
           //alert("The text has been changed."+iconos);
     });
-
+    //SetOptionLayers();
 });
+
+function SetOptionLayers(){
+    if (_fondo === "plano"){
+        $('#fondoON').addClass('active');
+        $('#fondoON input').prop('checked',true);
+    }
+    else{
+        $('#fondoOFF').addClass('active');
+        $('#fondoOFF input').prop('checked',true);
+    }
+    
+    if (_tema === "c"){
+        $('#temaON').addClass('active');
+        $('#temaON input').prop('checked',true);
+    }
+    else{
+        $('#temaOFF').addClass('active');
+        $('#temaOFF input').prop('checked',true);
+    }
+    
+    if (_toponimo === "d"){
+        $('#topoON').addClass('active');
+        $('#topoON input').prop('checked',true);
+    }
+    else{
+        $('#topoOFF').addClass('active');
+        $('#topoOFF input').prop('checked',true);
+    }
+    
+    for (i=0; i<=3;i++){
+        $('#P'+i).removeClass('active');
+        $('#P'+i).children('input').prop('checked', false);
+    }
+    $('#P'+ _nivel).addClass('active');
+    $('#P'+_nivel).children('input').prop('checked',true);
+}

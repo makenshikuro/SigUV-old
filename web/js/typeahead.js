@@ -4,12 +4,12 @@ $(document).ready(function () {
     var profesores = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: "http://147.156.82.219:8080/siguvServer/webresources/profesores"
+        prefetch: _serverDB+"/webresources/profesores"
     });
     var asignaturas = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: "http://147.156.82.219:8080/siguvServer/webresources/asignaturas"
+        prefetch: _serverDB+"/webresources/asignaturas"
     });
 
     $('#busqueda-tab-profesor .typeahead').typeahead({

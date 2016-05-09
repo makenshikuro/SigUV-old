@@ -12,13 +12,14 @@
  * 
  */
 
-/* global _serverDB, _server, data */
+/* global _serverDB, _server, data, server */
 
 
 
 
-server = "http://www.adretse.es/siguv/";
-_serverDB = "http://localhost:8080/siguvServer/";
+server = "http://adretse.uv.es/";
+//server = "http://www.adretse.es/siguv/";
+/*_serverDB = "http://localhost:8080/siguvServer/";*/
 
 
 
@@ -57,7 +58,7 @@ $(document).ready(function () {
         var html = '<table class="table table-hover"><tbody>';
         $.each(v, function (i, data) {
             html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud +', 21);"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
-            console.log('http://www.adretse.es/siguv/'+data.chano);
+            //console.log('http://www.adretse.es/siguv/'+data.chano);
         });
         html += "</tbody></table>";
         $(html).appendTo('#facultades');
@@ -83,6 +84,15 @@ function LocalizarProfesor(id) {
         $('#busqueda-tab-todo .typeahead').typeahead('val', '');
         $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
         openSidebarInfo(data, "profesores");
+        _nivel = data.idespacio.piso;
+        SetOptionLayers();
+        ChangeMapLayer();
+        
+        //console.log(data.idespacio.boundingbox);
+        MostrarArea(data.idespacio.boundingbox);
+        
+        
+        
 
     });
 }
