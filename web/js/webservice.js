@@ -51,7 +51,7 @@ $(document).ready(function () {
   });*/
     
   //profesores = $.getJSON("http://localhost:8080/siguvServer/webresources/profesores");
-  $.getJSON( "http://localhost:8080/siguvServer/webresources/edificios", function(v) {
+  $.getJSON( "http://localhost:8080/SiguvRest/webresources/edificios", function(v) {
   
     //$.getJSON("http://147.156.82.219:8080/siguvServer/webresources/edificios", function (v) {
 
@@ -112,7 +112,30 @@ function ListarDocentesAsignatura(id) {
     });
 }
 
-
+function getAsignaturas(idProfesor){
+    var asignaturas;
+    $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/profesores/'+idProfesor+'/asignaturas',
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    console.log("done");
+                    asignaturas = response;
+                    
+                }
+                /* Respuesta errónea */
+                else{
+                    console.log("fail");
+                    
+                }
+        },
+        async: false
+    });
+    console.log("salgo");
+    return asignaturas;
+}
 
 function GetQueryStringParams(sParam)
 {

@@ -21,45 +21,17 @@ function init() {
     queryString = GetQueryStringParams("id");
     _data = "";
     
-    /* Consulta de Query */
-    if (typeof (queryString) !== 'undefined'){
-        var req = $.ajax({
-        type: 'GET',
-        url: _serverDB + 'webresources/espacios/' + queryString,
-        dataType: 'json',
-        success: function(response, textStatus, errorThrown) {
-                /* Respuesta correcta */
-                if(textStatus === 'success'){
-                    //console.log("done");
-                    _nivel = response.piso;
-                    //console.log(response.idcoordenada.latitud);
-                    centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
-                    _currentPosition = centro;
-                    _zoom = 22;
-                    _queryMode = true;
-                    _data = response;
-                    
-                }
-                /* Respuesta errónea */
-                else{
-                    //console.log("fail");
-                    DefaultMap();
-                }
-        },
-        async: false
-    });
-    /* Respuesta por defecto sin queryString */
-    }
-    else{
-        DefaultMap();
-    }
+    _nivel = "0";
+    centro = [39.512859, -0.4244782];
+    _currentPosition = centro;
+    _zoom = 18;
     
     /* Variables Globales   */
     _fondo = "plano";
     _tema = "b";
     _iconos = true;
-    //_nivel = "0";
     _toponimo = "d";
+    _area ="";
     
     /* Variables  */
     var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
@@ -228,6 +200,50 @@ function init() {
             //map.featureLayer.setFilter(function() { return false; });
         }
     });
+    
+    /* Consulta de Query */
+    if (typeof (queryString) !== 'undefined'){
+        var req = $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/espacios/' + queryString,
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                //console.log("log: "+textStatus);
+                if(textStatus === 'success'){
+                    //console.log("done");
+                    _nivel = response.piso;
+                    //console.log(response.idcoordenada.latitud);
+                    centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
+                    _currentPosition = centro;
+                    _zoom = 22;
+                    _queryMode = true;
+                    _data = response;
+                    
+                }
+                
+        },
+        error: function(response,textStatu, error){
+            /* Respuesta errónea */
+            //console.log("log2: "+textStatu);
+            DefaultMap();
+            openModalError(queryString);
+            
+            
+        },
+        async: false
+    });
+    /* Respuesta por defecto sin queryString */
+    }
+    else{
+        DefaultMap();
+        
+        
+    }
+    
+    
+    
+    
     //var group = new L.featureGroup([L, marker2]);
     if (_queryMode){
         openSidebarInfo(_data, "espacios");
@@ -243,6 +259,21 @@ function init() {
 
 function setPosition(lat, long, zoom){
     map.setView(new L.LatLng(lat, long), 22,{animation: true});
+}
+
+/* Funcion openModalError
+ * Abre un modal informando del error en la queryString
+ */
+function openModalError(string){
+    //console.log(string+'hola');
+    var html= '<div class="claseerror">El recurso: '+ string+' es err\u00F3neo.</div>';
+    /*var html = '<div class="list-group grupo-ficha">';
+        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
+        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';*/
+    map.fire('modal', {content: html});
 }
 
  /* Funcion openSidebarLayers
@@ -269,23 +300,90 @@ function openSidebarInfo(data,tipo) {
     $('#profesor-info').empty();
     
     if (tipo === "profesores"){
-        var html = '<div >'+data.nombre+'</div>';
+        //var html = '<h2>Ficha profesor</h2>';
+        /*html +=  '<div class="media">';
+        html += '<a class="pull-left" href="#">';
+        html += ' <img id="profesorLogoFacultad" width="50px" class="media-object" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'">';
+        html += '</a>';
+        html += '<div class="media-body">';
+        html += '<h4 id="profesorNombre" class="media-heading">'+data.nombre+'</h4>';     
+        html += '</div></div>';*/
+        console.log(data.tutorias);
+        
+        if (data.tutorias !== null){
+            var tutos = data.tutorias.split(',');
+        }
+        //console.log("idprofesor: "+data.idprofesor);
+        var asig = getAsignaturas(data.idprofesor);
+        //console.log("vuelvo");
+        //console.log(asig);
+        var i=0,j=0;
+        var html = '<div class="list-group grupo-ficha">';
+        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
+        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.idespacio.piso+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idespacio.idedificio.nombre+'</h5></div></div>';
+        html += '<div href="#" class="list-group-item"><h4>Tutorias</h4>';
+        if (data.tutorias !== null){ 
+            while (i <= tutos.length - 1) {
+                html += '<h5 class="ficha">' + tutos[i] + '</h5>';
+                i++;
+            }
+        }
+        else{
+            html += '<h5 class="ficha">' + 'Información disponible en breve' + '</h5>';
+        }
+        html += '</div>';
+        
+        html += '<div href="#" class="list-group-item"><h4>Asignaturas</h4>';
+        if (asig.length !== 0) {
+            while (j <= asig.length - 1) {
+                html += '<h5 class="ficha">' + asig[j].nombre + '</h5>';
+                j++;
+            }
+        }
+        else{
+            html += '<h5 class="ficha">' + 'Información disponible en breve' + '</h5>';
+        }
+        html += '</div></div>';
+        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22'+')" >Ver en el Mapa</button>';
+        
+        /*var html = '<div >'+data.nombre+'</div>';
         html += '<div>' + data.idespacio.idespacio + '</div>';
         html += '<div>' + data.correo + '</div>';
         html += '<div>' + data.idespacio.nombre + '</div>';
         html += '<div>' + data.idespacio.descripcion + '</div>';
-        html += '<div><img width= "50px" src=" ' + _server+ data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';
+        html += '<div><img width= "150px" src="' + _server+ data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';*/
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');
     }
     else{
-        var html = '<div >'+data.nombre+'</div>';
+        
+        var html = '<div class="list-group grupo-ficha">';
+        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
+        //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
+        //html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.bloque+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.piso+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idedificio.chano + '" alt="'+ data.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idedificio.nombre+'</h5></div></div>';
+        html += '<div href="#" class="list-group-item"><h4>Tipo</h4><h5 class="ficha">'+data.tipo+'</h5></div>';
+        //html += '<div href="#" class="list-group-item"><h4>Asignaturas</h4><h5 class="ficha">'+'Lista Asignaturas'+'</h5></div>';
+        html += '</div>';
+        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22'+')" >Ver en el Mapa</button>';
+        
+        
+        
+        /*var html = '<div >'+data.nombre+'</div>';
         html += '<div>' + data.idespacio.idespacio + '</div>';
         html += '<div>' + data.bloque + '</div>';
         html += '<div>' + data.idespacio.nombre + '</div>';
         html += '<div>' + data.idespacio.descripcion + '</div>';
-        html += '<div><img width= "50px" src=" ' + _server + data.idedificio.chano + '">' + data.idedificio.nombre + '</div>';
+        html += '<div><img width= "50px" src=" ' + _server + data.idedificio.chano + '">' + data.idedificio.nombre + '</div>';*/
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
     }
     //console.log(data.idespacio.boundingbox);
@@ -307,6 +405,7 @@ function closeAllSidebars() {
     sidebarLayers.hide();
     sidebarInfo.hide();
     clearMarkerSearch();
+    BorrarArea();
 }
 
 /* Funcion MostrarArea
@@ -315,33 +414,24 @@ function closeAllSidebars() {
  * 
  */
 function MostrarArea(data){
-    coords = data.split(',');
-    //console.log(data);
-    //console.log(coords);
-    //console.log(coords.length);
-    //console.log(coords.size());
+    var coords = data.split(',');
     var points = [];
-    /*for (i=0; i<coords.length-1;i++){
-        //points.push(coords[i]);
-        //points.push(coords[i+1]);
-        console.log(coords[i]);
     
-    }*/
-    //points.push(centro);
-    /*points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
-    points.push(new L.LatLng(39.51349371255555, -0.422447919845581));
-    points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
-    points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
-    
-    points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
-    points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
-    points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
-    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
-    var p = new R.Polygon(points);
-    map.addLayer(p);
+    for (i=0; i < coords.length-1; i+=2){
+        //console.log("iteracion: "+i);
+        points.push(new L.LatLng(coords[i],coords[i+1]));
+    }
+    _area = new R.Polygon(points);
+    map.addLayer(_area);
     //map.addLayer(new R.Marker(centro));
     
     
+}
+/* Función BorrarArea
+ * Elimina el area generada como resultado de una busqueda de espacio o profesor
+ */
+function BorrarArea(){
+    map.removeLayer(_area);
 }
 
 

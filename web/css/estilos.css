@@ -53,7 +53,23 @@ html, body {
 #map {
     cursor: crosshair;
 }
-
+h5.ficha{
+    padding-left: 10px;
+}
+.grupo-ficha{
+    padding-top: 40px;
+}
+img.img-fichaFac {
+    width: 65px;
+    padding-left: 10px;
+}
+div.fichaFac {
+    margin-bottom: 10px;
+}
+h5.text-fichaFac {
+    padding-left: 10px;
+    display: inline-block;
+}
 
 /**  Bootstrap  **/
 
@@ -134,7 +150,9 @@ html, body {
     margin-left: 10px;
     vertical-align: top;
 }
-
+.list-group-item {
+    padding: 0px 15px;
+}
 /**  Leaflet   **/
 
 .sidebar-header {
