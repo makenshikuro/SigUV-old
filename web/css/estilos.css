@@ -24,7 +24,10 @@ html, body {
 .navbar-header-text {
     padding-left: 0.3em;
 }
-
+/*canvas{
+    width: 100% !important;
+    height: 50% !important;
+}*/
 
 .opciones{
     right: 0;

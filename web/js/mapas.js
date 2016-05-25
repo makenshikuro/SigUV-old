@@ -38,7 +38,7 @@ function init() {
     var norEste = new L.LatLng(39.5138330698016, -0.42219042778015137);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
     _mapMinZoom = 5;
-    _mapMaxZoom = 23;
+    _mapMaxZoom = 25;
     
     
 
@@ -184,13 +184,13 @@ function init() {
 
         // (map.getZoom > 10)
         
-        if (map.getZoom() < 18) {
+        if (map.getZoom() < 17) {
             $("#nivel").removeClass('level');
             $("#nivel").addClass('levelOFF');
             map.removeLayer(layerGroupFac);
             map.addLayer(layerGroupCam);
         } 
-        if(map.getZoom() >= 18){
+        if(map.getZoom() >= 17){
             $("#nivel").addClass('level');
             $("#nivel").removeClass('levelOFF');
             map.addLayer(layerGroupFac);
@@ -265,7 +265,6 @@ function setPosition(lat, long, zoom){
  * Abre un modal informando del error en la queryString
  */
 function openModalError(string){
-    //console.log(string+'hola');
     var html= '<div class="claseerror">El recurso: '+ string+' es err\u00F3neo.</div>';
     /*var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
@@ -275,6 +274,38 @@ function openModalError(string){
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';*/
     map.fire('modal', {content: html});
 }
+
+/* Funcion openModalPano
+ * Abre un modal informando del error en la queryString
+ */
+function openModalPano(){
+    var string= 'hola';
+    var html= '<div id="container" >El recurso: '+ string+' es err\u00F3neo.</div>';
+    
+    if (_listaPanos.length !== 0) {
+            var j=0;
+            while (j <= _listaPanos.length - 1) {
+                console.log( _listaPanos[j].panorama+" ;"+j );
+                j++;
+            }
+        }
+    html+='<button onclick="Change('+"'R0010081'"+');">change</button>';
+    html+='<button onclick="Change('+"'R0010105'"+');">change</button>';
+    html+='<button onclick="Change('+"'R0010117'"+');">change</button>';
+    /*var html = '<div class="list-group grupo-ficha">';
+        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
+        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';*/
+    map.fire('modal', {content: html});
+    //$('#container').append( "<strong>Hello</strong>" );
+     init2();
+     animate();
+    
+}
+
+
 
  /* Funcion openSidebarLayers
   * Abre un módulo lateral con opciónes 
@@ -300,24 +331,20 @@ function openSidebarInfo(data,tipo) {
     $('#profesor-info').empty();
     
     if (tipo === "profesores"){
-        //var html = '<h2>Ficha profesor</h2>';
-        /*html +=  '<div class="media">';
-        html += '<a class="pull-left" href="#">';
-        html += ' <img id="profesorLogoFacultad" width="50px" class="media-object" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'">';
-        html += '</a>';
-        html += '<div class="media-body">';
-        html += '<h4 id="profesorNombre" class="media-heading">'+data.nombre+'</h4>';     
-        html += '</div></div>';*/
-        console.log(data.tutorias);
+        
+        //console.log(data.tutorias);
         
         if (data.tutorias !== null){
             var tutos = data.tutorias.split(',');
         }
         //console.log("idprofesor: "+data.idprofesor);
         var asig = getAsignaturas(data.idprofesor);
+        var panos = getPanoramas(data.idespacio.idespacio);
+        //console.log(panos);
+        //console.log(data.idespacio.idespacio);
         //console.log("vuelvo");
         //console.log(asig);
-        var i=0,j=0;
+        
         var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
@@ -328,6 +355,7 @@ function openSidebarInfo(data,tipo) {
         html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idespacio.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tutorias</h4>';
         if (data.tutorias !== null){ 
+            var i=0;
             while (i <= tutos.length - 1) {
                 html += '<h5 class="ficha">' + tutos[i] + '</h5>';
                 i++;
@@ -340,6 +368,7 @@ function openSidebarInfo(data,tipo) {
         
         html += '<div href="#" class="list-group-item"><h4>Asignaturas</h4>';
         if (asig.length !== 0) {
+            var j=0;
             while (j <= asig.length - 1) {
                 html += '<h5 class="ficha">' + asig[j].nombre + '</h5>';
                 j++;
@@ -351,13 +380,14 @@ function openSidebarInfo(data,tipo) {
         html += '</div></div>';
         html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22'+')" >Ver en el Mapa</button>';
         
-        /*var html = '<div >'+data.nombre+'</div>';
-        html += '<div>' + data.idespacio.idespacio + '</div>';
-        html += '<div>' + data.correo + '</div>';
-        html += '<div>' + data.idespacio.nombre + '</div>';
-        html += '<div>' + data.idespacio.descripcion + '</div>';
-        html += '<div><img width= "150px" src="' + _server+ data.idespacio.idedificio.chano + '">' + data.idespacio.idedificio.nombre + '</div>';*/
+        
+        if (panos.length !== 0) {
+            _listaPanos = panos;
+            html += '<button type="button" class="btn btn-info" onclick="openModalPano();">Ver en el Mapa</button>';
+        }
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+        
+        
         
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');
     }
@@ -365,27 +395,18 @@ function openSidebarInfo(data,tipo) {
         
         var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
-        //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
-        //html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.bloque+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.piso+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idedificio.chano + '" alt="'+ data.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tipo</h4><h5 class="ficha">'+data.tipo+'</h5></div>';
-        //html += '<div href="#" class="list-group-item"><h4>Asignaturas</h4><h5 class="ficha">'+'Lista Asignaturas'+'</h5></div>';
         html += '</div>';
         html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22'+')" >Ver en el Mapa</button>';
         
-        
-        
-        /*var html = '<div >'+data.nombre+'</div>';
-        html += '<div>' + data.idespacio.idespacio + '</div>';
-        html += '<div>' + data.bloque + '</div>';
-        html += '<div>' + data.idespacio.nombre + '</div>';
-        html += '<div>' + data.idespacio.descripcion + '</div>';
-        html += '<div><img width= "50px" src=" ' + _server + data.idedificio.chano + '">' + data.idedificio.nombre + '</div>';*/
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
     }
+    
+    
     //console.log(data.idespacio.boundingbox);
     //console.log(_server+data.chano);
     //alert(data.nombre);

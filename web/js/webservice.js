@@ -121,8 +121,32 @@ function getAsignaturas(idProfesor){
         success: function(response, textStatus, errorThrown) {
                 /* Respuesta correcta */
                 if(textStatus === 'success'){
-                    console.log("done");
+                    //console.log("done");
                     asignaturas = response;
+                    
+                }
+                /* Respuesta errónea */
+                else{
+                    //console.log("fail");
+                    
+                }
+        },
+        async: false
+    });
+    //console.log("salgo");
+    return asignaturas;
+}
+function getPanoramas(idEspacio){
+    var panoramas;
+    $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/espacios/'+idEspacio+'/panoramas',
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    console.log("done");
+                    panoramas = response;
                     
                 }
                 /* Respuesta errónea */
@@ -134,7 +158,8 @@ function getAsignaturas(idProfesor){
         async: false
     });
     console.log("salgo");
-    return asignaturas;
+    return panoramas;
+    
 }
 
 function GetQueryStringParams(sParam)
