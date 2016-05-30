@@ -51,7 +51,7 @@ $(document).ready(function () {
   });*/
     
   //profesores = $.getJSON("http://localhost:8080/siguvServer/webresources/profesores");
-  $.getJSON( "http://localhost:8080/SiguvRest/webresources/edificios", function(v) {
+  $.getJSON( _serverDB + 'webresources/edificios', function(v) {
   
     //$.getJSON("http://147.156.82.219:8080/siguvServer/webresources/edificios", function (v) {
 
