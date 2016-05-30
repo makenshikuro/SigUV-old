@@ -112,7 +112,69 @@ and open the template in the editor.
     </head>
 
     <body onload="init()">
-
+        
+        <nav class="navbar navbar-inverse" role="navigation">
+  <!-- El logotipo y el icono que despliega el menú se agrupan
+       para mostrarlos mejor en los dispositivos móviles -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse"
+            data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Desplegar navegación</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"><div class="logoUV"></div></a>
+  </div>
+ 
+  <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+       otro elemento que se pueda ocultar al minimizar la barra -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+        <li><a onclick="closeAllSidebars();" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
+        <li><a onclick="openSidebarLayers();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
+        <li><a onclick="openSidebarFacultades();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
+    </ul>
+ 
+    <!--<form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Buscar">
+      </div>
+      <button type="submit" class="btn btn-default">Enviar</button>
+    </form>-->
+    <div id="nivel" class="btn-group level" data-toggle="buttons">
+                    <label id="P0" class="btn btn-primary ON">
+                        <input type="radio" name="nivel" value="0" autocomplete="off"> PB
+                    </label>
+                    <label id="P1" class="btn btn-primary ON">
+                        <input type="radio" name="nivel" value="1" autocomplete="off"> P1
+                    </label>
+                    <label id="P2" class="btn btn-primary ON">
+                        <input type="radio" name="nivel" value="2" autocomplete="off"> P2
+                    </label>             
+                    <label id="P3" class="btn btn-primary ON">
+                        <input  type="radio" name="nivel" value="3" autocomplete="off"> P3
+                    </label>
+                </div>
+ 
+    <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <span class="fa fa-cog"></span></span></a>
+              <ul class="dropdown-menu">
+                  <li><a href="#" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
+                  <li><a href="#"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
+                  <li><a href="#"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
+              </ul>
+          </li>
+    </ul>
+  </div>
+</nav>
+        
+        
+        
+        
+        <!--
         <div role="navigation" class="navbar navbar-inverse">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><div class="logoUV"></div></a>
@@ -156,6 +218,7 @@ and open the template in the editor.
 
             </div>
         </div>
+        -->
 
         <div id="map" ></div>
 
@@ -245,6 +308,7 @@ and open the template in the editor.
             <div id="profesor-info"></div>
         </div>
         <!-- Fin Sidebar de Información -->
+        
         <!-- Fin Sidebars -->
 
 

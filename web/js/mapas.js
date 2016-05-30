@@ -115,6 +115,7 @@ function init() {
         position: 'left'
     });
     map.addControl(sidebarInfo);
+    
 
     /*
      * Grupos de capas de Marcadores JSON
@@ -257,8 +258,14 @@ function init() {
 /* Funciones */
 
 
-function setPosition(lat, long, zoom){
+function setPosition(lat, long, zoom, cierre){
+    //cierre = String (cierre);
     map.setView(new L.LatLng(lat, long), 22,{animation: true});
+    //console.log(cierre);
+    if (cierre === 'true'){
+        //console.log("true");
+        sidebarInfo.hide();
+    }
 }
 
 /* Funcion openModalError
@@ -285,13 +292,18 @@ function openModalPano(){
     if (_listaPanos.length !== 0) {
             var j=0;
             while (j <= _listaPanos.length - 1) {
-                console.log( _listaPanos[j].panorama+" ;"+j );
+                console.log( _listaPanos[j].panorama );
+                html+='<button onclick="Change('+"'R0010081'"+');"><img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100"></button>';
+                //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100">';
                 j++;
             }
-        }
-    html+='<button onclick="Change('+"'R0010081'"+');">change</button>';
-    html+='<button onclick="Change('+"'R0010105'"+');">change</button>';
-    html+='<button onclick="Change('+"'R0010117'"+');">change</button>';
+        } 
+        
+    //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Smiley face" height="42" width="42">';
+
+    //html+='<button onclick="Change('+"'R0010081'"+');">change</button>';
+    //html+='<button onclick="Change('+"'R0010105'"+');">change</button>';
+    //html+='<button onclick="Change('+"'R0010117'"+');">change</button>';
     /*var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
@@ -299,7 +311,7 @@ function openModalPano(){
         html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';*/
     map.fire('modal', {content: html});
-    //$('#container').append( "<strong>Hello</strong>" );
+    
      init2();
      animate();
     
@@ -378,12 +390,12 @@ function openSidebarInfo(data,tipo) {
             html += '<h5 class="ficha">' + 'Información disponible en breve' + '</h5>';
         }
         html += '</div></div>';
-        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22'+')" >Ver en el Mapa</button>';
+        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" >Ver en el Mapa</button>';
         
         
         if (panos.length !== 0) {
             _listaPanos = panos;
-            html += '<button type="button" class="btn btn-info" onclick="openModalPano();">Ver en el Mapa</button>';
+            html += '<button type="button" class="btn btn-info" onclick="openModalPano();">Ver 360&#176;</button>';
         }
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
@@ -401,7 +413,7 @@ function openSidebarInfo(data,tipo) {
         html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idedificio.chano + '" alt="'+ data.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tipo</h4><h5 class="ficha">'+data.tipo+'</h5></div>';
         html += '</div>';
-        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22'+')" >Ver en el Mapa</button>';
+        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22, \'true\')" >Ver en el Mapa</button>';
         
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
     }
@@ -495,14 +507,14 @@ function showPosition(position){
 
    
     if ($('.dropdown-menu li:first-child span.labelGPS').hasClass('label-success')) {
-        console.log("OFF");
+        //console.log("OFF");
         $('.dropdown-menu li:first-child span.labelGPS').removeClass('label-success');
         $('.dropdown-menu li:first-child span.labelGPS').addClass('label-danger');
         $('.dropdown-menu li:first-child span.labelGPS').html("OFF");
         map.removeLayer(layerGroupGPS);
 
     } else {
-        console.log("ON");
+        //console.log("ON");
         $('.dropdown-menu li:first-child span.labelGPS').removeClass('label-danger');
         $('.dropdown-menu li:first-child span.labelGPS').addClass('label-success');
         $('.dropdown-menu li:first-child span.labelGPS').html("ON");
