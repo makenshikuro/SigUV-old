@@ -78,18 +78,27 @@ $(document).ready(function () {
 function LocalizarProfesor(id) {
     $.getJSON(_serverDB + 'webresources/profesores/' + id, function (data) {
         //console.log(data);
+        console.log(data);
+        if (data.visibilidad === 1){
+            setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21, "false");
+            addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
+            $('#busqueda-tab-todo .typeahead').typeahead('val', '');
+            $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
 
-        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21,"false");
-        addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
-        $('#busqueda-tab-todo .typeahead').typeahead('val', '');
-        $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
-        openSidebarInfo(data, "profesores");
-        _nivel = data.idespacio.piso;
-        SetOptionLayers();
-        ChangeMapLayer();
-        
-        //console.log(data.idespacio.boundingbox);
-        MostrarArea(data.idespacio.boundingbox);
+            openSidebarInfo(data, "profesores");
+            _nivel = data.idespacio.piso;
+            SetOptionLayers();
+            ChangeMapLayer();
+
+            //console.log(data.idespacio.boundingbox);
+            MostrarArea(data.idespacio.boundingbox);
+        }
+        else{
+            console.log("hola");
+            openSidebarInfo(data,"no");
+            
+        }
+            
         
         
         

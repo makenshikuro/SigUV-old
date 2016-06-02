@@ -403,7 +403,7 @@ function openSidebarInfo(data,tipo) {
         
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');
     }
-    else{
+    else if (tipo === "espacios"){
         
         var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
@@ -416,6 +416,9 @@ function openSidebarInfo(data,tipo) {
         html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22, \'true\')" >Ver en el Mapa</button>';
         
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
+    }
+    else if(tipo === "no"){
+        console.log("no2");
     }
     
     
@@ -495,7 +498,13 @@ function ChangeMapLayer(){
  * 
  */
 function getGPS(){
-    navigator.geolocation.getCurrentPosition(showPosition,showError);
+    if (navigator && navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError,{ enableHighAccuracy: true });
+}
+else{
+    alert("NO GPS");
+}
+    //navigator.geolocation.getCurrentPosition(showPosition,);
 }
 /*
  * Función que muestra Posicion del GPS y coloca una marca geográfica
