@@ -117,7 +117,7 @@ $(document).ready(function () {
     $('#busqueda-tab-asignatura .typeahead').on('typeahead:selected', function (evt, item) {
         //var idEspacio = item.idespacio.idespacio;
         //$('#busqueda-tab-profesor .typeahead').typeahead('val', idEspacio);
-        $('#localizar-asignatura').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')').attr('data-dismiss','modal');
+        //$('#localizar-asignatura').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')').attr('data-dismiss','modal');
         
     });
     //update al seleccionar profesor

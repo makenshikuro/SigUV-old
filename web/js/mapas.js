@@ -34,12 +34,14 @@ function init() {
     _area ="";
     
     /* Variables  */
-    var surOeste = new L.LatLng(39.51171412912667, -0.42497992515563965);
-    var norEste = new L.LatLng(39.5138330698016, -0.42219042778015137);
+    var surOeste = new L.LatLng(39.51178034700101,-0.4247921705245971);
+    var norEste = new L.LatLng(39.513427496314236,-0.42252838611602783);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
     _mapMinZoom = 5;
     _mapMaxZoom = 25;
+   
     
+
     
 
     /* Inicialización Mapa */
@@ -55,6 +57,7 @@ function init() {
         attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
+        
         unloadInvisibleTiles: true,
         opacity: 1.00
     });
@@ -63,8 +66,10 @@ function init() {
     
     //var points = [];
     //points.push(centro);
-    //points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
-    //points.push(new L.LatLng(39.51349371255555, -0.422447919845581));
+    /*points.push(_mapBounds.getSouthWest());
+    points.push(_mapBounds.getNorthWest());
+    points.push(_mapBounds.getNorthEast());
+    points.push(_mapBounds.getSouthEast());*/
     /*points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
     points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
     
@@ -72,17 +77,9 @@ function init() {
     points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
     points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
     points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
-    //var p = new R.Polygon(points);
-    //map.addLayer(p);
+    /*var p = new R.Polygon(points);
+    map.addLayer(p);*/
     //map.addLayer(new R.Marker(centro));
-    
-
-    /*osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        minZoom: _mapMinZoom,
-        maxZoom: _mapMaxZoom,
-        unloadInvisibleTiles: true,
-        opacity: 1.00
-    });*/
     
     ETSEmap = L.tileLayer(_server+ 'mapas/'+ _tema + _toponimo +_nivel+'/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
@@ -124,11 +121,6 @@ function init() {
     layerGroupCam = L.layerGroup().addTo(map);
     layerGroupGPS = L.layerGroup();
     layerGroupSearch = L.layerGroup().addTo(map);
-    
-    
-    
-
-    //map.addControl(new L.Control.Layers({ 'MBT': mapboxTiles, 'Google Terrain': googleLayer}, {'ETSE': ETSEmap, "Markers": layerGroup}));
 
     /* Marcadores GeoJSON
      *  Facultades:   Marcadores correspondientes a las facultades de la UV
@@ -228,9 +220,7 @@ function init() {
             /* Respuesta errónea */
             //console.log("log2: "+textStatu);
             DefaultMap();
-            openModalError(queryString);
-            
-            
+            openModalError(queryString);   
         },
         async: false
     });
@@ -238,29 +228,21 @@ function init() {
     }
     else{
         DefaultMap();
-        
-        
     }
     
-    
-    
-    
-    //var group = new L.featureGroup([L, marker2]);
     if (_queryMode){
         openSidebarInfo(_data, "espacios");
         
     }
     
-    SetOptionLayers();
-    
+    SetOptionLayers();   
 }
 
 /* Funciones */
 
-
 function setPosition(lat, long, zoom, cierre){
     //cierre = String (cierre);
-    map.setView(new L.LatLng(lat, long), 22,{animation: true});
+    map.setView(new L.LatLng(lat, long), zoom,{animation: true});
     //console.log(cierre);
     if (cierre === 'true'){
         //console.log("true");
@@ -273,12 +255,6 @@ function setPosition(lat, long, zoom, cierre){
  */
 function openModalError(string){
     var html= '<div class="claseerror">El recurso: '+ string+' es err\u00F3neo.</div>';
-    /*var html = '<div class="list-group grupo-ficha">';
-        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
-        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';*/
     map.fire('modal', {content: html});
 }
 
@@ -297,7 +273,7 @@ function openModalPano(){
                 //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100">';
                 j++;
             }
-        } 
+    } 
         
     //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Smiley face" height="42" width="42">';
 
@@ -314,7 +290,6 @@ function openModalPano(){
     
      init2();
      animate();
-    
 }
 
 
@@ -360,6 +335,7 @@ function openSidebarInfo(data,tipo) {
         var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
+        //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';
@@ -399,8 +375,6 @@ function openSidebarInfo(data,tipo) {
         }
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
-        
-        
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');
     }
     else if (tipo === "espacios"){
@@ -416,9 +390,6 @@ function openSidebarInfo(data,tipo) {
         html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22, \'true\')" >Ver en el Mapa</button>';
         
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
-    }
-    else if(tipo === "no"){
-        console.log("no2");
     }
     
     

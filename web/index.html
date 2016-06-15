@@ -104,16 +104,11 @@ and open the template in the editor.
         <script src="js/panorama.js"></script>
         <script src="js/mapas.js"></script>
         <script src="js/webservice.js"></script>
-        
-
-
-
-
     </head>
 
     <body onload="init()">
         
-        <nav class="navbar navbar-inverse" role="navigation">
+        <nav class="navbar navbar-inverse">
   <!-- El logotipo y el icono que despliega el menú se agrupan
        para mostrarlos mejor en los dispositivos móviles -->
   <div class="navbar-header">
@@ -349,8 +344,29 @@ and open the template in the editor.
                             <div id="busqueda-tab-asignatura" class="tab-pane fade">
                                 <div class='clearM1'></div>
                                 <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
-                                <button id="localizar-asignatura" type="button" class="btn btn-default"  >Localizar</button>
-                                <div id="listaDocentes"></div>
+                                <button id="localizar-asignatura" type="button" class="btn btn-default">Localizar</button>
+                                <div id="listaDocentes">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr> 
+                                                    <th>Name</th>
+                                                    <th>Facultad</th>
+                                                    <th>Departamento</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Anna</td>
+                                                    <td>New York</td>
+                                                    <td>USA</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -57,7 +57,7 @@ $(document).ready(function () {
 
         var html = '<table class="table table-hover"><tbody>';
         $.each(v, function (i, data) {
-            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud +', 21,false);"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
+            html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud +', 20,false);"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
             //console.log('http://www.adretse.es/siguv/'+data.chano);
         });
         html += "</tbody></table>";
@@ -79,7 +79,7 @@ function LocalizarProfesor(id) {
     $.getJSON(_serverDB + 'webresources/profesores/' + id, function (data) {
         //console.log(data);
         console.log(data);
-        if (data.visibilidad === 1){
+        if (data.visibilidad === '1'){
             setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21, "false");
             addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
             $('#busqueda-tab-todo .typeahead').typeahead('val', '');
@@ -94,8 +94,12 @@ function LocalizarProfesor(id) {
             MostrarArea(data.idespacio.boundingbox);
         }
         else{
+            var html = '<div>';
+                html += 'Lo sentimos, pero el recurso '+data.nombre+' no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
+                html += '</div>';
+            map.fire('modal', {content: html});
             console.log("hola");
-            openSidebarInfo(data,"no");
+            //openSidebarInfo(data,"no");
             
         }
             
