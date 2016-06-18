@@ -35,7 +35,7 @@ function init() {
     
     /* Variables  */
     var surOeste = new L.LatLng(39.51178034700101,-0.4247921705245971);
-    var norEste = new L.LatLng(39.513427496314236,-0.42252838611602783);
+    var norEste = new L.LatLng(39.51368822239936,-0.42276978492736816);
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
     _mapMinZoom = 5;
     _mapMaxZoom = 25;
@@ -64,9 +64,9 @@ function init() {
 
     googleLayer = new L.Google('SATELLITE');
     
-    //var points = [];
-    //points.push(centro);
-    /*points.push(_mapBounds.getSouthWest());
+    /*var points = [];
+    
+    points.push(_mapBounds.getSouthWest());
     points.push(_mapBounds.getNorthWest());
     points.push(_mapBounds.getNorthEast());
     points.push(_mapBounds.getSouthEast());*/
@@ -333,7 +333,20 @@ function openSidebarInfo(data,tipo) {
         //console.log(asig);
         
         var html = '<div class="list-group grupo-ficha">';
-        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
+        html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';
+        
+        if (panos.length !== 0) {
+            _listaPanos = panos;
+            //html += '';
+            html += '<li class="icon-360" onclick="openModalPano();"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
+            html += '<li class="icon-location" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/location.svg" alt="panoramica de 360 grados"></li>';
+            
+            /*html += '<button type="button" class="btn btn-info" onclick="openModalPano();">';
+            html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
+            html += '</button>';*/
+        }
+        html += '</ul>';
+        html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
         //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
@@ -366,13 +379,15 @@ function openSidebarInfo(data,tipo) {
             html += '<h5 class="ficha">' + 'Información disponible en breve' + '</h5>';
         }
         html += '</div></div>';
-        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" >Ver en el Mapa</button>';
+        //html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" >Ver en el Mapa</button>';
         
         
-        if (panos.length !== 0) {
+        /*if (panos.length !== 0) {
             _listaPanos = panos;
-            html += '<button type="button" class="btn btn-info" onclick="openModalPano();">Ver 360&#176;</button>';
-        }
+            html += '<button type="button" class="btn btn-info" onclick="openModalPano();">';
+            html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
+            html += '</button>';
+        }*/
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');

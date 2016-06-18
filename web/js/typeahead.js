@@ -11,6 +11,11 @@ $(document).ready(function () {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: _serverDB+"/webresources/asignaturas"
     });
+    var espacios = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: _serverDB+"/webresources/espacios"
+    });
 
     $('#busqueda-tab-profesor .typeahead').typeahead({
         hint: true,
@@ -65,10 +70,37 @@ $(document).ready(function () {
                 displayKey: 'nombre',
                 source: asignaturas,
                 templates: {
-                    
                     suggestion: Handlebars.compile('<div class="typeahead-resultados-asignaturas">{{nombre}} </div>')
                 }
             });
+
+    $('#busqueda-tab-espacio .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1,
+        classNames: {
+            input: 'Typeahead-input',
+            hint: 'Typeahead-hint',
+            selectable: 'Typeahead-selectable',
+            menu: 'Typeahead-menu',
+            dataset: 'Typeahead-dataset',
+            suggestion: 'Typeahead-suggestion',
+            empty: 'Typeahead-empty',
+            open: 'Typeahead-open',
+            cursor: 'Typeahead-cursor'
+
+        }
+    },
+            {
+                name: 'espacios',
+                displayKey: 'descripcion',
+                source: espacios,
+                templates: {
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-espacios">{{nombre}} - {{descripcion}} </div>')
+                }
+            });
+    
+    
             
     $('#busqueda-tab-todo .typeahead').typeahead({
         highlight: true,
@@ -104,22 +136,56 @@ $(document).ready(function () {
                     header: '<div class="typeahead-header-resultados"><span class="fa fa-graduation-cap"></span>Asignaturas</h3>',
                     suggestion: Handlebars.compile('<div class="typeahead-resultados-asignaturas">{{nombre}} </div>')
                 }
+            },
+            {
+                name: 'espacios',
+                display: 'nombre',
+                source: espacios,
+                templates: {
+                    header: '<div class="typeahead-header-resultados"><span class="fa fa-sitemap"></span>Espacios</h3>',
+                    suggestion: Handlebars.compile('<div class="typeahead-resultados-espacios">{{descripcion}} &#45; <span class="label label-primary">{{nombre}}</span></div>')
+                }
             });
 
     //update al seleccionar profesor
     $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function (evt, item) {
-        //var idEspacio = item.idespacio.idespacio;
-        //$('#busqueda-tab-profesor .typeahead').typeahead('val', idEspacio);
         $('#localizar-profesor').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+')').attr('data-dismiss','modal');
         
     });
     //update al seleccionar asignatura
     $('#busqueda-tab-asignatura .typeahead').on('typeahead:selected', function (evt, item) {
-        //var idEspacio = item.idespacio.idespacio;
-        //$('#busqueda-tab-profesor .typeahead').typeahead('val', idEspacio);
-        //$('#localizar-asignatura').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')').attr('data-dismiss','modal');
+        
+        $('#listaDocentes').empty();
+        var profesores = ListarDocentesAsignatura(item.idasignatura);
+        console.log(profesores);
+        var i;
+        var html = '<div class="table-responsive">';
+            html += '<table class="table table-hover">';
+            html += '<thead><tr><th>Nombre</th><th>Facultad</th><th>Departamento</th></tr></thead>';
+            html += '<tbody>';
+            for ( i=0; i < profesores.length ;i++){      
+                html += '<tr ';
+                if (profesores[i].visibilidad === '0'){
+                    html += 'class ="danger"';
+                }
+                html += 'data-dismiss="modal" onclick="LocalizarProfesor(' + profesores[i].idprofesor +');">';
+                html += '<td>'+ profesores[i].nombre +'</td>';
+                html += '<td>'+ profesores[i].visibilidad +'</td>';
+                html += '<td>'+ profesores[i].correo +'</td>';
+                html += '</tr>';
+            }
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';                       
+        $('#listaDocentes').append(html);
+    });
+    //update al seleccionar espacio
+    $('#busqueda-tab-espacio .typeahead').on('typeahead:selected', function (evt, item) {
+        console.log(item.idespacio);
+        $('#localizar-espacio').attr('onclick', '').attr('onclick','LocalizarEspacio("'+item.idespacio+'")').attr('data-dismiss','modal');
         
     });
+    
     //update al seleccionar profesor
     $('#busqueda-tab-todo .typeahead').on('typeahead:selected', function (evt, item) {
         if ( typeof(item.idprofesor) !== 'undefined'){
@@ -133,7 +199,7 @@ $(document).ready(function () {
         //var asignatura = item.nombre;
         /*$('#busqueda-tab-todo .typeahead').typeahead('val', asig);*/
         //console.log(item);
-        $('#localizar-all').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')');
+        //$('#localizar-all').attr('onclick', '').attr('onclick','ListarDocentesAsignatura('+item.idasignatura+')');
     }
         
     });

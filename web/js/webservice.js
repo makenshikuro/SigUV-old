@@ -84,6 +84,9 @@ function LocalizarProfesor(id) {
             addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
             $('#busqueda-tab-todo .typeahead').typeahead('val', '');
             $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
+            $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
+            $('#listaDocentes').empty();
+            
 
             openSidebarInfo(data, "profesores");
             _nivel = data.idespacio.piso;
@@ -110,19 +113,68 @@ function LocalizarProfesor(id) {
     });
 }
 function LocalizarEspacio(id) {
+    console.log("espacio: "+id);
+    $.getJSON(_serverDB + 'webresources/espacios/' + id, function (data) {
+        //console.log(data);
+        console.log(data);
+        if (data.visibilidad === '1'){
+            setPosition(data.idcoordenada.latitud, data.idcoordenada.longitud, 21, "false");
+            addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
+            $('#busqueda-tab-todo .typeahead').typeahead('val', '');
+            $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
+            $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
+            $('#listaDocentes').empty();
+            
+
+            openSidebarInfo(data, "espacios");
+            _nivel = data.piso;
+            SetOptionLayers();
+            ChangeMapLayer();
+
+            //console.log(data.idespacio.boundingbox);
+            MostrarArea(data.boundingbox);
+        }
+        else{
+            var html = '<div>';
+                html += 'Lo sentimos, pero el recurso '+data.nombre+' no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
+                html += '</div>';
+            map.fire('modal', {content: html});
+            console.log("hola");
+            //openSidebarInfo(data,"no");
+            
+        }
+            
+        
+        
+        
+
+    });
     
 }
 
 
-function ListarDocentesAsignatura(id) {
-    $.getJSON(_serverDB + 'webresources/asignaturas/' + id, function (data) {
-        //console.log(data);
-
-        setPosition(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud, 21,"false");
-        $('#busqueda-tab-todo .typeahead').typeahead('val', '');
-        $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
-
+function ListarDocentesAsignatura(idAsignatura) {
+    var profesores;
+    $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/asignaturas/'+idAsignatura+'/profesores',
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    //console.log("done");
+                    profesores = response;
+                    //console.log(profesores);
+                }
+                /* Respuesta errónea */
+                else{
+                    //console.log("fail");
+                    
+                }
+        },
+        async: false
     });
+    return profesores;
 }
 
 function getAsignaturas(idProfesor){

@@ -71,8 +71,8 @@ and open the template in the editor.
 
             //_server = "http://www.adretse.es/siguv/";
             _queryMode = false;
-            //_serverDB = "http://147.156.85.92:8282/SiguvRest/";
-            _serverDB = "http://localhost:8080/SiguvRest/";
+            _serverDB = "http://147.156.85.92:8282/SiguvRest/";
+           // _serverDB = "http://localhost:8080/SiguvRest/";
             L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
             var camera, scene, renderer;
 
@@ -262,7 +262,7 @@ and open the template in the editor.
                     <label class="btn btn-primary ON large" id="topoON">
                         <input type="radio" name="denominacion" value="d" > <div><div><img src="images/bd.png"></div><div> Descripci&oacute;n</div></div>
                     </label>
-
+                    
                     <label class="btn btn-primary ON large" id="topoOFF">
                         <input type="radio" name="denominacion" value="c"> <div><div><img src="images/bc.png"></div><div> C&oacute;digo</div></div> 
                     </label>
@@ -324,6 +324,7 @@ and open the template in the editor.
                             <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>
                             <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>
                             <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>
+                            <li><a data-toggle="tab" href="#busqueda-tab-espacio"><span class="fa fa-sitemap"></span><span class="modal-tab-text">Espacio</span></a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -344,29 +345,16 @@ and open the template in the editor.
                             <div id="busqueda-tab-asignatura" class="tab-pane fade">
                                 <div class='clearM1'></div>
                                 <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
-                                <button id="localizar-asignatura" type="button" class="btn btn-default">Localizar</button>
+                                
                                 <div id="listaDocentes">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr> 
-                                                    <th>Name</th>
-                                                    <th>Facultad</th>
-                                                    <th>Departamento</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Anna</td>
-                                                    <td>New York</td>
-                                                    <td>USA</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
 
                                 </div>
+                            </div>
+                            <div id="busqueda-tab-espacio" class="tab-pane fade">
+                                <div class='clearM1'></div>
+                                <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>
+                                <button id="localizar-espacio" type="button" class="btn btn-default">Localizar</button>
+                                
                             </div>
                         </div>
                     </div>
