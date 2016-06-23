@@ -1,196 +1,220 @@
 /* global THREE */
 var object;
-function init2() {
+function initPanorama(idPano) {
 
-				var container, mesh;
-                                //THREE.ImageUtils.crossOrigin = '';
-				container = document.getElementById( 'container' );
+    var container, mesh;
+    //THREE.ImageUtils.crossOrigin = '';
+    container = document.getElementById('visor-panorama');
 
-				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
-				camera.target = new THREE.Vector3( 0, 0, 0 );
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
+    camera.target = new THREE.Vector3(0, 0, 0);
 
-				scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
-				/*var geometry = new THREE.SphereGeometry( 500, 60, 40 );
-				geometry.scale( - 1, 1, 1 );*/
-                                
-                                var loader = new THREE.TextureLoader();
-                                loader.crossOrigin = true;
-                                loader.load( 'http://147.156.82.219/recursos/panoramicas/R0010080.JPG', function ( texture ) {
-					var geometry = new THREE.SphereGeometry( 500, 60, 40 );
-                                        geometry.scale( - 1, 1, 1 );
-					var mat = new THREE.MeshBasicMaterial( {
-                                            map: texture
-                                        } );
-                                        
-					
-                                        mesh = new THREE.Mesh( geometry, mat );
-                                        object = mesh;
-					scene.add( mesh );
-				} );
-
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth/3, window.innerHeight/3 );
-				container.appendChild( renderer.domElement );
-
-				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
-				document.addEventListener( 'MozMousePixelScroll', onDocumentMouseWheel, false);
-
-				//
-
-				document.addEventListener( 'dragover', function ( event ) {
-
-					event.preventDefault();
-					event.dataTransfer.dropEffect = 'copy';
-
-				}, false );
-
-				document.addEventListener( 'dragenter', function ( event ) {
-
-					document.body.style.opacity = 0.5;
-
-				}, false );
-
-				document.addEventListener( 'dragleave', function ( event ) {
-
-					document.body.style.opacity = 1;
-
-				}, false );
-
-				document.addEventListener( 'drop', function ( event ) {
-
-					event.preventDefault();
-
-					var reader = new FileReader();
-					reader.addEventListener( 'load', function ( event ) {
-
-						material.map.image.src = event.target.result;
-						material.map.needsUpdate = true;
-
-					}, false );
-					reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
-
-					document.body.style.opacity = 1;
-
-				}, false );
-
-				//
-
-				window.addEventListener( 'resize', onWindowResize, false );
-
-			}
-                        
-function Change(idPano){
-    //console.log(object);
     var loader = new THREE.TextureLoader();
     loader.crossOrigin = true;
-    var tex = loader.load( _serverPano+idPano+'.jpg');
-    object.material.map = tex;
-    object.material.needsUpdate = true;
+    loader.load('http://147.156.82.219/recursos/panoramicas/' + idPano + '.JPG', function (texture) {
+        var geometry = new THREE.SphereGeometry(500, 60, 40);
+        geometry.scale(-1, 1, 1);
+        var mat = new THREE.MeshBasicMaterial({
+            map: texture
+        });
+
+
+        mesh = new THREE.Mesh(geometry, mat);
+        object = mesh;
+        scene.add(mesh);
+    });
     
+    /*var html = '<div class="panorama-control">';
+        html += '</div>';
+        
+    $( "canvas" ).after(html);*/
+        
+
+    renderer = new THREE.WebGLRenderer();
+    //renderer = new THREE.CanvasRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    //console.log($('#container').width());
     
+    $('.pano').css('max-width', (window.innerWidth / 2)+30 );
+     $('.pano').css('margin-top', 100 );
+    /*$('.pano').css('height', (window.innerHeight / 2) );*/
+    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+    container.appendChild(renderer.domElement);
+
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
+    document.addEventListener('mouseup', onDocumentMouseUp, false);
+    document.addEventListener('mousewheel', onDocumentMouseWheel, false);
+    document.addEventListener('MozMousePixelScroll', onDocumentMouseWheel, false);
+  
+
+    //
+
+    document.addEventListener('dragover', function (event) {
+
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+
+    }, false);
+
+    document.addEventListener('dragenter', function (event) {
+
+        document.body.style.opacity = 0.5;
+
+    }, false);
+
+    document.addEventListener('dragleave', function (event) {
+
+        document.body.style.opacity = 1;
+
+    }, false);
+
+    document.addEventListener('drop', function (event) {
+
+        event.preventDefault();
+
+        var reader = new FileReader();
+        reader.addEventListener('load', function (event) {
+
+            material.map.image.src = event.target.result;
+            material.map.needsUpdate = true;
+
+        }, false);
+        reader.readAsDataURL(event.dataTransfer.files[ 0 ]);
+
+        document.body.style.opacity = 1;
+
+    }, false);
+
+    //
+
+    window.addEventListener('resize', onWindowResize, false);
+    var html = '<div class="panorama-control"></div>';
+     $('canvas').after(html);
+     $('panorama-control').css("width",(window.innerWidth / 2));
+    
+     $( "canvas" ).mousedown(function(event) {
+        onDocumentMouseDown(event);
+});
 }
 
-			function onWindowResize() {
+function Change(idPano) {
+    
+    var loader = new THREE.TextureLoader();
+    loader.crossOrigin = true;
+    var tex = loader.load(_serverPano + idPano + '.jpg');
+    object.material.map = tex;
+    object.material.needsUpdate = true;
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth/3, window.innerHeight/3 );
+}
 
-			}
+function onWindowResize() {
 
-			function onDocumentMouseDown( event ) {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    //console.log($('#container').width());
+    /*var ratio = window.innerWidth /window.innerHeight;
+    var height = $('canvas').width() * ratio;*/
+    $('.pano').css('max-width', (window.innerWidth / 2)+30 );
+    $('panorama-control').css("width",(window.innerWidth / 2));
+    /*$('.pano').css('height', (window.innerHeight / 2) );
+    console.log($('canvas').width());
+    var width = $('canvas').width() +;
+    $('.pano').css('width', width);*/
+    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
 
-				event.preventDefault();
+}
 
-				isUserInteracting = true;
+function onDocumentMouseDown(event) {
 
-				onPointerDownPointerX = event.clientX;
-				onPointerDownPointerY = event.clientY;
+    event.preventDefault();
 
-				onPointerDownLon = lon;
-				onPointerDownLat = lat;
+    isUserInteracting = true;
 
-			}
+    onPointerDownPointerX = event.clientX;
+    onPointerDownPointerY = event.clientY;
 
-			function onDocumentMouseMove( event ) {
+    onPointerDownLon = lon;
+    onPointerDownLat = lat;
+    
+    
 
-				if ( isUserInteracting === true ) {
+}
 
-					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
-					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+function onDocumentMouseMove(event) {
 
-				}
+    if (isUserInteracting === true) {
 
-			}
+        lon = (onPointerDownPointerX - event.clientX) * 0.1 + onPointerDownLon;
+        lat = (event.clientY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
+        
 
-			function onDocumentMouseUp( event ) {
+    }
+}
 
-				isUserInteracting = false;
+function onDocumentMouseUp(event) {
+    isUserInteracting = false;
+}
 
-			}
+function onDocumentMouseWheel(event) {
 
-			function onDocumentMouseWheel( event ) {
+    // WebKit
 
-				// WebKit
+    if (event.wheelDeltaY) {
 
-				if ( event.wheelDeltaY ) {
+        camera.fov -= event.wheelDeltaY * 0.05;
 
-					camera.fov -= event.wheelDeltaY * 0.05;
+        // Opera / Explorer 9
 
-				// Opera / Explorer 9
+    } else if (event.wheelDelta) {
 
-				} else if ( event.wheelDelta ) {
+        camera.fov -= event.wheelDelta * 0.05;
 
-					camera.fov -= event.wheelDelta * 0.05;
+        // Firefox
 
-				// Firefox
+    } else if (event.detail) {
 
-				} else if ( event.detail ) {
+        camera.fov += event.detail * 1.0;
 
-					camera.fov += event.detail * 1.0;
+    }
 
-				}
+    camera.updateProjectionMatrix();
 
-				camera.updateProjectionMatrix();
+}
 
-			}
+function animate() {
 
-			function animate() {
+    requestAnimationFrame(animate);
+    update();
 
-				requestAnimationFrame( animate );
-				update();
+}
 
-			}
+function update() {
 
-			function update() {
+    if (isUserInteracting === false) {
 
-				if ( isUserInteracting === false ) {
+        lon += 0.1;
 
-					lon += 0.1;
+    }
 
-				}
+    lat = Math.max(-85, Math.min(85, lat));
+    phi = THREE.Math.degToRad(90 - lat);
+    theta = THREE.Math.degToRad(lon);
 
-				lat = Math.max( - 85, Math.min( 85, lat ) );
-				phi = THREE.Math.degToRad( 90 - lat );
-				theta = THREE.Math.degToRad( lon );
+    camera.target.x = 500 * Math.sin(phi) * Math.cos(theta);
+    camera.target.y = 500 * Math.cos(phi);
+    camera.target.z = 500 * Math.sin(phi) * Math.sin(theta);
 
-				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
-				camera.target.y = 500 * Math.cos( phi );
-				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+    camera.lookAt(camera.target);
 
-				camera.lookAt( camera.target );
+    /*
+     // distortion
+     camera.position.copy( camera.target ).negate();
+     */
 
-				/*
-				// distortion
-				camera.position.copy( camera.target ).negate();
-				*/
+    renderer.render(scene, camera);
 
-				renderer.render( scene, camera );
-
-			}
+}

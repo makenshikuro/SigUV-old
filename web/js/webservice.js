@@ -58,12 +58,12 @@ $(document).ready(function () {
         var html = '<table class="table table-hover"><tbody>';
         $.each(v, function (i, data) {
             html += '<tr onclick="setPosition(' + data.idcoordenada.latitud + ',' + data.idcoordenada.longitud +', 20,false);"><td><img width= "50px" src="'+ server+ data.chano + '">' + data.nombre + '</td></tr>';
-            //console.log('http://www.adretse.es/siguv/'+data.chano);
+           
         });
         html += "</tbody></table>";
         $(html).appendTo('#facultades');
 
-        //console.log( "success"+v[0].nombre );
+        
 
     });
 
@@ -101,7 +101,7 @@ function LocalizarProfesor(id) {
                 html += 'Lo sentimos, pero el recurso '+data.nombre+' no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
                 html += '</div>';
             map.fire('modal', {content: html});
-            console.log("hola");
+            //console.log("hola");
             //openSidebarInfo(data,"no");
             
         }
@@ -111,6 +111,7 @@ function LocalizarProfesor(id) {
         
 
     });
+    map.closeModal();
 }
 function LocalizarEspacio(id) {
     console.log("espacio: "+id);
@@ -149,7 +150,7 @@ function LocalizarEspacio(id) {
         
 
     });
-    
+    map.closeModal();
 }
 
 
@@ -254,6 +255,19 @@ function GetQueryStringParams(sParam)
     }
     
     
+}
+
+function MostrarURL(idrecurso){
+    //console.log(window.location.origin+window.location.pathname);
+    var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
+    map.fire('modal', {content: url});
+    //console.log(window.location.pathname);
+}
+function ShareTwitter(){
+    console.log("twtt");
+}
+function ShareFacebook(){
+    console.log("Face");
 }
 /*function BuscarEspacio(id){
     var json;

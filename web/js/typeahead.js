@@ -1,7 +1,7 @@
 /* global Bloodhound, Handlebars */
-$(document).ready(function () {
+function typeahead () {
        
-    var profesores = new Bloodhound({
+    profesores = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: _serverDB+"/webresources/profesores"
@@ -93,7 +93,7 @@ $(document).ready(function () {
     },
             {
                 name: 'espacios',
-                displayKey: 'descripcion',
+                displayKey: 'idespacio',
                 source: espacios,
                 templates: {
                     suggestion: Handlebars.compile('<div class="typeahead-resultados-espacios">{{nombre}} - {{descripcion}} </div>')
@@ -139,7 +139,7 @@ $(document).ready(function () {
             },
             {
                 name: 'espacios',
-                display: 'nombre',
+                display: 'idespacio',
                 source: espacios,
                 templates: {
                     header: '<div class="typeahead-header-resultados"><span class="fa fa-sitemap"></span>Espacios</h3>',
@@ -149,7 +149,8 @@ $(document).ready(function () {
 
     //update al seleccionar profesor
     $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function (evt, item) {
-        $('#localizar-profesor').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+')').attr('data-dismiss','modal');
+        
+        $('#localizar-profesor').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+');');
         
     });
     //update al seleccionar asignatura
@@ -168,7 +169,7 @@ $(document).ready(function () {
                 if (profesores[i].visibilidad === '0'){
                     html += 'class ="danger"';
                 }
-                html += 'data-dismiss="modal" onclick="LocalizarProfesor(' + profesores[i].idprofesor +');">';
+                html += 'onclick="LocalizarProfesor(' + profesores[i].idprofesor +');">';
                 html += '<td>'+ profesores[i].nombre +'</td>';
                 html += '<td>'+ profesores[i].visibilidad +'</td>';
                 html += '<td>'+ profesores[i].correo +'</td>';
@@ -182,7 +183,7 @@ $(document).ready(function () {
     //update al seleccionar espacio
     $('#busqueda-tab-espacio .typeahead').on('typeahead:selected', function (evt, item) {
         console.log(item.idespacio);
-        $('#localizar-espacio').attr('onclick', '').attr('onclick','LocalizarEspacio("'+item.idespacio+'")').attr('data-dismiss','modal');
+        $('#localizar-espacio').attr('onclick', '').attr('onclick','LocalizarEspacio("'+item.idespacio+'");');
         
     });
     
@@ -193,7 +194,7 @@ $(document).ready(function () {
         /*console.log(evt);
         console.log(item);*/
         /*$('#busqueda-tab-todo .typeahead').typeahead('val', idEspacio );*/
-        $('#localizar-all').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+')').attr('data-dismiss','modal');
+        $('#localizar-all').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+');');
     }
     else{
         //var asignatura = item.nombre;
@@ -205,4 +206,4 @@ $(document).ready(function () {
     });
     
 
-});
+}

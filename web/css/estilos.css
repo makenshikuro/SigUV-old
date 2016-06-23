@@ -165,6 +165,38 @@ img.img-icon-location {
     position: relative;
 }
 
+.block{
+    vertical-align: middle;
+    display: table-cell;
+}
+.redes {
+    display: inline-block;
+    padding: 5px;
+}
+.panoramas {
+    text-align: center;
+    margin-top: -15px;
+    margin-bottom: -30px;
+}
+
+div.panorama-name {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.panorama-control {
+    width: 100%;
+    height: 50px;
+    /* opacity: 0.5; */
+    background: black;
+    position: relative;
+    bottom: 0.4em;
+}
+
+div#visor-panorama {
+    width: 100%;
+    overflow: hidden;
+}
 
 /**  Leaflet   **/
 
@@ -201,7 +233,82 @@ img.img-icon-location {
     padding-left: 0.3em;
 }
 
+.leaflet-bar button:last-of-type {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: 40px;
+    border-bottom: none;
+    padding: 4px;
+    height: 40px;
+}
+.leaflet-bar button, .leaflet-bar button:hover {
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    /*width: 26px;
+    height: 33px;*/
+    width: 40px !important;
+    padding: 4px;
+    height: 40px !important;
+    line-height: 26px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+.leaflet-left .leaflet-control {
+    margin-left: 0px !important;
 
+    border-left: 4px solid #e4e4e4;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-right: 1px solid #e4e4e4;
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    box-shadow: 1px 1px 10px -4px;
+}
+.bookmark {
+    font-size: 1.5em;
+    text-align: center;
+    width: 30px;
+    padding-top: 1px;
+    padding-left: 1px;
+    line-height: 30px;
+}
+
+/*.book {
+    width: 30px;
+    line-height: 30px;
+    padding-right: 4px;
+    font-size: 2em;
+    padding-top: 4px;
+}*/
+/*
+.leaflet-left .leaflet-control {
+    margin-left: 12px;
+     border-left: 2px solid #FF0000; 
+     border: 1px solid; 
+    -moz-box-shadow: inset 0 8px 8px -8px #696868, inset 0 -8px 8px -8px #696868;
+     -webkit-box-shadow: inset 0 8px 8px -8px #696868, inset 0 -8px 8px -8px #696868; 
+     box-shadow: inset 0 8px 8px -8px #696868, inset 0 -8px 8px -8px #696868; 
+    width: 40px;
+     z-index: -1; 
+    position: relative;
+     box-shadow: none; 
+    background: white;
+     border: 1px solid #f2f2f2;
+     z-index: 100000000; 
+    border-top-left-radius: 0;
+     border-left: 1px solid transparent; 
+    border-bottom-left-radius: 0;
+    height: 40px;
+}
+
+*/
+
+/*.pano{
+  margin-top: 10 !important; 
+}*/
 /*
 .typeahead,
 .tt-query,
@@ -222,9 +329,12 @@ img.img-icon-location {
   background-color: #fff;
 }
 
-*/.typeahead:focus {
+*/
+.typeahead:focus {
   border: 2px solid #0097cf;
 }/*
+ 
+ 
 
 .tt-query {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);

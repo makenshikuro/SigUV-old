@@ -16,6 +16,7 @@ function DefaultMap(){
     _zoom = 18;
 }
 
+
 function init() {
     /* Recogemos variable de query String */
     queryString = GetQueryStringParams("id");
@@ -41,12 +42,18 @@ function init() {
     _mapMaxZoom = 25;
    
     
-
+    
+    
+    
+    
     
 
     /* Inicialización Mapa */
     map = L.map('map', {center: centro, zoom: _zoom, zoomControl: false});
 
+    L.easyButton( '<span class="fa fa-bookmark bookmark"></span>', function(){
+  alert('you just clicked the html entity \&starf;');
+}).addTo(map);
     /* Capas 
      * mapboxTiles = Mapbox.com  
      * osm = Open Street View    
@@ -261,35 +268,38 @@ function openModalError(string){
 /* Funcion openModalPano
  * Abre un modal informando del error en la queryString
  */
-function openModalPano(){
-    var string= 'hola';
-    var html= '<div id="container" >El recurso: '+ string+' es err\u00F3neo.</div>';
-    html+='<ul class="pagination">  <li><a href="#">&laquo;</a></li>  <li><a href="#">1</a></li>  <li><a href="#">2</a></li>  <li><a href="#">&raquo;</a></li></ul>';
-                
+function openModalPano(nombreEspacio){
+    
+    var html = '<div id="container" ><div class="panorama-name">'+ nombreEspacio+'</div>';
+    html += '<div id="visor-panorama" ></div>';
+        
     if (_listaPanos.length !== 0) {
-            var j=0;
+        var j = 0;
+        if (_listaPanos.length !== 1) {
+            html += '<div class="panoramas"><ul class="pagination">';
+            
             while (j <= _listaPanos.length - 1) {
-                console.log( _listaPanos[j].panorama );
+                console.log(_listaPanos[j].panorama);
+                html += '<li class="page-item ';
+                if (j == 0){
+                    html += 'active';
+                }
+                
+                html += '"><a href="#" onclick="Change(\''+_listaPanos[j].panorama+'\');">'+(j+1)+'</a></li>';
+
                 //html+='<button onclick="Change('+"'R0010081'"+');"><img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100"></button>';
                 //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100">';
                 j++;
             }
+            
+            html += '</ul></div>';
+        }
+            
     } 
         
-    //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Smiley face" height="42" width="42">';
-
-    //html+='<button onclick="Change('+"'R0010081'"+');">change</button>';
-    //html+='<button onclick="Change('+"'R0010105'"+');">change</button>';
-    //html+='<button onclick="Change('+"'R0010117'"+');">change</button>';
-    /*var html = '<div class="list-group grupo-ficha">';
-        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4></div>';
-        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';*/
-    map.fire('modal', {content: html});
+    map.fire('modal', {content: html, MODAL_CONTENT_CLS: 'modal-content pano'});
     
-     init2();
+     initPanorama(_listaPanos[0].panorama);
      animate();
 }
 
@@ -339,7 +349,7 @@ function openSidebarInfo(data,tipo) {
         if (panos.length !== 0) {
             _listaPanos = panos;
             //html += '';
-            html += '<li class="icon-360" onclick="openModalPano();"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
+            html += '<li class="icon-360" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
             
             /*html += '<button type="button" class="btn btn-info" onclick="openModalPano();">';
             html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
@@ -348,6 +358,12 @@ function openSidebarInfo(data,tipo) {
         html += '<li class="icon-location" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/location.svg" alt="panoramica de 360 grados"></li>';
             
         html += '</ul>';
+        html += '</div>';
+        html += '<div class="redes-sociales list-group-item">';
+        html += '<a class="redes" onclick="MostrarURL(\''+data.idespacio.idespacio+'\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
+        html += '<a class="redes" onclick="ShareTwitter();" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
+        html += '<a class="redes" onclick="ShareFacebook();" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
+        
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
         //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
@@ -390,6 +406,10 @@ function openSidebarInfo(data,tipo) {
             html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
             html += '</button>';
         }*/
+        html += '<script>$(document).ready(function(){ $( "img.fb" ).hover( function() {$( this ).attr("src","images/social/fb-activo.svg" ); }, function() { $( this ).attr("src","images/social/fb-inactivo.svg");});});  </script>';
+        html += '<script>$(document).ready(function(){ $( "img.tw" ).hover( function() {$( this ).attr("src","images/social/tw-activo.svg" ); }, function() { $( this ).attr("src","images/social/tw-inactivo.svg");});});  </script>';
+        html += '<script>$(document).ready(function(){ $( "img.link" ).hover( function() {$( this ).attr("src","images/social/link-activo.svg" ); }, function() { $( this ).attr("src","images/social/link-inactivo.svg");});});  </script>';
+        
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
         $('#sidebarInfo .sidebar-header .sidebar-header-icon span').attr('class', '').attr('class','fa fa-graduation-cap');
@@ -398,7 +418,7 @@ function openSidebarInfo(data,tipo) {
         var panos = getPanoramas(data.idespacio);
         
         var html = '<div class="list-group grupo-ficha">';
-        html += '<div href="#" class="list-group-item active"><h4>'+data.nombre+'</h4><ul>';
+        html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';
         if (panos.length !== 0) {
             _listaPanos = panos;
             //html += '';
@@ -412,6 +432,12 @@ function openSidebarInfo(data,tipo) {
             
         html += '</ul>';
         html += '</div>';
+        html += '<div class="redes-sociales list-group-item">';
+        html += '<a class="redes" onclick="MostrarURL(\''+data.idespacio+'\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
+        html += '<a class="redes" onclick="ShareTwitter();" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
+        html += '<a class="redes" onclick="ShareFacebook();" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
+        
+        html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.bloque+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.piso+'</h5></div>';
@@ -419,6 +445,10 @@ function openSidebarInfo(data,tipo) {
         html += '<div href="#" class="list-group-item"><h4>Tipo</h4><h5 class="ficha">'+data.tipo+'</h5></div>';
         html += '</div>';
         html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22, \'true\')" >Ver en el Mapa</button>';
+        
+        html += '<script>$(document).ready(function(){ $( "img.fb" ).hover( function() {$( this ).attr("src","images/social/fb-activo.svg" ); }, function() { $( this ).attr("src","images/social/fb-inactivo.svg");});});  </script>';
+        html += '<script>$(document).ready(function(){ $( "img.tw" ).hover( function() {$( this ).attr("src","images/social/tw-activo.svg" );  }, function() { $( this ).attr("src","images/social/tw-inactivo.svg");});});  </script>';
+        html += '<script>$(document).ready(function(){ $( "img.link" ).hover( function() {$( this ).attr("src","images/social/link-activo.svg" ); }, function() { $( this ).attr("src","images/social/link-inactivo.svg");});});  </script>';
         
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
     }
@@ -573,6 +603,64 @@ function clearMarkerSearch (){
       
 }
 
+function Buscador(){
+    
+     var  html = '              <div class="modal-header">';
+         
+         html += '                <h4 class="modal-title">Buscador</h4>';
+         html += '            </div>';
+          html += '           <div class="modal-body">';
+           html += '              <p> Buscador que nos permite localizar cualquier estancia de la ETSE, desde el punto de vista de las personas, las estancias, las denominaciones de espacios, o las aulas .</p>';
+           html += '              <ul class="nav nav-tabs">';
+                        html += '     <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>';
+                        html += '     <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>';
+                        html += '     <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>';
+                       html += '     <li><a data-toggle="tab" href="#busqueda-tab-espacio"><span class="fa fa-sitemap"></span><span class="modal-tab-text">Espacio</span></a></li>';
+                      html += ' </ul>';
+
+                html += ' <div class="tab-content">';
+                   html += '     <div id="busqueda-tab-todo" class="tab-pane fade in active">';
+                  html += '         <div class="clearM1"></div>';
+                    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+                     html += '         <button id="localizar-all" type="button" class="btn btn-default" >Localizar</button>';
+                   html += '     </div>';
+
+                    html += '     <div id="busqueda-tab-profesor" class="tab-pane fade">';
+                     html += '         <div class="clearM1"></div>';
+                     html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+                     html += '         <input type="hidden" id="todo">';
+                    html += '         <div id = "resultados-profesor"></div>';
+                    html += '         <button id="localizar-profesor" type="button" class="btn btn-default"  >Localizar</button>';
+
+                  html += '     </div>';
+                   html += '     <div id="busqueda-tab-asignatura" class="tab-pane fade">';
+                     html += '         <div class="clearM1"></div>';
+                    html += '<p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+                                
+                    html += '         <div id="listaDocentes">';
+
+                      html += '         </div>';
+                     html += '     </div>';
+                    html += '     <div id="busqueda-tab-espacio" class="tab-pane fade">';
+                     html += '         <div class="clearM1"></div>';
+                    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+                    html += '         <button id="localizar-espacio" type="button" class="btn btn-default">Localizar</button>';
+                                
+                     html += '     </div>';
+                     html += '  </div>';
+                   html += '</div>';
+                  html += '<div class="modal-footer">';
+                  html += '      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+             html += '     </div>';
+       
+ 
+    map.fire('modal', {content: html, MODAL_CONTENT_CLS: 'modal-content search'});
+    typeahead();
+    $('.search').css('margin-top', 100 );
+}
+
+
+
 function ShowArea(data){
     console.log();
     //var points = [];
@@ -719,3 +807,4 @@ function SetOptionLayers(){
     $('#P'+ _nivel).addClass('active');
     $('#P'+_nivel).children('input').prop('checked',true);
 }
+

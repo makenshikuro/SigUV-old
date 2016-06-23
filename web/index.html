@@ -50,6 +50,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
         <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
         <link rel="stylesheet" href="css/leaflet.modal.min.css">
+        <link rel="stylesheet" href="css/easyButton.css">
         
 
 
@@ -76,7 +77,7 @@ and open the template in the editor.
             L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
             var camera, scene, renderer;
 
-			var isUserInteracting = false,
+			isUserInteracting = false,
 			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
 			lon = 0, onMouseDownLon = 0,
 			lat = 0, onMouseDownLat = 0,
@@ -97,6 +98,8 @@ and open the template in the editor.
         <script src="js/rlayer.js"></script>
         <script src="js/leaflet.awesome-markers.min.js"></script>
         <script src="js/typeahead.bundle.js"></script>
+        <script src="js/easyButton.js"></script>
+
         <script src="js/typeahead.js"></script>
         <script src="js/handlebars-v4.0.5.js"></script>
         <script src="js/underscore-min.js"></script>
@@ -126,11 +129,11 @@ and open the template in the editor.
        otro elemento que se pueda ocultar al minimizar la barra -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-        <li><a onclick="closeAllSidebars();" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
+        <li><a onclick="closeAllSidebars();Buscador();" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
         <li><a onclick="openSidebarLayers();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
         <li><a onclick="openSidebarFacultades();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
     </ul>
- 
+      
     <!--<form class="navbar-form navbar-left" role="search">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="Buscar">
@@ -165,55 +168,7 @@ and open the template in the editor.
     </ul>
   </div>
 </nav>
-        
-        
-        
-        
-        <!--
-        <div role="navigation" class="navbar navbar-inverse">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#"><div class="logoUV"></div></a>
-            </div>
 
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav navbar-left">
-                    <li><a onclick="closeAllSidebars();" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
-                    <li><a onclick="openSidebarLayers();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
-                    <li><a onclick="openSidebarFacultades();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <span class="fa fa-cog"></span></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
-                            <li><a href="#"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
-                            <li><a href="#"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
-                        </ul>
-                    </li>
-                </ul>
-                <div id="nivel" class="btn-group level" data-toggle="buttons">
-                    <label id="P0" class="btn btn-primary ON">
-                        <input type="radio" name="nivel" value="0" autocomplete="off"> PB
-                    </label>
-                    <label id="P1" class="btn btn-primary ON">
-                        <input type="radio" name="nivel" value="1" autocomplete="off"> P1
-                    </label>
-                    <label id="P2" class="btn btn-primary ON">
-                        <input type="radio" name="nivel" value="2" autocomplete="off"> P2
-                    </label>             
-                    <label id="P3" class="btn btn-primary ON">
-                        <input  type="radio" name="nivel" value="3" autocomplete="off"> P3
-                    </label>
-                </div>
-
-
-
-
-
-            </div>
-        </div>
-        -->
 
         <div id="map" ></div>
 
@@ -298,21 +253,26 @@ and open the template in the editor.
         <!-- Fin Sidebar de Facultades -->
 
         <!-- Sidebar de Información -->
+        
         <div id="sidebarInfo">
+            
+           
 
             <div id="profesor-info"></div>
         </div>
+        
+        
         <!-- Fin Sidebar de Información -->
         
         <!-- Fin Sidebars -->
 
 
         <!-- Modals -->
-        <!-- Modals Search-->
+        <!-- Modals Search
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
-                <!-- Modal content-->
+                <!-- Modal content
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -363,14 +323,13 @@ and open the template in the editor.
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="pano" ></div>
+        </div>-->
+        
         <!-- Fin Modal Search -->
         <!--<div id="container"></div>-->
         <!-- Fin Modales -->
         <script>
-            
-           
+
         </script>
 
     </body>
