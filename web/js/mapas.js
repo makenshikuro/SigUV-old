@@ -7,7 +7,7 @@
 
 
 
-/* global _serverDB */
+/* global _serverDB, isMobile */
 
 function DefaultMap(){
     _nivel = "0";
@@ -19,7 +19,7 @@ function DefaultMap(){
 
 function init() {
     /* Recogemos variable de query String */
-    queryString = GetQueryStringParams("id");
+    queryString = GetQueryStringParams();
     _data = "";
     
     _nivel = "0";
@@ -40,20 +40,12 @@ function init() {
     _mapBounds = new L.LatLngBounds(surOeste, norEste);
     _mapMinZoom = 5;
     _mapMaxZoom = 25;
-   
-    
-    
-    
-    
-    
-    
+
 
     /* Inicialización Mapa */
     map = L.map('map', {center: centro, zoom: _zoom, zoomControl: false});
 
-    L.easyButton( '<span class="fa fa-bookmark bookmark"></span>', function(){
-  alert('you just clicked the html entity \&starf;');
-}).addTo(map);
+   
     /* Capas 
      * mapboxTiles = Mapbox.com  
      * osm = Open Street View    
@@ -169,10 +161,23 @@ function init() {
         layer.bindPopup(popupContent);
     }
 
-    
+    var pnt =0;
+    var arrey='';
     map.on('click', function(e) {
-     console.log(e.latlng.lat+","+e.latlng.lng);
+        pnt++;
+        arrey += e.latlng.lat+","+e.latlng.lng+";";
+        
+        if (pnt === 4){
+            
+            console.log(arrey);
+            pnt = 0;
+            arrey ='';
+        }
+        
      
+     
+     
+     //console.log(pnt);
      });
     
 
@@ -202,45 +207,85 @@ function init() {
     });
     
     /* Consulta de Query */
-    if (typeof (queryString) !== 'undefined'){
-        var req = $.ajax({
-        type: 'GET',
-        url: _serverDB + 'webresources/espacios/' + queryString,
-        dataType: 'json',
-        success: function(response, textStatus, errorThrown) {
-                /* Respuesta correcta */
-                //console.log("log: "+textStatus);
-                if(textStatus === 'success'){
-                    //console.log("done");
-                    _nivel = response.piso;
-                    //console.log(response.idcoordenada.latitud);
-                    centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
-                    _currentPosition = centro;
-                    _zoom = 22;
-                    _queryMode = true;
-                    _data = response;
-                    
-                }
-                
-        },
-        error: function(response,textStatu, error){
-            /* Respuesta errónea */
-            //console.log("log2: "+textStatu);
-            DefaultMap();
-            openModalError(queryString);   
-        },
-        async: false
-    });
-    /* Respuesta por defecto sin queryString */
+    if (typeof (queryString) !== 'undefined') {
+        var string = queryString.split(';');
+        var recurso = string[0];
+        var tipoRecurso = string[1];
+
+
+        if (tipoRecurso === 'espacio') {
+            var req = $.ajax({
+                type: 'GET',
+                url: _serverDB + 'webresources/espacios/' + string[0],
+                dataType: 'json',
+                success: function (response, textStatus, errorThrown) {
+                    /* Respuesta correcta */
+                    //console.log("log: "+textStatus);
+                    if (textStatus === 'success') {
+                        //console.log("done");
+                        _nivel = response.piso;
+                        //console.log(response.idcoordenada.latitud);
+                        centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
+                        _currentPosition = centro;
+                        _zoom = 22;
+                        _data = response;
+                    }
+                    openSidebarInfo(_data, "espacios");
+
+                },
+                error: function (response, textStatu, error) {
+                    /* Respuesta errónea */
+                    //console.log("log2: "+textStatu);
+                    DefaultMap();
+                    openModalError(queryString);
+                },
+                async: false
+            });
+        }
+        else if (string[1] === 'profesor'){
+            var req = $.ajax({
+                type: 'GET',
+                url: _serverDB + 'webresources/profesores/' + string[0],
+                dataType: 'json',
+                success: function (response, textStatus, errorThrown) {
+                    /* Respuesta correcta */
+                    console.log(response);
+                    if (textStatus === 'success') {
+                        //console.log("done");
+                        _nivel = response.idespacio.piso;
+                        //console.log(response.idcoordenada.latitud);
+                        centro = [response.idespacio.idcoordenada.latitud, response.idespacio.idcoordenada.longitud];
+                        _currentPosition = centro;
+                        _zoom = 22;
+                        _data = response;
+                    }
+                    openSidebarInfo(_data, "profesores");
+
+                },
+                error: function (response, textStatu, error) {
+                    /* Respuesta errónea */
+                    //console.log("log2: "+textStatu);
+                    DefaultMap();
+                    openModalError(queryString);
+                },
+                async: false
+            });
+            
+        }
+        /* Respuesta por defecto sin queryString */
     }
     else{
         DefaultMap();
     }
     
-    if (_queryMode){
-        openSidebarInfo(_data, "espacios");
+    
+    
+     L.easyButton( '<span class="fa fa-bookmark bookmark"></span>', function(){
+  console.log("abre");
+       sidebarInfo.toggle();
         
-    }
+    }).addTo(map);
+    
     
     SetOptionLayers();   
 }
@@ -350,19 +395,16 @@ function openSidebarInfo(data,tipo) {
             _listaPanos = panos;
             //html += '';
             html += '<li class="icon-360" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
-            
-            /*html += '<button type="button" class="btn btn-info" onclick="openModalPano();">';
-            html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
-            html += '</button>';*/
+      
         }
         html += '<li class="icon-location" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/location.svg" alt="panoramica de 360 grados"></li>';
             
         html += '</ul>';
         html += '</div>';
         html += '<div class="redes-sociales list-group-item">';
-        html += '<a class="redes" onclick="MostrarURL(\''+data.idespacio.idespacio+'\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
-        html += '<a class="redes" onclick="ShareTwitter();" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
-        html += '<a class="redes" onclick="ShareFacebook();" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
+        html += '<a class="redes" onclick="MostrarURL(\''+data.idprofesor+';profesor\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
+        html += '<a class="redes" onclick="ShareTwitter(\''+data.idprofesor+';profesor\');" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
+        html += '<a class="redes" onclick="ShareFacebook(\''+data.idprofesor+';profesor\');" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
         
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
@@ -433,9 +475,9 @@ function openSidebarInfo(data,tipo) {
         html += '</ul>';
         html += '</div>';
         html += '<div class="redes-sociales list-group-item">';
-        html += '<a class="redes" onclick="MostrarURL(\''+data.idespacio+'\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
-        html += '<a class="redes" onclick="ShareTwitter();" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
-        html += '<a class="redes" onclick="ShareFacebook();" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
+        html += '<a class="redes" onclick="MostrarURL(\''+data.idespacio+';espacio\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
+        html += '<a class="redes" onclick="ShareTwitter(\''+data.idespacio+';espacio\');" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
+        html += '<a class="redes" onclick="ShareFacebook(\''+data.idespacio+';espacio\');" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
         
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
@@ -462,8 +504,13 @@ function openSidebarInfo(data,tipo) {
     $(html).appendTo('#profesor-info');
     sidebarLayers.hide();
     sidebarInfo.toggle();
+    if (!$('.easy-button-container').hasClass("visible")){
+        $('.easy-button-container').addClass("visible");
+    }
+    
     
 }
+
 
  /* Funcion closeAllSidebars
   * Cierra todos los sidebar existentes 
@@ -474,6 +521,10 @@ function closeAllSidebars() {
     sidebarInfo.hide();
     clearMarkerSearch();
     BorrarArea();
+    if ($('.easy-button-container').hasClass("visible")){
+        $('.easy-button-container').removeClass("visible");
+        
+    }
 }
 
 /* Funcion MostrarArea
@@ -650,7 +701,7 @@ function Buscador(){
                      html += '  </div>';
                    html += '</div>';
                   html += '<div class="modal-footer">';
-                  html += '      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+                  html += '      <button type="button" class="btn btn-default" onclick="ModalClose();">Close</button>';
              html += '     </div>';
        
  
@@ -662,7 +713,7 @@ function Buscador(){
 
 
 function ShowArea(data){
-    console.log();
+    //console.log();
     //var points = [];
     //points.push(centro);
     //points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
@@ -769,6 +820,18 @@ $(document).ready(function () {
         ChangeMapLayer();
           //alert("The text has been changed."+iconos);
     });
+    
+    
+    $(".nav a[data-colapse='true']").on('click', function () {
+        if (isMobile.any()) {
+            $('.btn-navbar').click(); //bootstrap 2.x
+            $('.navbar-toggle').click(); //bootstrap 3.x by Richard
+        }
+        
+        
+});
+    
+    
     //SetOptionLayers();
 });
 

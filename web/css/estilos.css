@@ -258,7 +258,6 @@ div#visor-panorama {
 }
 .leaflet-left .leaflet-control {
     margin-left: 0px !important;
-
     border-left: 4px solid #e4e4e4;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -266,6 +265,16 @@ div#visor-panorama {
     border-top: 1px solid #e4e4e4;
     border-bottom: 1px solid #e4e4e4;
     box-shadow: 1px 1px 10px -4px;
+    opacity: 0;
+    visibility: hidden;        
+}
+.visible {
+    /* opacity: 0.5; */
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
 }
 .bookmark {
     font-size: 1.5em;
@@ -275,14 +284,15 @@ div#visor-panorama {
     padding-left: 1px;
     line-height: 30px;
 }
+div#url {
+    display: inline-block;
+    border: 1px solid;
+    width: 80%;
+    padding: 10px;
+    box-shadow: 0px 0px 10px 1px #a0a0a0;
+}
 
-/*.book {
-    width: 30px;
-    line-height: 30px;
-    padding-right: 4px;
-    font-size: 2em;
-    padding-top: 4px;
-}*/
+
 /*
 .leaflet-left .leaflet-control {
     margin-left: 12px;

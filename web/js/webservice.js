@@ -111,7 +111,7 @@ function LocalizarProfesor(id) {
         
 
     });
-    map.closeModal();
+    ModalClose();
 }
 function LocalizarEspacio(id) {
     console.log("espacio: "+id);
@@ -140,7 +140,7 @@ function LocalizarEspacio(id) {
                 html += 'Lo sentimos, pero el recurso '+data.nombre+' no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
                 html += '</div>';
             map.fire('modal', {content: html});
-            console.log("hola");
+            //console.log("hola");
             //openSidebarInfo(data,"no");
             
         }
@@ -150,7 +150,7 @@ function LocalizarEspacio(id) {
         
 
     });
-    map.closeModal();
+    ModalClose();
 }
 
 
@@ -228,66 +228,86 @@ function getPanoramas(idEspacio){
     
 }
 
-function GetQueryStringParams(sParam)
+function GetQueryStringParams()
 {
-    /*var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) 
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] === sParam) 
-        {
-            return sParameterName[1];
-        }
-    }*/
+    var query;
+    var flag = false;
+    
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i++) 
     {
         var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] === sParam) 
+        if ((sParameterName[0] === "idespacio")&&(flag !== true)) 
         {
             if ( typeof(sParameterName[1]) !== 'undefined'){
-                 
+                 query = sParameterName[1]+';'+"espacio";
+                 flag = true;
+                 //console.log("espacioID");
             }
-            return sParameterName[1];
+            
+        }
+        else if ((sParameterName[0] === "idprofesor")&&(flag !== true)) 
+        {
+            if ( typeof(sParameterName[1]) !== 'undefined'){
+                 query = sParameterName[1]+';'+"profesor";
+                 flag = true;
+                 //console.log("profesorID");
+            }
+            
         }
     }
-    
+    //console.log(query);
+    return query;
     
 }
 
-function MostrarURL(idrecurso){
+function MostrarURL(recurso){
     //console.log(window.location.origin+window.location.pathname);
-    var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
-    map.fire('modal', {content: url});
+    var clipboard = new Clipboard('.btn');
+    var aux = recurso.split(';');
+    var idrecurso = aux[0];
+    var tipoRecurso = aux[1];
+    var url = '';
+    console.log(idrecurso);
+    console.log(tipoRecurso);
+    if (tipoRecurso === 'espacio') {
+        url = window.location.origin + "/SigUV/index.html?idespacio=" + idrecurso;
+    } else if (tipoRecurso === 'profesor') {
+        url = window.location.origin + "/SigUV/index.html?idprofesor=" + idrecurso;
+    }
+    
+    var html = '<div class="urlbox"><div class=""></div><div id="url">' + url + '</div><div class="btn" data-clipboard-target="#url"><img class="copy" src="images/social/copy-inactivo.svg" title="¡Copiado al Portapapeles!"></div></div>';
+   
+    map.fire('modal', {content: html});
+    //$('#url').append(url);
+     $( ".btn" ).hover(
+        function() {$('.copy').attr('src','images/social/copy-activo.svg');},
+        function() {$('.copy').attr('src','images/social/copy-inactivo.svg');});
+    
     //console.log(window.location.pathname);
 }
-function ShareTwitter(){
+function ShareTwitter(idrecurso){
+    var opciones = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+    var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
+    var html = 'http://twitter.com/share?url='+url+'&text=Texto';
+    window.open(html, '_blank',opciones);
+    
     console.log("twtt");
 }
-function ShareFacebook(){
+function ShareFacebook(idrecurso){
+    var opciones = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+    var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
+    var html = 'http://www.facebook.com/sharer.php?u='+url+'&t=Texto';
+    window.open(html, '_blank',opciones);
     console.log("Face");
 }
-/*function BuscarEspacio(id){
-    var json;
-    $.getJSON(_serverDB + 'webresources/espacios/' + id , function(j){
-        console.log("primer");
-        console.log(j);
-    })
-            .done(function(data){
-                console.log("done");
-                console.log(data);
-                return data;
-                
-    })
-            .fail(function(doto){
-                console.log("fail");
-                console.log(doto);
-    });
-    console.log("fuera");
-    
-}*/
+
+function ModalClose(){
+    map.closeModal();
+}
+
+
 function CallSucceed(json){
     console.log("dentro");
     query = json;

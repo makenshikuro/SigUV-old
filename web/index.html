@@ -82,7 +82,27 @@ and open the template in the editor.
 			lon = 0, onMouseDownLon = 0,
 			lat = 0, onMouseDownLat = 0,
 			phi = 0, theta = 0;
-            
+            isMobile = {
+    Android: function() {
+        return navigator.userAgent.match(/Android/i);
+    },
+    BlackBerry: function() {
+        return navigator.userAgent.match(/BlackBerry/i);
+    },
+    iOS: function() {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+    Opera: function() {
+        return navigator.userAgent.match(/Opera Mini/i);
+    },
+    Windows: function() {
+        return navigator.userAgent.match(/IEMobile/i);
+    },
+    any: function() {
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+    }
+};
+    
 
 
         </script>
@@ -99,8 +119,8 @@ and open the template in the editor.
         <script src="js/leaflet.awesome-markers.min.js"></script>
         <script src="js/typeahead.bundle.js"></script>
         <script src="js/easyButton.js"></script>
-
         <script src="js/typeahead.js"></script>
+        <script src="js/clipboard.min.js"></script>
         <script src="js/handlebars-v4.0.5.js"></script>
         <script src="js/underscore-min.js"></script>
         <script src="js/poi.js"></script>
@@ -129,9 +149,9 @@ and open the template in the editor.
        otro elemento que se pueda ocultar al minimizar la barra -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-        <li><a onclick="closeAllSidebars();Buscador();" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
-        <li><a onclick="openSidebarLayers();" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
-        <li><a onclick="openSidebarFacultades();"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
+        <li><a onclick="closeAllSidebars();Buscador();" data-colapse="true" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
+        <li><a onclick="openSidebarLayers();" data-colapse="true" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
+        <li><a onclick="openSidebarFacultades();" data-colapse="true"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
     </ul>
       
     <!--<form class="navbar-form navbar-left" role="search">
@@ -160,9 +180,9 @@ and open the template in the editor.
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                   <span class="fa fa-cog"></span></span></a>
               <ul class="dropdown-menu">
-                  <li><a href="#" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
-                  <li><a href="#"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
-                  <li><a href="#"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
+                  <li><a href="#" data-colapse="true" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
+                  <li><a href="#" data-colapse="true"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
+                  <li><a href="#" data-colapse="true"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
               </ul>
           </li>
     </ul>
@@ -329,7 +349,14 @@ and open the template in the editor.
         <!--<div id="container"></div>-->
         <!-- Fin Modales -->
         <script>
+/*$(window).ready(function(){
 
+  $('div#url').load(function(){
+
+    // code to run after div's image has loaded
+
+  });
+});*/
         </script>
 
     </body>
