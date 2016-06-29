@@ -53,7 +53,7 @@ function init() {
      * PB = Planos planta Baja   
      */
     mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/ubustus.p2c7e9pf/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, {
-        attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',
+        /*attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>',*/
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         
@@ -63,30 +63,13 @@ function init() {
 
     googleLayer = new L.Google('SATELLITE');
     
-    /*var points = [];
-    
-    points.push(_mapBounds.getSouthWest());
-    points.push(_mapBounds.getNorthWest());
-    points.push(_mapBounds.getNorthEast());
-    points.push(_mapBounds.getSouthEast());*/
-    /*points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
-    points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
-    
-    points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
-    points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
-    points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
-    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
-    /*var p = new R.Polygon(points);
-    map.addLayer(p);*/
-    //map.addLayer(new R.Marker(centro));
-    
     ETSEmap = L.tileLayer(_server+ 'mapas/'+ _tema + _toponimo +_nivel+'/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         bounds: _mapBounds,
         zIndex: 7
     });
-    //console.log(_server+_tema + _toponimo +_nivel);
+ 
     /* Añadido de Capas */
     map.addLayer(mapboxTiles);
     map.addLayer(ETSEmap);
@@ -97,18 +80,21 @@ function init() {
     //Sidebar
     sidebarLayers = L.control.sidebar('sidebarLayers', {
         closeButton: true,
-        position: 'left'
+        position: 'left',
+        autoPan: false
     });
     map.addControl(sidebarLayers);
 
     sidebarFacultades = L.control.sidebar('sidebarFacultades', {
         closeButton: true,
-        position: 'left'
+        position: 'left',
+        autoPan: false
     });
     map.addControl(sidebarFacultades);
     sidebarInfo = L.control.sidebar('sidebarInfo', {
         closeButton: true,
-        position: 'left'
+        position: 'left',
+        autoPan: false
     });
     map.addControl(sidebarInfo);
     
@@ -201,9 +187,7 @@ function init() {
             map.addLayer(layerGroupFac);
             map.removeLayer(layerGroupCam);
         }
-        else {
-            //map.featureLayer.setFilter(function() { return false; });
-        }
+        
     });
     
     /* Consulta de Query */
@@ -216,15 +200,15 @@ function init() {
         if (tipoRecurso === 'espacio') {
             var req = $.ajax({
                 type: 'GET',
-                url: _serverDB + 'webresources/espacios/' + string[0],
+                url: _serverDB + 'webresources/espacios/' + recurso,
                 dataType: 'json',
                 success: function (response, textStatus, errorThrown) {
                     /* Respuesta correcta */
-                    //console.log("log: "+textStatus);
+                   
                     if (textStatus === 'success') {
-                        //console.log("done");
+                        
                         _nivel = response.piso;
-                        //console.log(response.idcoordenada.latitud);
+                        
                         centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
                         _currentPosition = centro;
                         _zoom = 22;
@@ -235,7 +219,7 @@ function init() {
                 },
                 error: function (response, textStatu, error) {
                     /* Respuesta errónea */
-                    //console.log("log2: "+textStatu);
+                    
                     DefaultMap();
                     openModalError(queryString);
                 },
@@ -264,7 +248,6 @@ function init() {
                 },
                 error: function (response, textStatu, error) {
                     /* Respuesta errónea */
-                    //console.log("log2: "+textStatu);
                     DefaultMap();
                     openModalError(queryString);
                 },
@@ -278,12 +261,10 @@ function init() {
         DefaultMap();
     }
     
-    
-    
-     L.easyButton( '<span class="fa fa-bookmark bookmark"></span>', function(){
-  console.log("abre");
-       sidebarInfo.toggle();
-        
+     L.easyButton( '<span title="Marcap&aacute;ginas" class="fa fa-bookmark bookmark"></span>', function(){
+  
+        sidebarInfo.toggle();
+               
     }).addTo(map);
     
     
@@ -293,12 +274,12 @@ function init() {
 /* Funciones */
 
 function setPosition(lat, long, zoom, cierre){
-    //cierre = String (cierre);
     map.setView(new L.LatLng(lat, long), zoom,{animation: true});
-    //console.log(cierre);
-    if (cierre === 'true'){
-        //console.log("true");
+
+    if (String(cierre) === 'true'){
+        
         sidebarInfo.hide();
+        sidebarFacultades.hide();
     }
 }
 
@@ -331,9 +312,6 @@ function openModalPano(nombreEspacio){
                 }
                 
                 html += '"><a href="#" onclick="Change(\''+_listaPanos[j].panorama+'\');">'+(j+1)+'</a></li>';
-
-                //html+='<button onclick="Change('+"'R0010081'"+');"><img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100"></button>';
-                //html+='<img src='+_serverPano+_listaPanos[j].panorama+".jpg"+' alt="Panor&acute;mica '+(j+1)+'" height="50" width="100">';
                 j++;
             }
             
@@ -372,48 +350,40 @@ function openSidebarFacultades() {
 function openSidebarInfo(data,tipo) {
     //console.log(dat a);
     $('#profesor-info').empty();
-    
+    //console.log(data);
     if (tipo === "profesores"){
-        
-        //console.log(data.tutorias);
         
         if (data.tutorias !== null){
             var tutos = data.tutorias.split(',');
         }
-        //console.log("idprofesor: "+data.idprofesor);
+
         var asig = getAsignaturas(data.idprofesor);
         var panos = getPanoramas(data.idespacio.idespacio);
-        //console.log(panos);
-        //console.log(data.idespacio.idespacio);
-        //console.log("vuelvo");
-        //console.log(asig);
         
         var html = '<div class="list-group grupo-ficha">';
-        html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';
-        
-        if (panos.length !== 0) {
-            _listaPanos = panos;
-            //html += '';
-            html += '<li class="icon-360" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
-      
-        }
-        html += '<li class="icon-location" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/location.svg" alt="panoramica de 360 grados"></li>';
-            
+        html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';    
+        html += '<li class="icon-location" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',21,\'true\')" ><img class="img-icon-location" src="images/social/location-inactivo.svg" title="Mostrar posici&oacute;n en el mapa" alt="Mostrar posici&oacute;n en el mapa"></li>';   
         html += '</ul>';
         html += '</div>';
         html += '<div class="redes-sociales list-group-item">';
-        html += '<a class="redes" onclick="MostrarURL(\''+data.idprofesor+';profesor\');" title="Link" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
-        html += '<a class="redes" onclick="ShareTwitter(\''+data.idprofesor+';profesor\');" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
-        html += '<a class="redes" onclick="ShareFacebook(\''+data.idprofesor+';profesor\');" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
-        
+        html += '<a class="redes" onclick="MostrarURL(\''+data.idprofesor+';profesor\');" title="Compartir Enlace" href="#"><img class="link" src="images/social/link-inactivo.svg" alt="enlace al Recurso"></a>';
+        html += '<a class="redes" onclick="ShareTwitter(\''+data.idprofesor+';profesor\');" title="Compartir en Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
+        html += '<a class="redes" onclick="ShareFacebook(\''+data.idprofesor+';profesor\');" title="Compartir en Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
+        if (panos.length !== 0) {
+            _listaPanos = panos;
+            //html += '';
+            html += '<a class="redes" title="Ver Panoramas 360&deg;" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="icon-360" src="images/social/360-inactivo.png" alt="Panor&aacute;mica de 360 grados"></a>';
+      
+        }
         html += '</div>';
-        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
-        //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
+        //console.log(data.departamento);
+        //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.idespacio.piso+'</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idespacio.idedificio.nombre+'</h5></div></div>';
+        html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img title="'+ data.idespacio.idedificio.nombre +'" class="img-fichaFac" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idespacio.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tutorias</h4>';
         if (data.tutorias !== null){ 
             var i=0;
@@ -439,18 +409,10 @@ function openSidebarInfo(data,tipo) {
             html += '<h5 class="ficha">' + 'Información disponible en breve' + '</h5>';
         }
         html += '</div></div>';
-        //html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',22,\'true\')" >Ver en el Mapa</button>';
-        
-        
-        /*if (panos.length !== 0) {
-            _listaPanos = panos;
-            html += '<button type="button" class="btn btn-info" onclick="openModalPano();">';
-            html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
-            html += '</button>';
-        }*/
         html += '<script>$(document).ready(function(){ $( "img.fb" ).hover( function() {$( this ).attr("src","images/social/fb-activo.svg" ); }, function() { $( this ).attr("src","images/social/fb-inactivo.svg");});});  </script>';
         html += '<script>$(document).ready(function(){ $( "img.tw" ).hover( function() {$( this ).attr("src","images/social/tw-activo.svg" ); }, function() { $( this ).attr("src","images/social/tw-inactivo.svg");});});  </script>';
         html += '<script>$(document).ready(function(){ $( "img.link" ).hover( function() {$( this ).attr("src","images/social/link-activo.svg" ); }, function() { $( this ).attr("src","images/social/link-inactivo.svg");});});  </script>';
+        html += '<script>$(document).ready(function(){ $( "img.icon-360" ).hover( function() {$( this ).attr("src","images/social/360-activo.png" ); }, function() { $( this ).attr("src","images/social/360-inactivo.png");});});  </script>';
         
         addMarker(data.idespacio.idcoordenada.latitud, data.idespacio.idcoordenada.longitud);
         
@@ -466,9 +428,6 @@ function openSidebarInfo(data,tipo) {
             //html += '';
             html += '<li class="icon-360" onclick="openModalPano();"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
             
-            /*html += '<button type="button" class="btn btn-info" onclick="openModalPano();">';
-            html += '<img class="icon-360" src="images/360-icon.png" alt="panoramica de 360 grados">';
-            html += '</button>';*/
         }
         html += '<li class="icon-location" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/location.svg" alt="panoramica de 360 grados"></li>';
             
@@ -486,8 +445,7 @@ function openSidebarInfo(data,tipo) {
         html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img class="img-fichaFac" src="' + _server+ data.idedificio.chano + '" alt="'+ data.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tipo</h4><h5 class="ficha">'+data.tipo+'</h5></div>';
         html += '</div>';
-        html += '<button type="button" class="btn btn-info" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22, \'true\')" >Ver en el Mapa</button>';
-        
+       
         html += '<script>$(document).ready(function(){ $( "img.fb" ).hover( function() {$( this ).attr("src","images/social/fb-activo.svg" ); }, function() { $( this ).attr("src","images/social/fb-inactivo.svg");});});  </script>';
         html += '<script>$(document).ready(function(){ $( "img.tw" ).hover( function() {$( this ).attr("src","images/social/tw-activo.svg" );  }, function() { $( this ).attr("src","images/social/tw-inactivo.svg");});});  </script>';
         html += '<script>$(document).ready(function(){ $( "img.link" ).hover( function() {$( this ).attr("src","images/social/link-activo.svg" ); }, function() { $( this ).attr("src","images/social/link-inactivo.svg");});});  </script>';
@@ -613,7 +571,7 @@ function showPosition(position){
         var marker = L.marker(new L.LatLng(position.coords.latitude, position.coords.longitude),
                 {icon: L.AwesomeMarkers.icon({
                         icon: 'location-arrow',
-                        markerColor: 'blue',
+                        markerColor: 'lightblue',
                         prefix: 'fa',
                         iconColor: 'black'})
                 }
@@ -625,11 +583,6 @@ function showPosition(position){
 
         map.fitBounds(group.getBounds());
         map.addLayer(layerGroupGPS);
-        
-        //console.log(map.getCenter().lat);
-        //console.log(map.getCenter().lng);
-        
-        //setPosition(position.coords.latitude, position.coords.longitude, 21);
        
     }    
 }
@@ -871,3 +824,53 @@ function SetOptionLayers(){
     $('#P'+_nivel).children('input').prop('checked',true);
 }
 
+function showLegend(){
+    var html = '<div class="tabbable" id="leyenda-tab"><ul class="nav nav-tabs"><li class="active"><a href="#panel-tema" data-toggle="tab">Tem&aacute;tico</a></li><li class=""><a href="#panel-iconos" data-toggle="tab">Iconos</a></li></ul></div>';
+    html += '<div id="leyenda"><div class="tab-content">';
+        html += '<div id="panel-tema" class="tab-pane active">';
+        html += '<h3>Tem&aacute;tico</h3>';
+        html += '<p>Composici&oacute;n optimizada para los que deseen diferenciar los distintos espacios que podemos encontrar en una planta de un edificio. Es al mismo tiempo muy &uacute;til s&iacute; deseamos hacer impresiones, en la que cada uso tiene un color diferenciado</p>';
+        html += '<ul class="list-unstyled list-legend">';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #92cfea;"></div>Aula</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #c4fbdb;"></div>Laboratorio</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #c09f59;"></div>Despacho</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #5d8ddb;"></div>Aseo</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f3d174;"></div>Cafeter&iacute;a</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #e299b8;"></div>Biblioteca</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f5d940;"></div>Secretar&iacute;a</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f38f2a;"></div>Conserjer&iacute;a</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #bcc3b9;"></div>Sala de Reuniones</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #000000;"></div>Sal&oacute;n de Actos</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #ad83c7;"></div>Varios</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #990000;"></div>Negocio</li>';
+        html += '</ul></div>';
+    
+    html += '<div id="panel-iconos" class="tab-pane">';
+        html += '<h3>Elementos gr&aacute;ficos</h3>';
+        html += '<p>Podemos encontrar varios tipo de iconos en el mapa, algunos corresponden a edificios o campus y se muestran u ocultan en funcion del nivel de zoom o mediante configurción de las capas, permitiendo incluso hacer click para ver información adicional. El resto forman parte del GPS que nos indicará nuestra localización en el mapa respecto de nuestra visualización actual.</p>';
+        html += '<div class="row clearfix">';
+        html += '<div class="col-md-6 column">';
+        html += '<h4>Iconos</h4>';
+        html += '<ul class="list-unstyled list-graficos">';
+            html += '<li><div class="legend-marker" data-icon="facultad"></div>Facultad o Escuela</li>';
+            html += '<li><div class="legend-marker" data-icon="campus"></div>Campus</li>';
+            html += '<li><div class="legend-marker" data-icon="gps"></div>Localizaci&oacute;n de GPS</li>';
+            html += '<li><div class="legend-marker" data-icon="search"></div>Localizaci&oacute;n de b&uacute;squeda</li>';
+        html += '</ul></div>';
+    html += '<div class="col-md-6 column">';
+        html += '<h4>Marcadores</h4>';
+        html += '<ul class="list-unstyled list-icon">';
+            html += '<li><div class="legend-icon"><img src="images/social/360-inactivo.png"></div>Panor&aacute;mica 360 grados</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-link iconlegend" aria-hidden="true"></i></div>Compartir Enlace</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-twitter iconlegend" aria-hidden="true"></i></div>Compartir en Twitter</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-facebook iconlegend" aria-hidden="true"></i></div>Compartir en Facebook</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-bookmark iconlegend" aria-hidden="true"></i></div>Marcador de b&uacute;squeda</li>';
+        html += '</ul></div>';
+    html += '</div></div>';
+    html += '</div></div></div>';
+    
+    map.fire('modal',{content:html});
+}
+function showHelp(){
+    console.log("help");
+}

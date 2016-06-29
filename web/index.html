@@ -72,8 +72,9 @@ and open the template in the editor.
 
             //_server = "http://www.adretse.es/siguv/";
             _queryMode = false;
-            _serverDB = "http://147.156.85.92:8282/SiguvRest/";
-           // _serverDB = "http://localhost:8080/SiguvRest/";
+            //_serverDB = "http://147.156.85.92:8282/SiguvRest/";
+            //_serverDB = "http://147.156.85.92:8282/ServerRest/";
+            _serverDB = "http://localhost:8080/ServerRest/";
             L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
             var camera, scene, renderer;
 
@@ -161,30 +162,30 @@ and open the template in the editor.
       <button type="submit" class="btn btn-default">Enviar</button>
     </form>-->
     <div id="nivel" class="btn-group level" data-toggle="buttons">
-                    <label id="P0" class="btn btn-primary ON">
-                        <input type="radio" name="nivel" value="0" autocomplete="off"> PB
-                    </label>
-                    <label id="P1" class="btn btn-primary ON">
-                        <input type="radio" name="nivel" value="1" autocomplete="off"> P1
-                    </label>
-                    <label id="P2" class="btn btn-primary ON">
-                        <input type="radio" name="nivel" value="2" autocomplete="off"> P2
-                    </label>             
-                    <label id="P3" class="btn btn-primary ON">
-                        <input  type="radio" name="nivel" value="3" autocomplete="off"> P3
-                    </label>
-                </div>
- 
+        <label id="P0" class="btn btn-primary ON">
+            <input type="radio" name="nivel" value="0" autocomplete="off"> PB
+        </label>
+        <label id="P1" class="btn btn-primary ON">
+            <input type="radio" name="nivel" value="1" autocomplete="off"> P1
+        </label>
+        <label id="P2" class="btn btn-primary ON">
+            <input type="radio" name="nivel" value="2" autocomplete="off"> P2
+        </label>             
+        <label id="P3" class="btn btn-primary ON">
+            <input  type="radio" name="nivel" value="3" autocomplete="off"> P3
+        </label>
+    </div>
+    
     <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  <span class="fa fa-cog"></span></span></a>
-              <ul class="dropdown-menu">
-                  <li><a href="#" data-colapse="true" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
-                  <li><a href="#" data-colapse="true"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
-                  <li><a href="#" data-colapse="true"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
-              </ul>
-          </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="fa fa-cog"></span></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-colapse="true" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
+                <li><a href="#" data-colapse="true" onclick="showLegend();"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
+                <li><a href="#" data-colapse="true" onclick="showHelp();"><span class="fa fa-life-saver"></span><span class="navbar-header-text"></span>Ayuda</a></li> 
+            </ul>
+        </li>
     </ul>
   </div>
 </nav>

@@ -156,13 +156,20 @@ h5.text-fichaFac {
 .list-group-item {
     padding: 0px 15px;
 }
-img.img-icon-360 {
-    width: 50px;
+
+a .icon-360 {
+    width: 60px;
 }
+
 img.img-icon-location {
     width: 30px;
     bottom: 2px;
     position: relative;
+}
+img.img-icon-location:hover {
+
+    -webkit-filter: drop-shadow(1px 1px 1px black);
+    filter: drop-shadow(1px 1px 1px black);
 }
 
 .block{
@@ -196,6 +203,81 @@ div.panorama-name {
 div#visor-panorama {
     width: 100%;
     overflow: hidden;
+}
+
+.list-legend li.categoria div {
+    width: 40px;
+    height: 20px;
+    float: left;
+    margin-right: 1em;
+    line-height: 20px;
+    box-shadow: inset 0 0 2px #000;
+}
+.list-legend li {
+    line-height: 20px;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+.list-legend li:after {
+    padding-bottom: 1em;
+}
+
+div.legend-icon img {
+    width: 65px;
+    float: left;
+    border-radius: 5px;
+    padding: 5px;
+}
+.list-graficos li {
+    line-height: 40px;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+.list-graficos li:after {
+    padding-bottom: 1em;
+}
+.list-icon li {
+    line-height: 40px;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+.list-icon li:after {
+    padding-bottom: 1em;
+}
+.legend-icon {
+    float: left;
+    margin-right: 1em;
+    width: 65px;
+    text-align: center;
+}
+#panel-iconos li {
+    list-style: none;
+}
+.iconlegend {
+    font-size: 2.5em;
+    line-height: 40px;
+    color: #a9a9a9;
+}
+div.legend-marker {
+    width: 35px;
+    overflow: hidden;
+    float: left;
+    height: 45px;
+    position: relative;
+    margin-right: 1em;
+    background: url('images/markers-soft.png') no-repeat 0 0;
+}
+div[data-icon="facultad"]{
+    background-position: 0 0;
+}
+div[data-icon="campus"]{
+    background-position: -72px 0px;
+}
+div[data-icon="gps"]{
+    background-position: -468px 0px;
+}
+div[data-icon="search"]{
+    background-position: -108px 0px;
 }
 
 /**  Leaflet   **/
@@ -233,16 +315,10 @@ div#visor-panorama {
     padding-left: 0.3em;
 }
 
-.leaflet-bar button:last-of-type {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    width: 40px;
-    border-bottom: none;
-    padding: 4px;
-    height: 40px;
-}
+
+
 .leaflet-bar button, .leaflet-bar button:hover {
-    background-color: #fff;
+    
     border: none;
     border-bottom: 1px solid #ccc;
     /*width: 26px;
@@ -292,6 +368,17 @@ div#url {
     box-shadow: 0px 0px 10px 1px #a0a0a0;
 }
 
+@media (max-device-width: 480px) {
+    a[data-toggle="tab"] {
+        padding: 10px 6px !important;
+    }
+    .Typeahead-input {
+        width: 315px !important;
+    }
+    .leaflet-modal.show .modal-content {
+        margin-top: 0px !important;
+    }
+}
 
 /*
 .leaflet-left .leaflet-control {

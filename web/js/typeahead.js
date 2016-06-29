@@ -41,12 +41,8 @@ function typeahead () {
                 templates: {
                     
                     suggestion: Handlebars.compile('<div class="typeahead-resultados-profesores">{{nombre}} &#45; <span class="label label-primary">{{idespacio.idespacio}}</span></div>')
-                }
-                
-                
+                }    
             });
-
-    
     
     $('#busqueda-tab-asignatura .typeahead').typeahead({
         hint: true,
@@ -182,7 +178,6 @@ function typeahead () {
     });
     //update al seleccionar espacio
     $('#busqueda-tab-espacio .typeahead').on('typeahead:selected', function (evt, item) {
-        console.log(item.idespacio);
         $('#localizar-espacio').attr('onclick', '').attr('onclick','LocalizarEspacio("'+item.idespacio+'");');
         
     });
@@ -190,10 +185,6 @@ function typeahead () {
     //update al seleccionar profesor
     $('#busqueda-tab-todo .typeahead').on('typeahead:selected', function (evt, item) {
         if ( typeof(item.idprofesor) !== 'undefined'){
-        //var idEspacio = item.idespacio.idespacio;
-        /*console.log(evt);
-        console.log(item);*/
-        /*$('#busqueda-tab-todo .typeahead').typeahead('val', idEspacio );*/
         $('#localizar-all').attr('onclick', '').attr('onclick','LocalizarProfesor('+item.idprofesor+');');
     }
     else{
