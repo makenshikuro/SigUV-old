@@ -33,6 +33,7 @@ $(document).ready(function () {
         $(html).appendTo('#facultades');
 
     });
+
 });
 
 function LocalizarProfesor(id) {
@@ -45,6 +46,7 @@ function LocalizarProfesor(id) {
             $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
             $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
             $('#listaDocentes').empty();
+            $('#listaTodo').empty();
   
             openSidebarInfo(data, "profesores");
             _nivel = data.idespacio.piso;
@@ -53,8 +55,8 @@ function LocalizarProfesor(id) {
             MostrarArea(data.idespacio.boundingbox);
         }
         else{
-            var html = '<div>';
-                html += 'Lo sentimos, pero el recurso '+data.nombre+' no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
+            var html = '<div class="claseerror">';
+                html += 'Lo sentimos, pero el recurso "'+data.nombre+'" no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
                 html += '</div>';
             map.fire('modal', {content: html});
         }
@@ -71,6 +73,7 @@ function LocalizarEspacio(id) {
             $('#busqueda-tab-profesor .typeahead').typeahead('val', '');
             $('#busqueda-tab-asignatura .typeahead').typeahead('val', '');
             $('#listaDocentes').empty();
+            $('#listaTodo').empty();
 
             openSidebarInfo(data, "espacios");
             _nivel = data.piso;
@@ -79,8 +82,8 @@ function LocalizarEspacio(id) {
             MostrarArea(data.boundingbox);
         }
         else{
-            var html = '<div>';
-                html += 'Lo sentimos, pero el recurso '+data.nombre+' no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
+            var html = '<div class="claseerror">';
+                html += 'Lo sentimos, pero el recurso "'+data.nombre+'" no es accesible por lo que no se mostrar\u00e1 informaci\u00f3n al respecto. Disculpe las molestias';
                 html += '</div>';
             map.fire('modal', {content: html});      
         }
@@ -177,7 +180,7 @@ function GetQueryStringParams()
             
         }
     }
-    //console.log(query);
+    
     return query;
     
 }

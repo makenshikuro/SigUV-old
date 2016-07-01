@@ -367,6 +367,9 @@ div#url {
     padding: 10px;
     box-shadow: 0px 0px 10px 1px #a0a0a0;
 }
+.claseerror {
+    font-size: 1.2em;
+}
 
 @media (max-device-width: 480px) {
     a[data-toggle="tab"] {
@@ -379,6 +382,63 @@ div#url {
         margin-top: 0px !important;
     }
 }
+
+:-webkit-full-screen {
+  width: 100% !important;
+}
+:-moz-full-screen {
+  width: 100% !important;
+}
+:-ms-fullscreen {
+  width: 100% !important;
+}
+:fullscreen {
+  width: 100% !important;
+}
+:-ms-fullscreen::-ms-backdrop {
+	background-color: #00f; /* dark blue */
+}
+
+/* While in fullscreen, hide any children with class 'tohide' */
+:-webkit-full-screen .tohide, :-webkit-full-screen .close, :-webkit-full-screen .panorama-name {
+  display: none;
+}
+:-moz-full-screen .tohide, :-moz-full-screen .close, :-moz-full-screen .panorama-name {
+  display: none;
+}
+:-ms-fullscreen .tohide,:-ms-fullscreen .close,:-ms-fullscreen .panorama-name {
+  display: none;
+}
+:fullscreen .tohide, :fullscreen .close, :fullscreen .panorama-name {
+  display: none;
+}
+
+:-webkit-full-screen .pano {
+  margin-top: 0px !important;
+}
+:-moz-full-screen .pano {
+  margin-top: 0px !important;
+}
+:-ms-fullscreen .pano {
+  margin-top: 0px !important;
+}
+:fullscreen .pano {
+  margin-top: 0px !important;
+}
+
+:-webkit-full-screen .modal-content {
+  padding: 0px !important;
+}
+:-moz-full-screen .modal-content {
+  padding: 0px !important;
+}
+:-ms-fullscreen .modal-content {
+  padding: 0px !important;
+}
+:fullscreen .modal-content {
+  padding: 0px !important;
+}
+
 
 /*
 .leaflet-left .leaflet-control {
@@ -500,6 +560,7 @@ div#url {
     /*font-size: 3px;*/
     background-color: #fff;
     padding: 5px 30px;
+    font-size: 1.2em;
     /*border-left: 1px solid #000000;
     border-right: 1px solid #000000;*/
     
@@ -629,3 +690,19 @@ div#url {
     border-top: 2px solid #000000;
     padding-top: 10px;
 }
+
+/* Google Materials */
+
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }

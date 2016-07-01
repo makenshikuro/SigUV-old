@@ -20,7 +20,6 @@ function initPanorama(idPano) {
             map: texture
         });
 
-
         mesh = new THREE.Mesh(geometry, mat);
         object = mesh;
         scene.add(mesh);
@@ -89,11 +88,16 @@ function initPanorama(idPano) {
     }, false);
 
     //
+    onWindowResize();
+    //window.addEventListener('resize', onWindowResize, false);
+    var html = '<div class="panorama-control">';
+	html += '<button onclick="resizer();" class="button request"><i class="material-icons md-36">face</i>request fullscreen</button>';
+	html += '<button onclick="onWindowResize();" class="button cancel"><i class="material-icons md-36">face</i>cancel fullscreen</button>';
 
-    window.addEventListener('resize', onWindowResize, false);
-    var html = '<div class="panorama-control"></div>';
+html += '</div>';
      $('canvas').after(html);
      $('panorama-control').css("width",(window.innerWidth / 2));
+     fullScree();
     
      $( "canvas" ).mousedown(function(event) {
         onDocumentMouseDown(event);
@@ -115,18 +119,27 @@ function onWindowResize() {
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    //console.log($('#container').width());
-    /*var ratio = window.innerWidth /window.innerHeight;
-    var height = $('canvas').width() * ratio;*/
+
     $('.pano').css('max-width', (window.innerWidth / 2)+30 );
     $('panorama-control').css("width",(window.innerWidth / 2));
-    /*$('.pano').css('height', (window.innerHeight / 2) );
-    console.log($('canvas').width());
-    var width = $('canvas').width() +;
-    $('.pano').css('width', width);*/
+
     renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
 
 }
+function resizer() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    $('.pano').css('max-width', (window.innerWidth));
+    //$('panorama-control').css("width",(window.innerWidth));
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+}
+
+
+
 
 function onDocumentMouseDown(event) {
 
@@ -151,7 +164,6 @@ function onDocumentMouseMove(event) {
         lon = (onPointerDownPointerX - event.clientX) * 0.1 + onPointerDownLon;
         lat = (event.clientY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
         
-
     }
 }
 
@@ -217,4 +229,21 @@ function update() {
 
     renderer.render(scene, camera);
 
+}
+function fullScree(){
+                //document.querySelector(".available .value").innerHTML	= THREEx.FullScreen.available() ? "yes" : "no";
+		//document.querySelector(".activated .value").innerHTML	= THREEx.FullScreen.activated() ? "yes" : "no";
+		THREEx.FullScreen.bindKey({
+			dblclick	: true
+		});
+		
+		document.querySelector(".button.request").addEventListener('click', function(){
+			THREEx.FullScreen.request();
+			//document.querySelector(".activated .value").innerHTML	= THREEx.FullScreen.activated() ? "yes" : "no";
+		}, false);
+                
+		document.querySelector(".button.cancel").addEventListener('click', function(){
+			THREEx.FullScreen.cancel();
+			//document.querySelector(".activated .value").innerHTML	= THREEx.FullScreen.activated() ? "yes" : "no";
+		}, false);
 }

@@ -20,6 +20,7 @@ function DefaultMap(){
 function init() {
     /* Recogemos variable de query String */
     queryString = GetQueryStringParams();
+    
     _data = "";
     
     _nivel = "0";
@@ -130,6 +131,16 @@ function init() {
         onEachFeature: onEachFeature
     }).addTo(map);
     
+    /* Boton Leaflet
+     *  Permite abrir y cerrar el Sidebar de información de Profesores y Espacios dejando un marcador para no perder el resultado.
+     * 
+     */
+    L.easyButton( '<span title="Marcap&aacute;ginas" class="fa fa-bookmark bookmark"></span>', function(){
+  
+        sidebarInfo.toggle();
+               
+    }).addTo(map);
+    
     /*
      * Funcion onEachFeature
      * @param {type} feature: características del JSON
@@ -159,9 +170,6 @@ function init() {
             pnt = 0;
             arrey ='';
         }
-        
-     
-     
      
      //console.log(pnt);
      });
@@ -196,7 +204,6 @@ function init() {
         var recurso = string[0];
         var tipoRecurso = string[1];
 
-
         if (tipoRecurso === 'espacio') {
             var req = $.ajax({
                 type: 'GET',
@@ -204,7 +211,7 @@ function init() {
                 dataType: 'json',
                 success: function (response, textStatus, errorThrown) {
                     /* Respuesta correcta */
-                   
+               
                     if (textStatus === 'success') {
                         
                         _nivel = response.piso;
@@ -213,15 +220,27 @@ function init() {
                         _currentPosition = centro;
                         _zoom = 22;
                         _data = response;
+                        
+                        LocalizarEspacio(response.idespacio);
+                        //openSidebarInfo(_data, "espacios");
+                        if (!$('.easy-button-container').hasClass("visible")) {
+                        $('.easy-button-container').addClass("visible");
                     }
-                    openSidebarInfo(_data, "espacios");
+                    }
+                    if (textStatus === 'nocontent') {
+                        DefaultMap();
+                        openModalError(queryString);
+                    }
+                    
 
                 },
                 error: function (response, textStatu, error) {
+                    
                     /* Respuesta errónea */
                     
                     DefaultMap();
                     openModalError(queryString);
+                
                 },
                 async: false
             });
@@ -233,7 +252,7 @@ function init() {
                 dataType: 'json',
                 success: function (response, textStatus, errorThrown) {
                     /* Respuesta correcta */
-                    console.log(response);
+                    
                     if (textStatus === 'success') {
                         //console.log("done");
                         _nivel = response.idespacio.piso;
@@ -242,14 +261,24 @@ function init() {
                         _currentPosition = centro;
                         _zoom = 22;
                         _data = response;
+                        
+                        LocalizarProfesor(response.idprofesor);
+                        //openSidebarInfo(_data, "profesores");
+                        if (!$('.easy-button-container').hasClass("visible")) {
+                            $('.easy-button-container').addClass("visible");
+                        }
                     }
-                    openSidebarInfo(_data, "profesores");
+                    if (textStatus === 'nocontent') {
+                        DefaultMap();
+                        openModalError(queryString);
+                    }
 
                 },
                 error: function (response, textStatu, error) {
                     /* Respuesta errónea */
                     DefaultMap();
                     openModalError(queryString);
+
                 },
                 async: false
             });
@@ -260,14 +289,7 @@ function init() {
     else{
         DefaultMap();
     }
-    
-     L.easyButton( '<span title="Marcap&aacute;ginas" class="fa fa-bookmark bookmark"></span>', function(){
-  
-        sidebarInfo.toggle();
-               
-    }).addTo(map);
-    
-    
+
     SetOptionLayers();   
 }
 
@@ -287,7 +309,20 @@ function setPosition(lat, long, zoom, cierre){
  * Abre un modal informando del error en la queryString
  */
 function openModalError(string){
-    var html= '<div class="claseerror">El recurso: '+ string+' es err\u00F3neo.</div>';
+    var cadena = string.split(";");
+    var tipoRecurso = cadena[1];
+    var idRecurso = cadena[0];
+    var html= '';
+    
+    if (tipoRecurso === 'espacio'){
+        html += '<div class="claseerror">El espacio "'+ idRecurso+'" es no es v&aacute;lido. Por favor, revisa tu enlace</div>';
+    }
+    if (tipoRecurso === 'profesor'){  
+        html += '<div class="claseerror">El profesor "'+ idRecurso+'" es no es v&aacute;lido. Por favor, revisa tu enlace</div>';
+    }
+    else{
+        html += '<div class="claseerror">El recurso: '+ string+' es err\u00F3neo.</div>';
+    }
     map.fire('modal', {content: html});
 }
 
@@ -316,8 +351,7 @@ function openModalPano(nombreEspacio){
             }
             
             html += '</ul></div>';
-        }
-            
+        }          
     } 
         
     map.fire('modal', {content: html, MODAL_CONTENT_CLS: 'modal-content pano'});
@@ -326,8 +360,6 @@ function openModalPano(nombreEspacio){
      animate();
 }
 
-
-
  /* Funcion openSidebarLayers
   * Abre un módulo lateral con opciónes 
   */
@@ -335,7 +367,6 @@ function openSidebarLayers() {
     sidebarFacultades.hide();
     sidebarLayers.toggle();
 }
-
 
  /* Funcion openSidebarFacultades
   * Abre un módulo lateral con listado de Facultades 
@@ -429,7 +460,7 @@ function openSidebarInfo(data,tipo) {
             html += '<li class="icon-360" onclick="openModalPano();"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
             
         }
-        html += '<li class="icon-location" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/location.svg" alt="panoramica de 360 grados"></li>';
+        html += '<li class="icon-location" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/social/location-inactivo.svg" title="Mostrar posici&oacute;n en el mapa" alt="Mostrar posici&oacute;n en el mapa"></li>';
             
         html += '</ul>';
         html += '</div>';
@@ -452,13 +483,7 @@ function openSidebarInfo(data,tipo) {
         
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
     }
-    
-    
-    //console.log(data.idespacio.boundingbox);
-    //console.log(_server+data.chano);
-    //alert(data.nombre);
 
-    //html += "</tbody></table>";
     $(html).appendTo('#profesor-info');
     sidebarLayers.hide();
     sidebarInfo.toggle();
@@ -607,60 +632,63 @@ function clearMarkerSearch (){
       
 }
 
-function Buscador(){
-    
-     var  html = '              <div class="modal-header">';
-         
-         html += '                <h4 class="modal-title">Buscador</h4>';
-         html += '            </div>';
-          html += '           <div class="modal-body">';
-           html += '              <p> Buscador que nos permite localizar cualquier estancia de la ETSE, desde el punto de vista de las personas, las estancias, las denominaciones de espacios, o las aulas .</p>';
-           html += '              <ul class="nav nav-tabs">';
-                        html += '     <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>';
-                        html += '     <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>';
-                        html += '     <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>';
-                       html += '     <li><a data-toggle="tab" href="#busqueda-tab-espacio"><span class="fa fa-sitemap"></span><span class="modal-tab-text">Espacio</span></a></li>';
-                      html += ' </ul>';
+function Buscador() {
 
-                html += ' <div class="tab-content">';
-                   html += '     <div id="busqueda-tab-todo" class="tab-pane fade in active">';
-                  html += '         <div class="clearM1"></div>';
-                    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
-                     html += '         <button id="localizar-all" type="button" class="btn btn-default" >Localizar</button>';
-                   html += '     </div>';
+    var html = '<div class="modal-header">';
 
-                    html += '     <div id="busqueda-tab-profesor" class="tab-pane fade">';
-                     html += '         <div class="clearM1"></div>';
-                     html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
-                     html += '         <input type="hidden" id="todo">';
-                    html += '         <div id = "resultados-profesor"></div>';
-                    html += '         <button id="localizar-profesor" type="button" class="btn btn-default"  >Localizar</button>';
+    html += '   <h4 class="modal-title">Buscador</h4>';
+    html += '            </div>';
+    html += '           <div class="modal-body">';
+    html += '              <p> Buscador que nos permite localizar cualquier estancia de la ETSE, desde el punto de vista de las personas, las estancias, las denominaciones de espacios, o las aulas .</p>';
+    html += '              <ul class="nav nav-tabs">';
+    html += '     <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>';
+    html += '     <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>';
+    html += '     <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>';
+    html += '     <li><a data-toggle="tab" href="#busqueda-tab-espacio"><span class="fa fa-sitemap"></span><span class="modal-tab-text">Espacio</span></a></li>';
+    html += ' </ul>';
 
-                  html += '     </div>';
-                   html += '     <div id="busqueda-tab-asignatura" class="tab-pane fade">';
-                     html += '         <div class="clearM1"></div>';
-                    html += '<p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
-                                
-                    html += '         <div id="listaDocentes">';
+    html += ' <div class="tab-content">';
+    html += '     <div id="busqueda-tab-todo" class="tab-pane fade in active">';
+    html += '         <div class="clearM1"></div>';
+    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+    html += '         <div id="listaTodo">';
 
-                      html += '         </div>';
-                     html += '     </div>';
-                    html += '     <div id="busqueda-tab-espacio" class="tab-pane fade">';
-                     html += '         <div class="clearM1"></div>';
-                    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
-                    html += '         <button id="localizar-espacio" type="button" class="btn btn-default">Localizar</button>';
-                                
-                     html += '     </div>';
-                     html += '  </div>';
-                   html += '</div>';
-                  html += '<div class="modal-footer">';
-                  html += '      <button type="button" class="btn btn-default" onclick="ModalClose();">Close</button>';
-             html += '     </div>';
-       
- 
+    html += '         </div>';
+    html += '         <button id="localizar-all" type="button" class="btn btn-default" >Localizar</button>';
+    html += '     </div>';
+
+    html += '     <div id="busqueda-tab-profesor" class="tab-pane fade">';
+    html += '         <div class="clearM1"></div>';
+    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+    html += '         <input type="hidden" id="todo">';
+    html += '         <div id = "resultados-profesor"></div>';
+    html += '         <button id="localizar-profesor" type="button" class="btn btn-default"  >Localizar</button>';
+
+    html += '     </div>';
+    html += '     <div id="busqueda-tab-asignatura" class="tab-pane fade">';
+    html += '         <div class="clearM1"></div>';
+    html += '<p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+
+    html += '         <div id="listaDocentes">';
+
+    html += '         </div>';
+    html += '     </div>';
+    html += '     <div id="busqueda-tab-espacio" class="tab-pane fade">';
+    html += '         <div class="clearM1"></div>';
+    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+    html += '         <button id="localizar-espacio" type="button" class="btn btn-default">Localizar</button>';
+
+    html += '     </div>';
+    html += '  </div>';
+    html += '</div>';
+    html += '<div class="modal-footer">';
+    html += '      <button type="button" class="btn btn-default" onclick="ModalClose();">Close</button>';
+    html += '     </div>';
+
+
     map.fire('modal', {content: html, MODAL_CONTENT_CLS: 'modal-content search'});
     typeahead();
-    $('.search').css('margin-top', 100 );
+    $('.search').css('margin-top', 100);
 }
 
 
@@ -871,6 +899,50 @@ function showLegend(){
     
     map.fire('modal',{content:html});
 }
-function showHelp(){
-    console.log("help");
+function showHelp(){ //cambiar contenido
+    var html = '<div class="tabbable" id="leyenda-tab"><ul class="nav nav-tabs"><li class="active"><a href="#panel-tema" data-toggle="tab">Tem&aacute;tico</a></li><li class=""><a href="#panel-iconos" data-toggle="tab">Iconos</a></li></ul></div>';
+    html += '<div id="leyenda"><div class="tab-content">';
+        html += '<div id="panel-tema" class="tab-pane active">';
+        html += '<h3>Tem&aacute;tico</h3>';
+        html += '<p>Composici&oacute;n optimizada para los que deseen diferenciar los distintos espacios que podemos encontrar en una planta de un edificio. Es al mismo tiempo muy &uacute;til s&iacute; deseamos hacer impresiones, en la que cada uso tiene un color diferenciado</p>';
+        html += '<ul class="list-unstyled list-legend">';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #92cfea;"></div>Aula</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #c4fbdb;"></div>Laboratorio</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #c09f59;"></div>Despacho</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #5d8ddb;"></div>Aseo</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f3d174;"></div>Cafeter&iacute;a</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #e299b8;"></div>Biblioteca</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f5d940;"></div>Secretar&iacute;a</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f38f2a;"></div>Conserjer&iacute;a</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #bcc3b9;"></div>Sala de Reuniones</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #000000;"></div>Sal&oacute;n de Actos</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #ad83c7;"></div>Varios</li>';
+            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #990000;"></div>Negocio</li>';
+        html += '</ul></div>';
+    
+    html += '<div id="panel-iconos" class="tab-pane">';
+        html += '<h3>Elementos gr&aacute;ficos</h3>';
+        html += '<p>Podemos encontrar varios tipo de iconos en el mapa, algunos corresponden a edificios o campus y se muestran u ocultan en funcion del nivel de zoom o mediante configurción de las capas, permitiendo incluso hacer click para ver información adicional. El resto forman parte del GPS que nos indicará nuestra localización en el mapa respecto de nuestra visualización actual.</p>';
+        html += '<div class="row clearfix">';
+        html += '<div class="col-md-6 column">';
+        html += '<h4>Iconos</h4>';
+        html += '<ul class="list-unstyled list-graficos">';
+            html += '<li><div class="legend-marker" data-icon="facultad"></div>Facultad o Escuela</li>';
+            html += '<li><div class="legend-marker" data-icon="campus"></div>Campus</li>';
+            html += '<li><div class="legend-marker" data-icon="gps"></div>Localizaci&oacute;n de GPS</li>';
+            html += '<li><div class="legend-marker" data-icon="search"></div>Localizaci&oacute;n de b&uacute;squeda</li>';
+        html += '</ul></div>';
+    html += '<div class="col-md-6 column">';
+        html += '<h4>Marcadores</h4>';
+        html += '<ul class="list-unstyled list-icon">';
+            html += '<li><div class="legend-icon"><img src="images/social/360-inactivo.png"></div>Panor&aacute;mica 360 grados</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-link iconlegend" aria-hidden="true"></i></div>Compartir Enlace</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-twitter iconlegend" aria-hidden="true"></i></div>Compartir en Twitter</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-facebook iconlegend" aria-hidden="true"></i></div>Compartir en Facebook</li>';
+            html += '<li><div class="legend-icon"><i class="fa fa-bookmark iconlegend" aria-hidden="true"></i></div>Marcador de b&uacute;squeda</li>';
+        html += '</ul></div>';
+    html += '</div></div>';
+    html += '</div></div></div>';
+    
+    map.fire('modal',{content:html});
 }
