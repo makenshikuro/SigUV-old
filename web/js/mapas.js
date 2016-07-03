@@ -200,6 +200,8 @@ function init() {
     
     /* Consulta de Query */
     if (typeof (queryString) !== 'undefined') {
+        
+        if (queryString !== 'error'){
         var string = queryString.split(';');
         var recurso = string[0];
         var tipoRecurso = string[1];
@@ -289,6 +291,13 @@ function init() {
     else{
         DefaultMap();
     }
+    }
+    else{
+
+       var html = '<div class="claseerror">El recurso que est&aacute; buscando es err\u00F3neo. Verifique su b&uacute;squeda e int&eacute;ntelo de nuevo.</div>';
+    
+        map.fire('modal', {content: html});
+    }
 
     SetOptionLayers();   
 }
@@ -309,6 +318,8 @@ function setPosition(lat, long, zoom, cierre){
  * Abre un modal informando del error en la queryString
  */
 function openModalError(string){
+    
+    
     var cadena = string.split(";");
     var tipoRecurso = cadena[1];
     var idRecurso = cadena[0];
@@ -337,7 +348,7 @@ function openModalPano(nombreEspacio){
     if (_listaPanos.length !== 0) {
         var j = 0;
         if (_listaPanos.length !== 1) {
-            html += '<div class="panoramas"><ul class="pagination">';
+            html += '<div class="panoramas"><ul class="pagination panorama tohide">';
             
             while (j <= _listaPanos.length - 1) {
                 console.log(_listaPanos[j].panorama);
@@ -454,12 +465,9 @@ function openSidebarInfo(data,tipo) {
         
         var html = '<div class="list-group grupo-ficha">';
         html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';
-        if (panos.length !== 0) {
-            _listaPanos = panos;
-            //html += '';
-            html += '<li class="icon-360" onclick="openModalPano();"><img class="img-icon-360" src="images/360-icon.png" alt="panoramica de 360 grados"></li>';
-            
-        }
+        
+        
+        
         html += '<li class="icon-location" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/social/location-inactivo.svg" title="Mostrar posici&oacute;n en el mapa" alt="Mostrar posici&oacute;n en el mapa"></li>';
             
         html += '</ul>';
@@ -469,6 +477,12 @@ function openSidebarInfo(data,tipo) {
         html += '<a class="redes" onclick="ShareTwitter(\''+data.idespacio+';espacio\');" title="Twitter" href="#"><img class="tw" src="images/social/tw-inactivo.svg" alt="Compartir Twitter"></a>';
         html += '<a class="redes" onclick="ShareFacebook(\''+data.idespacio+';espacio\');" title="Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
         
+        if (panos.length !== 0) {
+            _listaPanos = panos;
+            //html += '';
+            html += '<a class="redes" title="Ver Panoramas 360&deg;" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="icon-360" src="images/social/360-inactivo.png" alt="Panor&aacute;mica de 360 grados"></a>';
+      
+        }
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.bloque+'</h5></div>';
@@ -480,6 +494,7 @@ function openSidebarInfo(data,tipo) {
         html += '<script>$(document).ready(function(){ $( "img.fb" ).hover( function() {$( this ).attr("src","images/social/fb-activo.svg" ); }, function() { $( this ).attr("src","images/social/fb-inactivo.svg");});});  </script>';
         html += '<script>$(document).ready(function(){ $( "img.tw" ).hover( function() {$( this ).attr("src","images/social/tw-activo.svg" );  }, function() { $( this ).attr("src","images/social/tw-inactivo.svg");});});  </script>';
         html += '<script>$(document).ready(function(){ $( "img.link" ).hover( function() {$( this ).attr("src","images/social/link-activo.svg" ); }, function() { $( this ).attr("src","images/social/link-inactivo.svg");});});  </script>';
+        html += '<script>$(document).ready(function(){ $( "img.icon-360" ).hover( function() {$( this ).attr("src","images/social/360-activo.png" ); }, function() { $( this ).attr("src","images/social/360-inactivo.png");});});  </script>';
         
         addMarker(data.idcoordenada.latitud, data.idcoordenada.longitud);
     }

@@ -1,4 +1,4 @@
-/* global THREE */
+/* global THREE, THREEx */
 var object;
 function initPanorama(idPano) {
 
@@ -88,16 +88,29 @@ function initPanorama(idPano) {
     }, false);
 
     //
-    onWindowResize();
+    WindowResize();
     //window.addEventListener('resize', onWindowResize, false);
     var html = '<div class="panorama-control">';
-	html += '<button onclick="resizer();" class="button request"><i class="material-icons md-36">face</i>request fullscreen</button>';
-	html += '<button onclick="onWindowResize();" class="button cancel"><i class="material-icons md-36">face</i>cancel fullscreen</button>';
-
-html += '</div>';
+        html +='<div title="Activar Pantalla Completa" onclick="fullscreen();" class="control-pano button request"><i class="material-icons md-36">fullscreen</i></div>';
+        html +='<div title="Desactivar Pantalla Completa" onclick="cancelFullScreen;" class="control-pano button cancel"><i class="material-icons md-36">fullscreen_exit</i></div>';
+        html += '</div>';
+        
      $('canvas').after(html);
      $('panorama-control').css("width",(window.innerWidth / 2));
-     fullScree();
+     
+    THREEx.FullScreen.bindKey({
+        dblclick: true
+    });
+
+    document.querySelector(".button.request").addEventListener('click', function () {
+        THREEx.FullScreen.request();
+
+    }, false);
+
+    document.querySelector(".button.cancel").addEventListener('click', function () {
+        THREEx.FullScreen.cancel();
+
+    }, false);
     
      $( "canvas" ).mousedown(function(event) {
         onDocumentMouseDown(event);
@@ -115,7 +128,11 @@ function Change(idPano) {
 
 }
 
-function onWindowResize() {
+function cancelFullScreen(){
+    WindowResize();
+}
+
+function WindowResize() {
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -126,7 +143,7 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
 
 }
-function resizer() {
+function fullscreen() {
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -231,19 +248,6 @@ function update() {
 
 }
 function fullScree(){
-                //document.querySelector(".available .value").innerHTML	= THREEx.FullScreen.available() ? "yes" : "no";
-		//document.querySelector(".activated .value").innerHTML	= THREEx.FullScreen.activated() ? "yes" : "no";
-		THREEx.FullScreen.bindKey({
-			dblclick	: true
-		});
-		
-		document.querySelector(".button.request").addEventListener('click', function(){
-			THREEx.FullScreen.request();
-			//document.querySelector(".activated .value").innerHTML	= THREEx.FullScreen.activated() ? "yes" : "no";
-		}, false);
                 
-		document.querySelector(".button.cancel").addEventListener('click', function(){
-			THREEx.FullScreen.cancel();
-			//document.querySelector(".activated .value").innerHTML	= THREEx.FullScreen.activated() ? "yes" : "no";
-		}, false);
+		
 }

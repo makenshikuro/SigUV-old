@@ -64,10 +64,13 @@ THREEx.FullScreen.cancel	= function()
 {
 	if( this._hasWebkitFullScreen ){
 		document.webkitCancelFullScreen();
+                WindowResize();
 	}else if( this._hasMozFullScreen ){
 		document.mozCancelFullScreen();
+                WindowResize();
 	}else{
 		console.assert(false);
+                WindowResize();
 	}
 }
 
@@ -100,6 +103,7 @@ THREEx.FullScreen.bindKey	= function(opts){
 		if( event.which !== charCode )	return;
 		// toggle fullscreen
 		toggle();
+                
 	}, this);
 
 	// listen to keypress

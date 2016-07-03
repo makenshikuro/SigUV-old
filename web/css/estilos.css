@@ -182,8 +182,13 @@ img.img-icon-location:hover {
 }
 .panoramas {
     text-align: center;
-    margin-top: -15px;
-    margin-bottom: -30px;
+    /*margin-top: -15px;
+    margin-bottom: -30px;*/
+}
+
+ul.pagination.panorama {
+    margin: 0;
+    padding: 0;
 }
 
 div.panorama-name {
@@ -193,12 +198,13 @@ div.panorama-name {
 
 .panorama-control {
     width: 100%;
-    height: 50px;
-    /* opacity: 0.5; */
+    height: 36px;
     background: black;
     position: relative;
+    overflow: hidden;
     bottom: 0.4em;
 }
+
 
 div#visor-panorama {
     width: 100%;
@@ -315,6 +321,9 @@ div[data-icon="search"]{
     padding-left: 0.3em;
 }
 
+.leaflet-modal .modal {
+    overflow: hidden !important;
+}
 
 
 .leaflet-bar button, .leaflet-bar button:hover {
@@ -370,6 +379,12 @@ div#url {
 .claseerror {
     font-size: 1.2em;
 }
+.control-pano {
+    float: right;
+}
+.control-pano:hover {
+    color:#a0a0a0;
+}
 
 @media (max-device-width: 480px) {
     a[data-toggle="tab"] {
@@ -414,29 +429,70 @@ div#url {
 }
 
 :-webkit-full-screen .pano {
-  margin-top: 0px !important;
+  padding: 0px !important;
 }
 :-moz-full-screen .pano {
-  margin-top: 0px !important;
+  padding: 0px !important;
 }
 :-ms-fullscreen .pano {
-  margin-top: 0px !important;
+  padding: 0px !important;
 }
 :fullscreen .pano {
-  margin-top: 0px !important;
+  padding: 0px !important;
 }
 
 :-webkit-full-screen .modal-content {
   padding: 0px !important;
+  margin: 0px !important;
+  background: #000 !important;
 }
 :-moz-full-screen .modal-content {
   padding: 0px !important;
+  margin: 0px !important;
+  background: #000 !important;
 }
 :-ms-fullscreen .modal-content {
   padding: 0px !important;
+  margin: 0px !important;
+  background: #000 !important;
 }
 :fullscreen .modal-content {
   padding: 0px !important;
+  margin: 0px !important;
+  background: #000 !important;
+}
+
+:-webkit-full-screen .cancel {
+  display: block;
+}
+:-moz-full-screen .cancel {
+  display: block;
+}
+:-ms-fullscreen .cancel {
+  display: block;
+}
+:fullscreen .cancel {
+  display: block;
+}
+
+:-webkit-full-screen .request {
+  display: none;
+}
+:-moz-full-screen .request {
+  display: none;
+}
+:-ms-fullscreen .request {
+  display: none;
+}
+:fullscreen .request {
+  display: none;
+}
+
+.request{
+    display: block;
+}
+.cancel{
+    display: none;
 }
 
 

@@ -160,24 +160,29 @@ function GetQueryStringParams()
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i++) 
     {
-        var sParameterName = sURLVariables[i].split('=');
-        if ((sParameterName[0] === "idespacio")&&(flag !== true)) 
-        {
-            if ( typeof(sParameterName[1]) !== 'undefined'){
-                 query = sParameterName[1]+';'+"espacio";
-                 flag = true;
-                 //console.log("espacioID");
+        var hayquery = sURLVariables[i].split('=');
+        if (hayquery !== -1){
+            var sParameterName = sURLVariables[i].split('=');
+            if ((sParameterName[0] === "idespacio") && (flag !== true))
+            {
+                if (typeof (sParameterName[1]) !== 'undefined') {
+                    query = sParameterName[1] + ';' + "espacio";
+                    flag = true;
+                    //console.log("espacioID");
+                }
+
+            } else if ((sParameterName[0] === "idprofesor") && (flag !== true))
+            {
+                if (typeof (sParameterName[1]) !== 'undefined') {
+                    query = sParameterName[1] + ';' + "profesor";
+                    flag = true;
+                    //console.log("profesorID");
+                }
+
             }
-            
         }
-        else if ((sParameterName[0] === "idprofesor")&&(flag !== true)) 
-        {
-            if ( typeof(sParameterName[1]) !== 'undefined'){
-                 query = sParameterName[1]+';'+"profesor";
-                 flag = true;
-                 //console.log("profesorID");
-            }
-            
+        else{
+            query = 'error';
         }
     }
     
@@ -212,7 +217,7 @@ function MostrarURL(recurso){
 function ShareTwitter(idrecurso){
     var opciones = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
     var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
-    var html = 'http://twitter.com/share?url='+url+'&text=Texto';
+    var html = 'http://twitter.com/share?url='+url;
     window.open(html, '_blank',opciones);
     
     //console.log("twtt");
@@ -220,7 +225,7 @@ function ShareTwitter(idrecurso){
 function ShareFacebook(idrecurso){
     var opciones = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
     var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
-    var html = 'http://www.facebook.com/sharer.php?u='+url+'&t=Texto';
+    var html = 'http://www.facebook.com/sharer.php?u='+url;
     window.open(html, '_blank',opciones);
     //console.log("Face");
 }
