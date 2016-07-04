@@ -130,7 +130,7 @@ function init() {
         },
         onEachFeature: onEachFeature
     }).addTo(map);
-    
+    //.bindPopup('<img class=popupStyle src=//www.uv.es/uwm/imatges/GMaps/logo_uv.png width=88% alt=LogoUV><div class=popupTitol>'+\""+titol+"\"+'</div><div class=popupStyle>"+webPopUp+telPopUp.replace("'","&apos;")+emailPopUp+" </div><div>"+descripcio.trim()+"</div>'+'<div id=pano class=googleView> </div>'+'<button class=botoGoogle onclick=ActivarGoogleViewd"+i+"("+contMarkers+");>"+verStreeView+"</button>')
     /* Boton Leaflet
      *  Permite abrir y cerrar el Sidebar de información de Profesores y Espacios dejando un marcador para no perder el resultado.
      * 
@@ -147,11 +147,19 @@ function init() {
      */
 
     function onEachFeature(feature, layer) {
-        var popupContent = "<p>" + feature.properties.name + "</p>";
-
-        if (feature.properties && feature.properties.popupContent) {
-            popupContent += feature.properties.popupContent;
+        var popupContent = '<img class="popupStyle" src="//www.uv.es/uwm/imatges/GMaps/logo_uv.png" width="88%" alt="LogoUV">';
+            popupContent += '<div class=popupTitol>'+feature.properties.name+'</div>';
+            popupContent += '<div class=popupStyle>';
+            if (feature.properties && feature.properties.web) {
+            popupContent += '<p><i class="fa fa-globe" aria-hidden="true"></i><a href="http://www.uv.es/'+feature.properties.web+'">http://www.uv.es/'+feature.properties.web+'</a></p>';
         }
+        if (feature.properties && feature.properties.telefono) {
+            popupContent += '<p><i class="fa fa-phone" aria-hidden="true"></i>'+feature.properties.telefono+'</p>';
+        }
+        if (feature.properties && feature.properties.correo) {
+            popupContent += '<p><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:'+feature.properties.correo+'">'+feature.properties.correo+'</a></p>';
+        }
+            popupContent += '</div>';
 
         layer.bindPopup(popupContent);
     }
@@ -249,7 +257,7 @@ function init() {
                         //console.log("done");
                         _nivelActual = response.idespacio.piso;
                         //console.log(response.idcoordenada.latitud);
-                        centro = [response.idespacio.idcoordenada.latitud, response.idespacio.idcoordenada.longitud];
+                        centro = [respones.idespacio.idcoordenada.latitud, response.idespacio.idcoordenada.longitud];
                         _currentPosition = centro;
                         _zoom = 22;
                         _data = response;

@@ -8,7 +8,8 @@ and open the template in the editor.
     <head>        
         <title>SigUV</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <meta charset="UTF-8" lang="es">
+        
         <!-- Favicons -->
         <link rel="apple-touch-icon" sizes="57x57" href="css/favicon/apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="css/favicon/apple-icon-60x60.png">
@@ -161,29 +162,29 @@ and open the template in the editor.
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
         <li><a onclick="closeAllSidebars();Buscador();" data-colapse="true" data-toggle="modal" data-target="#myModal" href="#"><span class="fa fa-search"></span><span class="navbar-header-text">Buscador</span></a></li>
-        <li><a onclick="openSidebarLayers();" data-colapse="true" href="#"><span class="fa fa-list-ul"></span></span><span class="navbar-header-text">Capas</span></a></li>
+        <li><a onclick="openSidebarLayers();" data-colapse="true" href="#"><span class="fa fa-list-ul"></span><span class="navbar-header-text">Capas</span></a></li>
         <li><a onclick="openSidebarFacultades();" data-colapse="true"  href="#"><span class="fa fa-university"></span><span class="navbar-header-text">Facultades</span></a></li>
     </ul>
      
     <div id="nivel" class="btn-group level" data-toggle="buttons">
         <label id="P0" class="btn btn-primary ON">
-            <input type="radio" name="nivel" value="0" autocomplete="off"> PB
+            <input type="radio" name="nivel" value="0"> PB
         </label>
         <label id="P1" class="btn btn-primary ON">
-            <input type="radio" name="nivel" value="1" autocomplete="off"> P1
+            <input type="radio" name="nivel" value="1"> P1
         </label>
         <label id="P2" class="btn btn-primary ON">
-            <input type="radio" name="nivel" value="2" autocomplete="off"> P2
+            <input type="radio" name="nivel" value="2"> P2
         </label>             
         <label id="P3" class="btn btn-primary ON">
-            <input  type="radio" name="nivel" value="3" autocomplete="off"> P3
+            <input  type="radio" name="nivel" value="3"> P3
         </label>
     </div>
     
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <span class="fa fa-cog"></span></span></a>
+                <span class="fa fa-cog"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="#" data-colapse="true" onclick="getGPS();"><span class="fa fa-location-arrow"></span><span class="navbar-header-text"></span>GPS<span class="label label-danger labelGPS">OFF</span></a></li>
                 <li><a href="#" data-colapse="true" onclick="showLegend();"><span class="fa fa-info-circle"></span><span class="navbar-header-text"></span>Leyenda</a></li>
@@ -209,11 +210,11 @@ and open the template in the editor.
                 <div class="sidebar-toggle-text" >Fondo</div>
                 <div class="btn-group" data-toggle="buttons"> 
                     <label class="btn btn-primary ON large" id="fondoON">
-                        <input type="radio" name="fondo" value="plano" > <div><div><img src="images/mapbox.png"></div><div>Plano</div></div>
+                        <input type="radio" name="fondo" value="plano" > <div><div><img alt="Imagen Mapbox" src="images/mapbox.png"></div><div>Plano</div></div>
                     </label>
 
                     <label class="btn btn-primary ON large" id="fondoOFF">
-                        <input type="radio" name="fondo" value="sat"  > <div><div><img src="images/google.png"></div><div> Sat&eacute;lite</div></div>
+                        <input type="radio" name="fondo" value="sat"  > <div><div><img alt="Imagen Google Maps" src="images/google.png"></div><div> Sat&eacute;lite</div></div>
                     </label>
                 </div>
 
@@ -223,12 +224,12 @@ and open the template in the editor.
                 <div class="sidebar-toggle-text" >Tema</div>
                 <div class="btn-group" data-toggle="buttons"> 
                     <label class="btn btn-primary ON large" id="temaON">
-                        <input type="radio" name="tema" value="c" > <div><div><img src="images/cd.png"></div><div> Categor&iacute;a</div></div>
+                        <input type="radio" name="tema" value="c" > <div><div><img alt="Imagen selecci&oacute;n modo por categor&iacute;as y denominaci&oacute;" src="images/cd.png"></div><div> Categor&iacute;a</div></div>
 
                     </label>
 
                     <label class="btn btn-primary ON large" id="temaOFF">
-                        <input type="radio" name="tema" value="b" checked > <div><div><img src="images/bd.png"></div><div> B&aacute;sico</div></div>
+                        <input type="radio" name="tema" value="b" checked > <div><div><img alt="Imagen selecci&oacute;n modo b&aacute;sico y denominaci&oacute;" src="images/cd.png" src="images/bd.png"></div><div> B&aacute;sico</div></div>
 
                     </label>
                 </div>
@@ -239,11 +240,11 @@ and open the template in the editor.
                 <div class="sidebar-toggle-text" >Top&oacute;nimos</div>
                 <div class="btn-group" data-toggle="buttons"> 
                     <label class="btn btn-primary ON large" id="topoON">
-                        <input type="radio" name="denominacion" value="d" > <div><div><img src="images/bd.png"></div><div> Descripci&oacute;n</div></div>
+                        <input type="radio" name="denominacion" value="d" > <div><div><img alt="Imagen selecci&oacute;n modo &aacute;sico y por c&oacute;digo" src="images/cd.png" src="images/bc.png"></div><div> Descripci&oacute;n</div></div>
                     </label>
                     
                     <label class="btn btn-primary ON large" id="topoOFF">
-                        <input type="radio" name="denominacion" value="c"> <div><div><img src="images/bc.png"></div><div> C&oacute;digo</div></div> 
+                        <input type="radio" name="denominacion" value="c"> <div><div><img alt="Imagen selecci&oacute;n modo por categor&iacute;as y por c&oacute;digo" src="images/cd.png" src="images/bc.png"></div><div> C&oacute;digo</div></div> 
                     </label>
                 </div>
 

@@ -10,6 +10,9 @@ Facultades = [{
         "name": "Escola T&egrave;cnica Superior d'Enginyeria",
         "name_ES": "Escuela T&eacute;cnica Superior de Ingenier&iacute;a",
         "name_EN": "School of Engineering",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -22,6 +25,9 @@ Facultades = [{
         "name": "Facultat de Farm&agrave;cia",
         "name_ES": "Facultad de Farmacia",
         "name_EN": "Faculty of Pharmacy",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -34,6 +40,9 @@ Facultades = [{
         "name": "Facultat de Matem&agrave;tiques",
         "name_ES": "Facultad de Matemáticas",
         "name_EN": "Faculty of Mathematics",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -46,6 +55,9 @@ Facultades = [{
         "name": "Facultat de Ciencies Biol&ograve;giques",
         "name_ES": "Facultad de Ciencias Biológicas",
         "name_EN": "Faculty of Biological Sciencies",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -58,6 +70,9 @@ Facultades = [{
         "name": "Facultat de F&iacute;sica",
         "name_ES": "Facultad de Física",
         "name_EN": "Faculty of Physics",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -70,6 +85,9 @@ Facultades = [{
         "name": "Facultat de Qu&iacute;mica",
         "name_ES": "Facultad de Química",
         "name_EN": "Faculty of Chemistry",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -83,6 +101,9 @@ Campus = [{
         "name": "Campus Blasco Iba&ntilde;ez",
         "name_ES": "Campus Blasco Ibañez",
         "name_EN": "Campus Blasco Ibañez",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -95,6 +116,9 @@ Campus = [{
         "name": "Campus Burjassot-Paterna",
         "name_ES": "Campus Burjassot-Paterna",
         "name_EN": "Campus Burjassot-Paterna",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -107,6 +131,9 @@ Campus = [{
         "name": "Campus Tarongers",
         "name_ES": "Campus Tarongers",
         "name_EN": "Campus Tarongers",
+        "web": "etse", 
+        "telefono": "666",
+        "correo": "asdfasd@asdfasd.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
