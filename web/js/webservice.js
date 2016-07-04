@@ -49,10 +49,12 @@ function LocalizarProfesor(id) {
             $('#listaTodo').empty();
   
             openSidebarInfo(data, "profesores");
-            _nivel = data.idespacio.piso;
+            _nivelActual = _nivelBusqueda = data.idespacio.piso;
             SetOptionLayers();
-            ChangeMapLayer();
+            
             MostrarArea(data.idespacio.boundingbox);
+            ChangeMapLayer();
+            //console.log(_nivelActual+' '+_nivelBusqueda);
         }
         else{
             var html = '<div class="claseerror">';
@@ -76,10 +78,12 @@ function LocalizarEspacio(id) {
             $('#listaTodo').empty();
 
             openSidebarInfo(data, "espacios");
-            _nivel = data.piso;
+            _nivelActual = _nivelBusqueda = data.piso;
             SetOptionLayers();
-            ChangeMapLayer();
+            
             MostrarArea(data.boundingbox);
+            ChangeMapLayer();
+            //console.log(_nivelActual+' '+_nivelBusqueda);
         }
         else{
             var html = '<div class="claseerror">';
@@ -151,17 +155,20 @@ function getPanoramas(idEspacio){
     
 }
 
-function GetQueryStringParams()
-{
-    var query;
+function GetQueryStringParams(){
+    var query = 'error';
     var flag = false;
     
     var sPageURL = window.location.search.substring(1);
+
+    if (!sPageURL) {
+        query = 'default';
+    }
     var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) 
+    for (var i = 0; i < sURLVariables.length; i++)
     {
         var hayquery = sURLVariables[i].split('=');
-        if (hayquery !== -1){
+        if (hayquery !== -1) {
             var sParameterName = sURLVariables[i].split('=');
             if ((sParameterName[0] === "idespacio") && (flag !== true))
             {
@@ -178,14 +185,9 @@ function GetQueryStringParams()
                     flag = true;
                     //console.log("profesorID");
                 }
-
             }
         }
-        else{
-            query = 'error';
-        }
     }
-    
     return query;
     
 }

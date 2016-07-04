@@ -285,6 +285,9 @@ div[data-icon="gps"]{
 div[data-icon="search"]{
     background-position: -108px 0px;
 }
+.lvlsearch{
+    background: darkseagreen;
+}
 
 /**  Leaflet   **/
 

@@ -7,10 +7,10 @@
 
 
 
-/* global _serverDB, isMobile */
+/* global _serverDB, isMobile, _nivelBusqueda, _listaPanos, L, _server */
 
 function DefaultMap(){
-    _nivel = "0";
+    _nivelActual = "0";
     centro = [39.512859, -0.4244782];
     _currentPosition = centro;
     _zoom = 18;
@@ -23,7 +23,7 @@ function init() {
     
     _data = "";
     
-    _nivel = "0";
+    _nivelActual = "0";
     centro = [39.512859, -0.4244782];
     _currentPosition = centro;
     _zoom = 18;
@@ -64,7 +64,7 @@ function init() {
 
     googleLayer = new L.Google('SATELLITE');
     
-    ETSEmap = L.tileLayer(_server+ 'mapas/'+ _tema + _toponimo +_nivel+'/{z}/{x}/{y}.png', {
+    ETSEmap = L.tileLayer(_server+ 'mapas/'+ _tema + _toponimo +_nivelActual+'/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         bounds: _mapBounds,
@@ -136,9 +136,7 @@ function init() {
      * 
      */
     L.easyButton( '<span title="Marcap&aacute;ginas" class="fa fa-bookmark bookmark"></span>', function(){
-  
-        sidebarInfo.toggle();
-               
+        sidebarInfo.toggle();       
     }).addTo(map);
     
     /*
@@ -199,13 +197,12 @@ function init() {
     });
     
     /* Consulta de Query */
-    if (typeof (queryString) !== 'undefined') {
+    if (queryString !== 'error') {
         
         if (queryString !== 'error'){
         var string = queryString.split(';');
         var recurso = string[0];
         var tipoRecurso = string[1];
-
         if (tipoRecurso === 'espacio') {
             var req = $.ajax({
                 type: 'GET',
@@ -215,16 +212,13 @@ function init() {
                     /* Respuesta correcta */
                
                     if (textStatus === 'success') {
-                        
-                        _nivel = response.piso;
-                        
+                        _nivelActual = response.piso;
                         centro = [response.idcoordenada.latitud, response.idcoordenada.longitud];
                         _currentPosition = centro;
                         _zoom = 22;
                         _data = response;
                         
                         LocalizarEspacio(response.idespacio);
-                        //openSidebarInfo(_data, "espacios");
                         if (!$('.easy-button-container').hasClass("visible")) {
                         $('.easy-button-container').addClass("visible");
                     }
@@ -233,16 +227,12 @@ function init() {
                         DefaultMap();
                         openModalError(queryString);
                     }
-                    
-
                 },
                 error: function (response, textStatu, error) {
                     
                     /* Respuesta errónea */
-                    
                     DefaultMap();
                     openModalError(queryString);
-                
                 },
                 async: false
             });
@@ -257,7 +247,7 @@ function init() {
                     
                     if (textStatus === 'success') {
                         //console.log("done");
-                        _nivel = response.idespacio.piso;
+                        _nivelActual = response.idespacio.piso;
                         //console.log(response.idcoordenada.latitud);
                         centro = [response.idespacio.idcoordenada.latitud, response.idespacio.idcoordenada.longitud];
                         _currentPosition = centro;
@@ -265,7 +255,6 @@ function init() {
                         _data = response;
                         
                         LocalizarProfesor(response.idprofesor);
-                        //openSidebarInfo(_data, "profesores");
                         if (!$('.easy-button-container').hasClass("visible")) {
                             $('.easy-button-container').addClass("visible");
                         }
@@ -280,11 +269,9 @@ function init() {
                     /* Respuesta errónea */
                     DefaultMap();
                     openModalError(queryString);
-
                 },
                 async: false
             });
-            
         }
         /* Respuesta por defecto sin queryString */
     }
@@ -293,10 +280,7 @@ function init() {
     }
     }
     else{
-
-       var html = '<div class="claseerror">El recurso que est&aacute; buscando es err\u00F3neo. Verifique su b&uacute;squeda e int&eacute;ntelo de nuevo.</div>';
-    
-        map.fire('modal', {content: html});
+        openModalError(queryString);
     }
 
     SetOptionLayers();   
@@ -326,13 +310,13 @@ function openModalError(string){
     var html= '';
     
     if (tipoRecurso === 'espacio'){
-        html += '<div class="claseerror">El espacio "'+ idRecurso+'" es no es v&aacute;lido. Por favor, revisa tu enlace</div>';
+        html += '<div class="claseerror">El espacio "'+ idRecurso+'" no es v&aacute;lido. Por favor, revisa tu enlace</div>';
     }
     if (tipoRecurso === 'profesor'){  
-        html += '<div class="claseerror">El profesor "'+ idRecurso+'" es no es v&aacute;lido. Por favor, revisa tu enlace</div>';
+        html += '<div class="claseerror">El profesor "'+ idRecurso+'" no es v&aacute;lido. Por favor, revisa tu enlace</div>';
     }
-    else{
-        html += '<div class="claseerror">El recurso: '+ string+' es err\u00F3neo.</div>';
+    if ((tipoRecurso !== 'espacio')&&(tipoRecurso !== 'profesor')){
+        html += '<div class="claseerror">El recurso que est&aacute; buscando es err\u00F3neo. Verifique su b&uacute;squeda e int&eacute;ntelo de nuevo.</div>'; 
     }
     map.fire('modal', {content: html});
 }
@@ -353,10 +337,9 @@ function openModalPano(nombreEspacio){
             while (j <= _listaPanos.length - 1) {
                 console.log(_listaPanos[j].panorama);
                 html += '<li class="page-item ';
-                if (j == 0){
+                if (j === 0){
                     html += 'active';
-                }
-                
+                }      
                 html += '"><a href="#" onclick="Change(\''+_listaPanos[j].panorama+'\');">'+(j+1)+'</a></li>';
                 j++;
             }
@@ -394,15 +377,16 @@ function openSidebarInfo(data,tipo) {
     $('#profesor-info').empty();
     //console.log(data);
     if (tipo === "profesores"){
-        
-        if (data.tutorias !== null){
+        //console.log(data.tutorias);
+        if ((data.tutorias !== null)&&(String(data.tutorias) !== 'undefined')){
+            //console.log("dentro");
             var tutos = data.tutorias.split(',');
         }
 
         var asig = getAsignaturas(data.idprofesor);
         var panos = getPanoramas(data.idespacio.idespacio);
-        
         var html = '<div class="list-group grupo-ficha">';
+        
         html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';    
         html += '<li class="icon-location" onclick="setPosition('+data.idespacio.idcoordenada.latitud+','+data.idespacio.idcoordenada.longitud+',21,\'true\')" ><img class="img-icon-location" src="images/social/location-inactivo.svg" title="Mostrar posici&oacute;n en el mapa" alt="Mostrar posici&oacute;n en el mapa"></li>';   
         html += '</ul>';
@@ -413,13 +397,9 @@ function openSidebarInfo(data,tipo) {
         html += '<a class="redes" onclick="ShareFacebook(\''+data.idprofesor+';profesor\');" title="Compartir en Facebook" href="#"><img class="fb" src="images/social/fb-inactivo.svg" alt="Compartir Facebook"></a>';
         if (panos.length !== 0) {
             _listaPanos = panos;
-            //html += '';
             html += '<a class="redes" title="Ver Panoramas 360&deg;" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="icon-360" src="images/social/360-inactivo.png" alt="Panor&aacute;mica de 360 grados"></a>';
-      
         }
         html += '</div>';
-        //console.log(data.departamento);
-        //html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">Informatica</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
@@ -427,7 +407,7 @@ function openSidebarInfo(data,tipo) {
         html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.idespacio.piso+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img title="'+ data.idespacio.idedificio.nombre +'" class="img-fichaFac" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idespacio.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tutorias</h4>';
-        if (data.tutorias !== null){ 
+        if ((data.tutorias !== null)&&(String(data.tutorias) !== 'undefined')){ 
             var i=0;
             while (i <= tutos.length - 1) {
                 html += '<h5 class="ficha">' + tutos[i] + '</h5>';
@@ -435,7 +415,7 @@ function openSidebarInfo(data,tipo) {
             }
         }
         else{
-            html += '<h5 class="ficha">' + 'Información disponible en breve' + '</h5>';
+            html += '<h5 class="ficha">' + 'Informaci&oacute;n disponible en breve' + '</h5>';
         }
         html += '</div>';
         
@@ -462,14 +442,10 @@ function openSidebarInfo(data,tipo) {
     }
     else if (tipo === "espacios"){
         var panos = getPanoramas(data.idespacio);
-        
         var html = '<div class="list-group grupo-ficha">';
+        
         html += '<div href="#" class="list-group-item active"><ul class="list-inline"><li><h4>'+data.nombre+'</h4></li>';
-        
-        
-        
-        html += '<li class="icon-location" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/social/location-inactivo.svg" title="Mostrar posici&oacute;n en el mapa" alt="Mostrar posici&oacute;n en el mapa"></li>';
-            
+        html += '<li class="icon-location" onclick="setPosition('+data.idcoordenada.latitud+','+data.idcoordenada.longitud+',22,\'true\')" ><img class="img-icon-location" src="images/social/location-inactivo.svg" title="Mostrar posici&oacute;n en el mapa" alt="Mostrar posici&oacute;n en el mapa"></li>';    
         html += '</ul>';
         html += '</div>';
         html += '<div class="redes-sociales list-group-item">';
@@ -479,9 +455,7 @@ function openSidebarInfo(data,tipo) {
         
         if (panos.length !== 0) {
             _listaPanos = panos;
-            //html += '';
             html += '<a class="redes" title="Ver Panoramas 360&deg;" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="icon-360" src="images/social/360-inactivo.png" alt="Panor&aacute;mica de 360 grados"></a>';
-      
         }
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
@@ -505,8 +479,6 @@ function openSidebarInfo(data,tipo) {
     if (!$('.easy-button-container').hasClass("visible")){
         $('.easy-button-container').addClass("visible");
     }
-    
-    
 }
 
 
@@ -520,8 +492,7 @@ function closeAllSidebars() {
     clearMarkerSearch();
     BorrarArea();
     if ($('.easy-button-container').hasClass("visible")){
-        $('.easy-button-container').removeClass("visible");
-        
+        $('.easy-button-container').removeClass("visible");  
     }
 }
 
@@ -535,22 +506,18 @@ function MostrarArea(data){
     var points = [];
     
     for (i=0; i < coords.length-1; i+=2){
-        //console.log("iteracion: "+i);
         points.push(new L.LatLng(coords[i],coords[i+1]));
     }
     _area = new R.Polygon(points);
-    map.addLayer(_area);
-    //map.addLayer(new R.Marker(centro));
-    
-    
+    map.addLayer(_area);    
 }
+
 /* Función BorrarArea
  * Elimina el area generada como resultado de una busqueda de espacio o profesor
  */
 function BorrarArea(){
     map.removeLayer(_area);
 }
-
 
 /*
  * Función que modifica el mapa activo de acuerdo a los valores globales de:
@@ -561,7 +528,7 @@ function ChangeMapLayer(){
     if (map.hasLayer(ETSEmap)) {
         map.removeLayer(ETSEmap);
     }
-    ETSEmap = L.tileLayer(_server+ 'mapas/' + _tema + _toponimo + _nivel + '/{z}/{x}/{y}.png', {
+    ETSEmap = L.tileLayer(_server+ 'mapas/' + _tema + _toponimo + _nivelActual + '/{z}/{x}/{y}.png', {
         minZoom: _mapMinZoom,
         maxZoom: _mapMaxZoom,
         bounds: _mapBounds,
@@ -569,6 +536,13 @@ function ChangeMapLayer(){
     });
     
     map.addLayer(ETSEmap);
+
+    if (_nivelActual === _nivelBusqueda){
+             map.addLayer(_area);
+    }
+    else{
+        map.removeLayer(_area);
+    }
 }
 
 
@@ -578,14 +552,12 @@ function ChangeMapLayer(){
  *  Dispara showError si el GPS falla
  * 
  */
-function getGPS(){
+function getGPS() {
     if (navigator && navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, showError,{ enableHighAccuracy: true });
-}
-else{
-    alert("NO GPS");
-}
-    //navigator.geolocation.getCurrentPosition(showPosition,);
+        navigator.geolocation.getCurrentPosition(showPosition, showError, {enableHighAccuracy: true});
+    } else {
+        alert("NO GPS");
+    }
 }
 /*
  * Función que muestra Posicion del GPS y coloca una marca geográfica
@@ -594,7 +566,6 @@ else{
  * 
  */
 function showPosition(position){
-
    
     if ($('.dropdown-menu li:first-child span.labelGPS').hasClass('label-success')) {
         //console.log("OFF");
@@ -706,28 +677,6 @@ function Buscador() {
     $('.search').css('margin-top', 100);
 }
 
-
-
-function ShowArea(data){
-    //console.log();
-    //var points = [];
-    //points.push(centro);
-    //points.push(new L.LatLng(39.51171412912667, -0.42497992515563965));
-    //points.push(new L.LatLng(39.51349371255555, -0.422447919845581));
-    /*points.push(new L.LatLng(39.51251184338205, -0.4241621866822243));
-    points.push(new L.LatLng(39.51253176025503, -0.4241863265633583));
-    
-    points.push(new L.LatLng(39.51252425909576, -0.4241973906755447));
-    points.push(new L.LatLng(39.51254521060758, -0.4242201894521713));
-    points.push(new L.LatLng(39.5125586609575, -0.42419973760843277));
-    points.push(new L.LatLng(39.512556591673054, -0.42419638484716415));*/
-    //var p = new R.Polygon(points);
-    //map.addLayer(p);
-    //map.addLayer(new R.Marker(centro));
-}
-
-
-
 /*
  * Función que muestra en caso de error GPS
  * 
@@ -753,7 +702,6 @@ $(document).ready(function () {
             _iconos = false;
         }
         ChangeMapLayer();
-        //alert("The text has been changed."+iconos);
     });
     $("input[name=tema]").change(function () {
         var tema = $('input:radio[name=tema]:checked').attr("value");
@@ -763,7 +711,6 @@ $(document).ready(function () {
             _tema = "b";
         }
         ChangeMapLayer();
-        //alert("The text has been changed."+iconos);
     });
     $("input[name=denominacion]").change(function () {
         var denominacion = $('input:radio[name=denominacion]:checked').attr("value");
@@ -773,7 +720,6 @@ $(document).ready(function () {
             _toponimo = "c";
         }
         ChangeMapLayer();
-        //alert("The text has been changed."+iconos);
     });
     $("input[name=fondo]").change(function () {
         var fondo = $('input:radio[name=fondo]:checked').attr("value");
@@ -787,10 +733,8 @@ $(document).ready(function () {
             //map.addLayer(osm);
             map.addLayer(googleLayer);
             _fondo = "sat";
-
         }
         ChangeMapLayer();
-        //alert("The text has been changed."+iconos);
     });
     
     
@@ -799,32 +743,28 @@ $(document).ready(function () {
         
         if (nivel === "0") {
             map.addLayer(layerGroupFac);
-            _nivel = "0";
+            _nivelActual = "0";
         }
         if (nivel === "1") {
             map.addLayer(layerGroupFac);
-            _nivel = "1";
+            _nivelActual = "1";
         }
         if (nivel === "2") {
             map.addLayer(layerGroupFac);
-            _nivel = "2";
+            _nivelActual = "2";
         }
         if (nivel === "3") {
             map.addLayer(layerGroupFac);
-            _nivel = "3";
+            _nivelActual = "3";
         }
         ChangeMapLayer();
-          //alert("The text has been changed."+iconos);
     });
-    
-    
+     
     $(".nav a[data-colapse='true']").on('click', function () {
         if (isMobile.any()) {
             $('.btn-navbar').click(); //bootstrap 2.x
             $('.navbar-toggle').click(); //bootstrap 3.x by Richard
         }
-        
-        
 });
     
     
@@ -849,7 +789,6 @@ function SetOptionLayers(){
         $('#temaOFF').addClass('active');
         $('#temaOFF input').prop('checked',true);
     }
-    
     if (_toponimo === "d"){
         $('#topoON').addClass('active');
         $('#topoON input').prop('checked',true);
@@ -860,11 +799,15 @@ function SetOptionLayers(){
     }
     
     for (i=0; i<=3;i++){
+        $('#P'+i).removeClass('lvlsearch');
         $('#P'+i).removeClass('active');
         $('#P'+i).children('input').prop('checked', false);
     }
-    $('#P'+ _nivel).addClass('active');
-    $('#P'+_nivel).children('input').prop('checked',true);
+    
+    
+    $('#P'+ _nivelActual).addClass('active');
+    $('#P'+_nivelActual).children('input').prop('checked',true);
+    $('#P'+ _nivelBusqueda).addClass('lvlsearch');
 }
 
 function showLegend(){

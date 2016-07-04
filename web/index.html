@@ -31,7 +31,7 @@ and open the template in the editor.
         <!-- Facebook OpenGraph -->
         <meta property="og:title" content="Sistema de geoposicionamiento de la Universitat de València" />
         <meta property="og:description" content="Servicio web que permite la localización de cualquier espacio o profesor dentro de la Universitat de València" />
-        <meta property="og:image" content="images/cd.png" />
+        <meta property="og:image" content="http://adrserverpc.uv.es:8282/SigUV/images/cd.png" />
 
 
         <!-- jQuery -->
@@ -67,7 +67,8 @@ and open the template in the editor.
 
         <!-- Javascript  -->
         <script>
-            _nivel = '';
+            _nivelActual = '';
+            _nivelBusqueda = '';
             _zoom = '';
             _fondo = '';
             _tema = '';
@@ -79,7 +80,7 @@ and open the template in the editor.
 
             //_server = "http://www.adretse.es/siguv/";
             _queryMode = false;
-            //_serverDB = "http://147.156.85.92:8282/SiguvRest/";
+            //_serverDB = "http://adrserverpc.uv.es:8282/SiguvRest/";
             _serverDB = "http://147.156.85.92:8282/ServerRest/";
             //_serverDB = "http://localhost:8080/ServerRest/";
             L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
