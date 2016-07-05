@@ -74,9 +74,6 @@ function init() {
     /* Añadido de Capas */
     map.addLayer(mapboxTiles);
     map.addLayer(ETSEmap);
-    
-    
-
 
     //Sidebar
     sidebarLayers = L.control.sidebar('sidebarLayers', {
@@ -119,7 +116,7 @@ function init() {
             layerGroupFac.addLayer(geoMarker);
             return geoMarker;
         },
-        onEachFeature: onEachFeature
+        onEachFeature: caracteristicasFacultades
     }).addTo(map);
 
     L.geoJson(Campus, {
@@ -128,7 +125,7 @@ function init() {
             layerGroupCam.addLayer(geoMarker);
             return geoMarker;
         },
-        onEachFeature: onEachFeature
+        onEachFeature: caracteristicasCampus
     }).addTo(map);
     //.bindPopup('<img class=popupStyle src=//www.uv.es/uwm/imatges/GMaps/logo_uv.png width=88% alt=LogoUV><div class=popupTitol>'+\""+titol+"\"+'</div><div class=popupStyle>"+webPopUp+telPopUp.replace("'","&apos;")+emailPopUp+" </div><div>"+descripcio.trim()+"</div>'+'<div id=pano class=googleView> </div>'+'<button class=botoGoogle onclick=ActivarGoogleViewd"+i+"("+contMarkers+");>"+verStreeView+"</button>')
     /* Boton Leaflet
@@ -140,13 +137,13 @@ function init() {
     }).addTo(map);
     
     /*
-     * Funcion onEachFeature
+     * Funcion caracteristicasFacultades
      * @param {type} feature: características del JSON
      * @param {type} layer:   capas
      * 
      */
 
-    function onEachFeature(feature, layer) {
+    function caracteristicasFacultades(feature, layer) {
         var popupContent = '<img class="popupStyle" src="//www.uv.es/uwm/imatges/GMaps/logo_uv.png" width="88%" alt="LogoUV">';
             popupContent += '<div class=popupTitol>'+feature.properties.name+'</div>';
             popupContent += '<div class=popupStyle>';
@@ -159,6 +156,26 @@ function init() {
         if (feature.properties && feature.properties.correo) {
             popupContent += '<p><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:'+feature.properties.correo+'">'+feature.properties.correo+'</a></p>';
         }
+            popupContent += '</div>';
+
+        layer.bindPopup(popupContent);
+    }
+    function caracteristicasCampus(feature, layer) {
+        var popupContent = '<img class="popupStyle" src="//www.uv.es/uwm/imatges/GMaps/logo_uv.png" width="88%" alt="LogoUV">';
+            popupContent += '<div class=popupTitol>'+feature.properties.name+'</div>';
+            popupContent += '<div class=popupStyle>';
+            
+            if (feature.properties && feature.properties.facultades) {
+            var facultad = feature.properties.facultades.split(',');
+            
+            var contador = 0;
+                while (contador < facultad.length) {
+                   
+                    popupContent += '<p><i class="fa fa-university" aria-hidden="true"></i>'+ facultad[contador] + '</p>';
+                     contador++;
+            }
+            }
+        
             popupContent += '</div>';
 
         layer.bindPopup(popupContent);
@@ -176,8 +193,6 @@ function init() {
             pnt = 0;
             arrey ='';
         }
-     
-     //console.log(pnt);
      });
     
 
@@ -381,15 +396,9 @@ function openSidebarFacultades() {
   * Abre un módulo lateral con Información de profesores 
   */
 function openSidebarInfo(data,tipo) {
-    //console.log(dat a);
+
     $('#profesor-info').empty();
-    //console.log(data);
     if (tipo === "profesores"){
-        //console.log(data.tutorias);
-        if ((data.tutorias !== null)&&(String(data.tutorias) !== 'undefined')){
-            //console.log("dentro");
-            var tutos = data.tutorias.split(',');
-        }
 
         var asig = getAsignaturas(data.idprofesor);
         var panos = getPanoramas(data.idespacio.idespacio);
@@ -409,22 +418,90 @@ function openSidebarInfo(data,tipo) {
         }
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Departamento</h4><h5 class="ficha">'+data.departamento+'</h5></div>';
-        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha">'+data.correo+'</h5></div>';
+        html += '<div href="#" class="list-group-item"><h4>Correo</h4><h5 class="ficha"><a title="Enviar correo a '+data.nombre+'" alt="Enviar correo a '+data.nombre+'" href="mailto:'+data.correo+'">'+data.correo+'</a></h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Despacho</h4><h5 class="ficha">'+data.idespacio.nombre+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Bloque</h4><h5 class="ficha">'+data.idespacio.bloque+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Piso</h4><h5 class="ficha">'+data.idespacio.piso+'</h5></div>';
         html += '<div href="#" class="list-group-item"><h4>Facultad</h4><div class="fichaFac"><img title="'+ data.idespacio.idedificio.nombre +'" class="img-fichaFac" src="' + _server+ data.idespacio.idedificio.chano + '" alt="'+ data.idespacio.idedificio.nombre +'"><h5 class="text-fichaFac">'+data.idespacio.idedificio.nombre+'</h5></div></div>';
         html += '<div href="#" class="list-group-item"><h4>Tutorias</h4>';
-        if ((data.tutorias !== null)&&(String(data.tutorias) !== 'undefined')){ 
-            var i=0;
-            while (i <= tutos.length - 1) {
-                html += '<h5 class="ficha">' + tutos[i] + '</h5>';
-                i++;
+        
+        if ((data.tutorias !== null)&&(String(data.tutorias) !== 'undefined')){
+            
+            var periodos = data.tutorias.split(';');
+            if (periodos.length === 1){
+                 if (periodos === 'yes'){
+                     html += '<i class="material-icons md-36">contact_mail</i>';
+                 } 
             }
+            else if (periodos.length === 2 ){
+                html += '<div class="row">';
+                
+                var tutos = periodos[0].split(',');
+                var i = 0;
+                while (i < tutos.length) {
+                    if (i === 0){
+                        html += '<div class="col-md-6">';
+                    }
+                    html += '<h5 class="ficha">' + tutos[i] + '</h5>';
+                    if (i === tutos.length - 1){
+                        html += '</div>';
+                    }
+                    i++;
+                }
+                
+                if (periodos[1] === 'yes'){
+                     html += '<div class="col-md-6 email" title="Participa en el programa de tutorias electrónicas" alt="Participa en el programa de tutorias electrónicas" ><i class="material-icons md-36">contact_mail</i><i class="material-icons md-36 done">done</i></div>';
+                }
+                else{
+                    html += '<div class="col-md-6 email" title="No participa en el programa de tutorias electrónicas" alt="No participa en el programa de tutorias electrónicas" ><i class="material-icons md-36">contact_mail</i><i class="material-icons md-36 cross">clear</i></div>';
+                }
+                
+                html += '</div>';
+               
+            }
+            else if (periodos.length === 3){
+                html += '<div class="row">';
+                var tutos = periodos[0].split(',');
+                var tutos2= periodos[1].split(',');
+                var i = 0;
+                
+                html += '<div class="col-md-6">';
+                html += '<h5>Primer Cuatrimestre</h5>';
+                while (i < tutos.length) {
+                    
+                    html += '<h5 class="ficha">' + tutos[i] + '</h5>';
+                    
+                    i++;
+                }
+                i=0;
+                
+                html += '<h5>Segundo Cuatrimestre</h5>';
+                while (i < tutos2.length) {
+                    
+                    html += '<h5 class="ficha">' + tutos2[i] + '</h5>';
+                    i++;
+                }
+                html += '</div>';
+                
+                if (periodos[2] === 'yes'){
+                     html += '<div class="col-md-6 email" title="Participa en el programa de tutorias electrónicas" alt="Participa en el programa de tutorias electrónicas" ><i class="material-icons md-36">contact_mail</i><i class="material-icons md-36 done">done</i></div>';
+                }
+                else{
+                    html += '<div class="col-md-6 email" title="No participa en el programa de tutorias electrónicas" alt="No participa en el programa de tutorias electrónicas" ><i class="material-icons md-36">contact_mail</i><i class="material-icons md-36 cross">clear</i></div>';
+                }
+                
+                html += '</div>';
+                
+            }
+            else{
+                html += '<h5 class="ficha">' + 'Informaci&oacute;n disponible en breve' + '</h5>';
+            }
+ 
         }
         else{
             html += '<h5 class="ficha">' + 'Informaci&oacute;n disponible en breve' + '</h5>';
         }
+        
         html += '</div>';
         
         html += '<div href="#" class="list-group-item"><h4>Asignaturas</h4>';

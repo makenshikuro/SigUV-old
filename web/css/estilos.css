@@ -289,23 +289,19 @@ div[data-icon="search"]{
 .lvlsearch{
     background: darkseagreen;
 }
-img.popupStyle {
-    padding-bottom: 1em;
+.email {
+    text-align: center;
 }
-.popupTitol {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 1em;
+.done {
+    color: #5cb85c;
+    margin-left: 0.5em;
 }
-.popupStyle {
-    width: 100%;
+.cross {
+    color: #d9534f;
+    margin-left: 0.5em;
 }
-.popupStyle .fa {
-    color: #082b3e;
-    padding-right: 1em;
-}
-.leaflet-popup-content p {
-    margin: 10px 0px !important;
+.ficha a {
+    color: #444 !important;
 }
 
 
@@ -376,6 +372,25 @@ img.popupStyle {
     opacity: 0;
     visibility: hidden;        
 }
+img.popupStyle {
+    padding-bottom: 1em;
+}
+.popupTitol {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+.popupStyle {
+    width: 100%;
+}
+.popupStyle .fa {
+    color: #082b3e;
+    padding-right: 1em;
+}
+.leaflet-popup-content p {
+    margin: 10px 0px !important;
+}
+
 .visible {
     /* opacity: 0.5; */
     opacity: 1 !important;

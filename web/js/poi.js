@@ -101,24 +101,7 @@ Campus = [{
         "name": "Campus Blasco Iba&ntilde;ez",
         "name_ES": "Campus Blasco Ibañez",
         "name_EN": "Campus Blasco Ibañez",
-        "web": "etse", 
-        "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [-0.421388, 39.509518 ]
-    }
-},{
-    "type": "Feature",
-    "properties": {
-        "name": "Campus Burjassot-Paterna",
-        "name_ES": "Campus Burjassot-Paterna",
-        "name_EN": "Campus Burjassot-Paterna",
-        "web": "etse", 
-        "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "facultades": "Geografia i Història, Filosofía, Traducció, fcafe",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -128,12 +111,23 @@ Campus = [{
 },{
     "type": "Feature",
     "properties": {
+        "name": "Campus Burjassot-Paterna",
+        "name_ES": "Campus Burjassot-Paterna",
+        "name_EN": "Campus Burjassot-Paterna",
+        "facultades": "Escola Tècnica Superior d'Enginyeria,Farmàcia,Matemàtiques,Física,Biologia,Química",
+        "popupContent": "This is where the Rockies play!"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-0.421388, 39.509518 ]
+    }
+},{
+    "type": "Feature",
+    "properties": {
         "name": "Campus Tarongers",
         "name_ES": "Campus Tarongers",
         "name_EN": "Campus Tarongers",
-        "web": "etse", 
-        "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "facultades": "Dret,Magisteri,Economia",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
