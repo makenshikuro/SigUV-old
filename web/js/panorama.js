@@ -247,7 +247,3 @@ function update() {
     renderer.render(scene, camera);
 
 }
-function fullScree(){
-                
-		
-}

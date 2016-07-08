@@ -269,10 +269,8 @@ function init() {
                     /* Respuesta correcta */
                     
                     if (textStatus === 'success') {
-                        //console.log("done");
-                        _nivelActual = response.idespacio.piso;
-                        //console.log(response.idcoordenada.latitud);
-                        centro = [respones.idespacio.idcoordenada.latitud, response.idespacio.idcoordenada.longitud];
+                        _nivelActual = response.idespacio.piso;                 
+                        centro = [response.idespacio.idcoordenada.latitud, response.idespacio.idcoordenada.longitud];
                         _currentPosition = centro;
                         _zoom = 22;
                         _data = response;
