@@ -343,7 +343,7 @@ function openModalError(string){
 }
 
 /* Funcion openModalPano
- * Abre un modal informando del error en la queryString
+ * Abre un modal con el visor de Panoramas
  */
 function openModalPano(nombreEspacio){
     
@@ -373,6 +373,10 @@ function openModalPano(nombreEspacio){
     
      initPanorama(_listaPanos[0].panorama);
      animate();
+}
+
+function ModalClose(){
+    map.closeModal();
 }
 
  /* Funcion openSidebarLayers

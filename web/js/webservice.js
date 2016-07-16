@@ -232,11 +232,6 @@ function ShareFacebook(idrecurso){
     //console.log("Face");
 }
 
-function ModalClose(){
-    map.closeModal();
-}
-
-
 function CallSucceed(json){
     console.log("dentro");
     query = json;
