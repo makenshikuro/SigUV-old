@@ -222,14 +222,14 @@ function ShareTwitter(idrecurso){
     var html = 'http://twitter.com/share?url='+url;
     window.open(html, '_blank',opciones);
     
-    //console.log("twtt");
+   
 }
 function ShareFacebook(idrecurso){
     var opciones = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
     var url = window.location.origin+"/SigUV/index.html?id="+idrecurso;
     var html = 'http://www.facebook.com/sharer.php?u='+url;
     window.open(html, '_blank',opciones);
-    //console.log("Face");
+
 }
 
 function CallSucceed(json){

@@ -248,3 +248,62 @@ function typeahead() {
     // Completar base de datos...
 
 }
+
+function Buscador() {
+
+    var html = '<div class="modal-header">';
+
+    html += '   <h4 class="modal-title">Buscador</h4>';
+    html += '            </div>';
+    html += '           <div class="modal-body">';
+    html += '              <p> Buscador que nos permite localizar cualquier estancia de la ETSE, desde el punto de vista de las personas, las estancias, las denominaciones de espacios, o las aulas .</p>';
+    html += '              <ul class="nav nav-tabs">';
+    html += '     <li class="active"><a data-toggle="tab" href="#busqueda-tab-todo"><span class="fa fa-search"></span><span class="modal-tab-text">Todo</span></a></li>';
+    html += '     <li><a data-toggle="tab" href="#busqueda-tab-profesor"><span class="fa fa-users"></span><span class="modal-tab-text">Profesor</span></a></li>';
+    html += '     <li><a data-toggle="tab" href="#busqueda-tab-asignatura"><span class="fa fa-graduation-cap"></span><span class="modal-tab-text">Asignatura</span></a></li>';
+    html += '     <li><a data-toggle="tab" href="#busqueda-tab-espacio"><span class="fa fa-sitemap"></span><span class="modal-tab-text">Espacio</span></a></li>';
+    html += ' </ul>';
+
+    html += ' <div class="tab-content">';
+    html += '     <div id="busqueda-tab-todo" class="tab-pane fade in active">';
+    html += '         <div class="clearM1"></div>';
+    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+    html += '         <div id="listaTodo">';
+
+    html += '         </div>';
+    html += '         <button id="localizar-all" type="button" class="btn btn-default" >Localizar</button>';
+    html += '     </div>';
+
+    html += '     <div id="busqueda-tab-profesor" class="tab-pane fade">';
+    html += '         <div class="clearM1"></div>';
+    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+    html += '         <input type="hidden" id="todo">';
+    html += '         <div id = "resultados-profesor"></div>';
+    html += '         <button id="localizar-profesor" type="button" class="btn btn-default"  >Localizar</button>';
+
+    html += '     </div>';
+    html += '     <div id="busqueda-tab-asignatura" class="tab-pane fade">';
+    html += '         <div class="clearM1"></div>';
+    html += '<p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+
+    html += '         <div id="listaDocentes">';
+
+    html += '         </div>';
+    html += '     </div>';
+    html += '     <div id="busqueda-tab-espacio" class="tab-pane fade">';
+    html += '         <div class="clearM1"></div>';
+    html += '         <p><input type="text" class="typeahead" placeholder="Campo de texto"></p>';
+    html += '         <button id="localizar-espacio" type="button" class="btn btn-default">Localizar</button>';
+
+    html += '     </div>';
+    html += '  </div>';
+    html += '</div>';
+    html += '<div class="modal-footer">';
+    html += '      <button type="button" class="btn btn-default" onclick="ModalClose();">Close</button>';
+    html += '     </div>';
+
+
+    map.fire('modal', {content: html, MODAL_CONTENT_CLS: 'modal-content search'});
+    typeahead();
+    $('.search').css('margin-top', 100);
+}
