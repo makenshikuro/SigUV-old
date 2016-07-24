@@ -239,11 +239,5 @@ function update() {
 
     camera.lookAt(camera.target);
 
-    /*
-     // distortion
-     camera.position.copy( camera.target ).negate();
-     */
-
     renderer.render(scene, camera);
-
 }
