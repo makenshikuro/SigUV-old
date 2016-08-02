@@ -1,20 +1,59 @@
-/* global Bloodhound, Handlebars */
+/* global Bloodhound, Handlebars, _serverDB */
+    profes ='';
+    subjects ='';
+    places ='';
+$.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/profesores/',
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    profes = response;
+                }
+        },
+        async: false
+    });
+    $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/asignaturas/',
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    subjects = response;
+                }
+        },
+        async: false
+    });
+    $.ajax({
+        type: 'GET',
+        url: _serverDB + 'webresources/espacios/',
+        dataType: 'json',
+        success: function(response, textStatus, errorThrown) {
+                /* Respuesta correcta */
+                if(textStatus === 'success'){
+                    places = response;
+                }
+        },
+        async: false
+    });
 function typeahead() {
-
-    profesores = new Bloodhound({
+    
+    var profesores = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: _serverDB + "/webresources/profesores"
+        local: profes
     });
     var asignaturas = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: _serverDB + "/webresources/asignaturas"
+        local: subjects
     });
     var espacios = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: _serverDB + "/webresources/espacios"
+        local: places
     });
 
     $('#busqueda-tab-profesor .typeahead').typeahead({
@@ -140,7 +179,11 @@ function typeahead() {
 
     //update al seleccionar profesor
     $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function (evt, item) {
+<<<<<<< HEAD
         console.log((item));
+=======
+        //console.log(item);
+>>>>>>> origin/master
         $('#localizar-profesor').attr('onclick', '').attr('onclick', 'LocalizarProfesor(' + item.idprofesor + ');');
     });
 
@@ -181,6 +224,7 @@ function typeahead() {
 
     //update al seleccionar todo
     $('#busqueda-tab-todo .typeahead').on('typeahead:selected.espacios', function (evt, item) {
+        //console.log(item);
         if (item.departamento) {
 
             $('#localizar-all').show();
