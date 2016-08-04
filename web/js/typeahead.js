@@ -179,11 +179,6 @@ function typeahead() {
 
     //update al seleccionar profesor
     $('#busqueda-tab-profesor .typeahead').on('typeahead:selected', function (evt, item) {
-<<<<<<< HEAD
-        console.log((item));
-=======
-        //console.log(item);
->>>>>>> origin/master
         $('#localizar-profesor').attr('onclick', '').attr('onclick', 'LocalizarProfesor(' + item.idprofesor + ');');
     });
 
