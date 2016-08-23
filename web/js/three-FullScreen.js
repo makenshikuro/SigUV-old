@@ -102,7 +102,7 @@ THREEx.FullScreen.bindKey	= function(opts){
 		// return now if the KeyPress isnt for the proper charCode
 		if( event.which !== charCode )	return;
 		// toggle fullscreen
-		toggle();
+		
                 
 	}, this);
 

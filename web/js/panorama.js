@@ -117,15 +117,23 @@ function initPanorama(idPano) {
 });
 }
 
-function Change(idPano) {
-    
+function Change(idPano, id) {
+
     var loader = new THREE.TextureLoader();
     loader.crossOrigin = true;
     var tex = loader.load(_serverPano + idPano + '.jpg');
     object.material.map = tex;
     object.material.needsUpdate = true;
-
-
+  
+    var nTabs = $('ul.pagination.panorama li').length;
+    for (indice=0; indice < nTabs; indice++){  
+        if (indice === id){
+            $('#panoTab'+indice).addClass('active');
+        }
+        else{
+            $('#panoTab'+indice).removeClass('active');
+        }
+    }
 }
 
 function cancelFullScreen(){

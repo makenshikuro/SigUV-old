@@ -136,6 +136,14 @@ function init() {
         sidebarInfo.toggle();       
     }).addTo(map);
     
+    var lc = L.control.locate({
+    position: 'topright',
+    strings: {
+        title: "Mostrar posición "
+    },
+    icon: "fa fa-map-marker marcadorGPS"
+}).addTo(map);
+    
     /*
      * Funcion caracteristicasFacultades
      * @param {type} feature: características del JSON
@@ -357,11 +365,11 @@ function openModalPano(nombreEspacio){
             
             while (j <= _listaPanos.length - 1) {
                 console.log(_listaPanos[j].panorama);
-                html += '<li class="page-item ';
+                html += '<li id="panoTab'+(j)+'" class="page-item ';
                 if (j === 0){
                     html += 'active';
                 }      
-                html += '"><a href="#" onclick="Change(\''+_listaPanos[j].panorama+'\');">'+(j+1)+'</a></li>';
+                html += '"><a href="#" onclick="Change(\''+_listaPanos[j].panorama+'\','+j+');">'+(j+1)+'</a></li>';
                 j++;
             }
             
