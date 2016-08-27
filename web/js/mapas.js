@@ -136,13 +136,31 @@ function init() {
         sidebarInfo.toggle();       
     }).addTo(map);
     
-    var lc = L.control.locate({
-    position: 'topright',
-    strings: {
-        title: "Mostrar posición "
-    },
-    icon: "fa fa-map-marker marcadorGPS"
-}).addTo(map);
+    var animatedToggle = L.easyButton({
+  id: 'animated-marker-toggle',
+  position: 'topright',
+  type: 'animate',
+  states: [{
+    stateName: 'add-markers',
+    icon: 'fa-map-marker marcaGPS',
+    title: 'Activar GPS',
+    onClick: function(control) {
+                    getGPS();
+      control.state('remove-markers');
+    }
+  }, {
+    stateName: 'remove-markers',
+    title: 'Desactivar GPS',
+    icon: 'fa-undo marcaGPS',
+    onClick: function(control) {
+                    getGPS();
+      control.state('add-markers');
+    }
+  }]
+});
+animatedToggle.addTo(map);
+    
+ 
     
     /*
      * Funcion caracteristicasFacultades
@@ -676,7 +694,7 @@ function showPosition(position){
         $('.dropdown-menu li:first-child span.labelGPS').html("ON");
         var marker = L.marker(new L.LatLng(position.coords.latitude, position.coords.longitude),
                 {icon: L.AwesomeMarkers.icon({
-                        icon: 'location-arrow',
+                        icon: 'fa-map-marker',
                         markerColor: 'lightblue',
                         prefix: 'fa',
                         iconColor: 'black'})
@@ -894,49 +912,111 @@ function showLegend(){
     map.fire('modal',{content:html});
 }
 function showHelp(){ //cambiar contenido
-    var html = '<div class="tabbable" id="leyenda-tab"><ul class="nav nav-tabs"><li class="active"><a href="#panel-tema" data-toggle="tab">Tem&aacute;tico</a></li><li class=""><a href="#panel-iconos" data-toggle="tab">Iconos</a></li></ul></div>';
-    html += '<div id="leyenda"><div class="tab-content">';
-        html += '<div id="panel-tema" class="tab-pane active">';
-        html += '<h3>Tem&aacute;tico</h3>';
-        html += '<p>Composici&oacute;n optimizada para los que deseen diferenciar los distintos espacios que podemos encontrar en una planta de un edificio. Es al mismo tiempo muy &uacute;til s&iacute; deseamos hacer impresiones, en la que cada uso tiene un color diferenciado</p>';
-        html += '<ul class="list-unstyled list-legend">';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #92cfea;"></div>Aula</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #c4fbdb;"></div>Laboratorio</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #c09f59;"></div>Despacho</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #5d8ddb;"></div>Aseo</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f3d174;"></div>Cafeter&iacute;a</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #e299b8;"></div>Biblioteca</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f5d940;"></div>Secretar&iacute;a</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #f38f2a;"></div>Conserjer&iacute;a</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #bcc3b9;"></div>Sala de Reuniones</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #000000;"></div>Sal&oacute;n de Actos</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #ad83c7;"></div>Varios</li>';
-            html += '<li class="categoria"><div class="legend-thumb" style="background-color: #990000;"></div>Negocio</li>';
-        html += '</ul></div>';
+
+     var html = '<h2>Ayuda</h2>';
+	html += '<div class="row">';
+        html += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">';
+          html += '  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">';
+             html += ' <div class="list-group">';
+             html += '   <a href="#" class="list-group-item active text-center">  <h4 class="glyphicon glyphicon-plane"></h4><br/>Localizar Recurso</a>';
+              html += '  <a href="#" class="list-group-item text-center"><h4 class="glyphicon glyphicon-road"></h4><br/>Interfaz</a>';
+               
+               html += ' <a href="#" class="list-group-item text-center"><h4 class="glyphicon glyphicon-home"></h4><br/>Panor&aacute;micas</a>';
+               
+             html += ' </div>';
+          html += '  </div>';
+          html += '  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">';
+            html += '    <!-- flight section -->';
+              html += '  <div class="bhoechie-tab-content active">';
+              html += '<ul class="nav nav-tabs">';
+ html += '<li class="active"><a data-toggle="tab" href="#ayuda-pro">Por Profesor</a></li>';
+  html +='<li><a data-toggle="tab" href="#ayuda-asig">Por Asignatura</a></li>';
+  html +='<li><a data-toggle="tab" href="#ayuda-espacio">Por Espacio</a></li>';
+html +='</ul>';
+
+html +='<div class="tab-content">';
+  html +='<div id="ayuda-pro" class="tab-pane fade in active">';
+    html +='<h3>B&uacute;squeda por Profesor</h3>';
+    html +='<p>Some content.</p>';
+  html +='</div>';
+  html +='<div id="ayuda-asig" class="tab-pane fade">';
+    html +='<h3>B&uacute;squeda por Asignatura</h3>';
+    html +='<p>Some content in menu 1.</p>';
+  html +='</div>';
+  html +='<div id="ayuda-espacio" class="tab-pane fade">';
+   html +=' <h3>B&uacute;squeda por Espacios</h3>';
+   html +=' <p>Some content in menu 2.</p>';
+  html +='</div>';
+html +='</div>';
+
+              
+              html += '  </div>';
+            html += '    <!-- Interfaz section -->';
+            html += '    <div class="bhoechie-tab-content">';
+            html += '<ul class="nav nav-tabs">';
+ html += '<li class="active"><a data-toggle="tab" href="#ayuda-proveedor">Proveedor</a></li>';
+  html +='<li><a data-toggle="tab" href="#ayuda-tema">Tema</a></li>';
+  html +='<li><a data-toggle="tab" href="#ayuda-topo">Top&oacute;nimos</a></li>';
+  html +='<li><a data-toggle="tab" href="#ayuda-icono">Iconos</a></li>';
+html +='</ul>';
+
+html +='<div class="tab-content">';
+  html +='<div id="ayuda-proveedor" class="tab-pane fade in active">';
+    html +='<h3>Proveedor de mapas</h3>';
+    html +='<p>Some content.</p>';
+  html +='</div>';
+  html +='<div id="ayuda-tema" class="tab-pane fade">';
+    html +='<h3>Tema</h3>';
+    html +='<p>Some content in menu 1.</p>';
+  html +='</div>';
+  html +='<div id="ayuda-topo" class="tab-pane fade">';
+   html +=' <h3>Top&oacute;nimo</h3>';
+   html +=' <p>Some content in menu 2.</p>';
+  html +='</div>';
+  html +='<div id="ayuda-icono" class="tab-pane fade">';
+   html +=' <h3>Iconos</h3>';
+   html +=' <p>Some content in menu 2.</p>';
+  html +='</div>';
+html +='</div>';
+              
+             html += '   </div>';
     
-    html += '<div id="panel-iconos" class="tab-pane">';
-        html += '<h3>Elementos gr&aacute;ficos</h3>';
-        html += '<p>Podemos encontrar varios tipo de iconos en el mapa, algunos corresponden a edificios o campus y se muestran u ocultan en funcion del nivel de zoom o mediante configurción de las capas, permitiendo incluso hacer click para ver información adicional. El resto forman parte del GPS que nos indicará nuestra localización en el mapa respecto de nuestra visualización actual.</p>';
-        html += '<div class="row clearfix">';
-        html += '<div class="col-md-6 column">';
-        html += '<h4>Iconos</h4>';
-        html += '<ul class="list-unstyled list-graficos">';
-            html += '<li><div class="legend-marker" data-icon="facultad"></div>Facultad o Escuela</li>';
-            html += '<li><div class="legend-marker" data-icon="campus"></div>Campus</li>';
-            html += '<li><div class="legend-marker" data-icon="gps"></div>Localizaci&oacute;n de GPS</li>';
-            html += '<li><div class="legend-marker" data-icon="search"></div>Localizaci&oacute;n de b&uacute;squeda</li>';
-        html += '</ul></div>';
-    html += '<div class="col-md-6 column">';
-        html += '<h4>Marcadores</h4>';
-        html += '<ul class="list-unstyled list-icon">';
-            html += '<li><div class="legend-icon"><img src="images/social/360-inactivo.png"></div>Panor&aacute;mica 360 grados</li>';
-            html += '<li><div class="legend-icon"><i class="fa fa-link iconlegend" aria-hidden="true"></i></div>Compartir Enlace</li>';
-            html += '<li><div class="legend-icon"><i class="fa fa-twitter iconlegend" aria-hidden="true"></i></div>Compartir en Twitter</li>';
-            html += '<li><div class="legend-icon"><i class="fa fa-facebook iconlegend" aria-hidden="true"></i></div>Compartir en Facebook</li>';
-            html += '<li><div class="legend-icon"><i class="fa fa-bookmark iconlegend" aria-hidden="true"></i></div>Marcador de b&uacute;squeda</li>';
-        html += '</ul></div>';
-    html += '</div></div>';
-    html += '</div></div></div>';
+             
+             
+             html += '   <!-- Panoramas search -->';
+             html += '   <div class="bhoechie-tab-content">';
+              html +='<h3>Panoramas</h3>';
+          /*  html += '        <center>';
+            html += '          <h1 class="glyphicon glyphicon-home" style="font-size:12em;color:#55518a"></h1>';
+            html += '          <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>';
+             html += '         <h3 style="margin-top: 0;color:#55518a">Hotel Directory</h3>';
+             html += '       </center>';*/
+             html += '   </div>';
+                
+                
+          html += '  </div>';
+       html += ' </div>';
+  html += '</div>';
+
+	
     
     map.fire('modal',{content:html});
+    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        var index = $(this).index();
+        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+    });
 }
+$(document).ready(function() {
+    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        var index = $(this).index();
+        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+    });
+});
