@@ -153,7 +153,7 @@ function init() {
     title: 'Desactivar GPS',
     icon: 'fa-undo marcaGPS',
     onClick: function(control) {
-                    getGPS();
+                    map.removeLayer(layerGroupGPS);
       control.state('add-markers');
     }
   }]
@@ -170,6 +170,7 @@ animatedToggle.addTo(map);
      */
 
     function caracteristicasFacultades(feature, layer) {
+        console.log(feature);
         var popupContent = '<img class="popupStyle" src="//www.uv.es/uwm/imatges/GMaps/logo_uv.png" width="88%" alt="LogoUV">';
             popupContent += '<div class=popupTitol>'+feature.properties.name+'</div>';
             popupContent += '<div class=popupStyle>';
@@ -426,6 +427,7 @@ function openSidebarFacultades() {
 function openSidebarInfo(data,tipo) {
 
     $('#profesor-info').empty();
+    
     if (tipo === "profesores"){
 
         var asig = getAsignaturas(data.idprofesor);
@@ -568,7 +570,7 @@ function openSidebarInfo(data,tipo) {
         
         if (panos.length !== 0) {
             _listaPanos = panos;
-            html += '<a class="redes" title="Ver Panoramas 360&deg;" onclick="openModalPano(\''+data.idespacio.nombre+'\');"><img class="icon-360" src="images/social/360-inactivo.png" alt="Panor&aacute;mica de 360 grados"></a>';
+            html += '<a class="redes" title="Ver Panoramas 360&deg;" onclick="openModalPano(\''+data.nombre+'\');"><img class="icon-360" src="images/social/360-inactivo.png" alt="Panor&aacute;mica de 360 grados"></a>';
         }
         html += '</div>';
         html += '<div href="#" class="list-group-item"><h4>Descripcion</h4><h5 class="ficha">'+data.descripcion+'</h5></div>';
@@ -918,10 +920,9 @@ function showHelp(){ //cambiar contenido
         html += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">';
           html += '  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">';
              html += ' <div class="list-group">';
-             html += '   <a href="#" class="list-group-item active text-center">  <h4 class="glyphicon glyphicon-plane"></h4><br/>Localizar Recurso</a>';
-              html += '  <a href="#" class="list-group-item text-center"><h4 class="glyphicon glyphicon-road"></h4><br/>Interfaz</a>';
-               
-               html += ' <a href="#" class="list-group-item text-center"><h4 class="glyphicon glyphicon-home"></h4><br/>Panor&aacute;micas</a>';
+             html += '   <a href="#" class="list-group-item active text-center">  <h4 class="fa fa-search fa-lg"></h4><br/>Localizar Recurso</a>';
+             html += '  <a href="#" class="list-group-item text-center"><h4 class="fa fa-bars fa-lg"></h4><br/>Interfaz</a>';             
+             html += ' <a href="#" class="list-group-item text-center"><h4 class="fa fa-picture-o fa-lg"></h4><br/>Panor&aacute;micas</a>';
                
              html += ' </div>';
           html += '  </div>';

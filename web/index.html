@@ -35,9 +35,6 @@ and open the template in the editor.
         <meta property="og:image" content="http://adrserverpc.uv.es:8282/SigUV/images/cd.png" />
 
 
-        
-        
-
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
@@ -45,7 +42,7 @@ and open the template in the editor.
 
         <!-- Estilos  -->
         <link rel="stylesheet" href="css/estilos.css" />
-        <link rel="stylesheet" href="css/L.Control.Sidebar.css" />
+        <link rel="stylesheet" href="css/L.Control.Sidebar.min.css" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
@@ -55,8 +52,8 @@ and open the template in the editor.
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
         <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
         <link rel="stylesheet" href="css/leaflet.modal.min.css">
-        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/easyButton.css">
+
 
         
     </head>
@@ -74,7 +71,7 @@ and open the template in the editor.
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="http://localhost:8080/SigUV/index.html"><div class="logoUV"></div></a>
+    <a class="navbar-brand" href="http://adrserverpc.uv.es:8282/SigUV/index.html"><div class="logoUV"></div></a>
   </div>
   
  
@@ -215,80 +212,33 @@ and open the template in the editor.
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="js/leaflet/leaflet.js"></script>
         
-         <!-- Mapbox  -->
-        <script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+         <!-- Mapbox -->
+        <script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script> 
 
         <!-- Javascript  -->
-        <script>
-            _nivelActual = '';
-            _nivelBusqueda = '';
-            _zoom = '';
-            _fondo = '';
-            _tema = '';
-            _toponimo = '';
-            _currentPosition = '';
-            _server = "http://adretse.uv.es/";
-            _serverPano="http://147.156.82.219/recursos/panoramicas/";
-            _listaPanos = '';
-
-            //_server = "http://www.adretse.es/siguv/";
-            //_serverDB = "http://adrserverpc.uv.es:8282/SiguvRest/";
-            //_serverDB = "http://147.156.85.92:8282/ServerRest/";
-            _serverDB = "http://localhost:8080/ServerRest/";
-            L.mapbox.accessToken = 'pk.eyJ1IjoidWJ1c3R1cyIsImEiOiJjaWs2bjhidDMwMHc1cDdrc2o4cnpkdWhkIn0.Nrk8FVCyADAGWSIGm86yBQ';
-            var camera, scene, renderer;
-
-			isUserInteracting = false,
-			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
-			lon = 0, onMouseDownLon = 0,
-			lat = 0, onMouseDownLat = 0,
-			phi = 0, theta = 0;
-            isMobile = {
-    Android: function() {
-        return navigator.userAgent.match(/Android/i);
-    },
-    BlackBerry: function() {
-        return navigator.userAgent.match(/BlackBerry/i);
-    },
-    iOS: function() {
-        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-    },
-    Opera: function() {
-        return navigator.userAgent.match(/Opera Mini/i);
-    },
-    Windows: function() {
-        return navigator.userAgent.match(/IEMobile/i);
-    },
-    any: function() {
-        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-    }
-};
-    
-
-
-        </script>
-        <!--<script async defer src="http://maps.google.com/maps/api/js?v=3"></script>-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCABPLRF1cCUlr2pOSHHa8iYl_gqYvnKFI"
-        async defer></script>
+        <script src="js/init.min.js"></script>
+        
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCABPLRF1cCUlr2pOSHHa8iYl_gqYvnKFI" async defer></script>
+        
         
         <script src="js/Google.min.js"></script>
         <script src="js/L.Control.Sidebar.min.js"></script>
         <script src="js/Leaflet.Modal.min.js"></script>
         <script src="js/raphael-min.js"></script>
         <script src="js/three.min.js"></script>
-        <script src="js/three-FullScreen.js"></script>
-        <script src="js/rlayer.js"></script>
+        <script src="js/three-FullScreen.min.js"></script>
+        <script src="js/rlayer.min.js"></script>
         <script src="js/leaflet.awesome-markers.min.js"></script>
         <script src="js/typeahead.bundle.min.js"></script>
         <script src="js/easyButton.min.js"></script>
-        <script src="js/typeahead.js"></script>
+        <script src="js/typeahead.min.js"></script>
         <script src="js/clipboard.min.js"></script>
         <script src="js/handlebars-v4.0.5.min.js"></script>
         <script src="js/poi.min.js"></script>
-        <script src="js/panorama.js"></script>
-        <script src="js/mapas.js"></script>
+        <script src="js/panorama.min.js"></script>
+        <script src="js/mapas.min.js"></script>
         <script src="js/webservice.min.js"></script>
-        <script src="js/L.Control.Locate.min.js"></script>
+        
 
     </body>
 </html>

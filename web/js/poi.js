@@ -11,8 +11,8 @@ Facultades = [{
         "name_ES": "Escuela T&eacute;cnica Superior de Ingenier&iacute;a",
         "name_EN": "School of Engineering",
         "web": "etse", 
-        "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "telefono": "963543211",
+        "correo": "etse@uv.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -25,9 +25,9 @@ Facultades = [{
         "name": "Facultat de Farm&agrave;cia",
         "name_ES": "Facultad de Farmacia",
         "name_EN": "Faculty of Pharmacy",
-        "web": "etse", 
-        "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "web": "farmacia", 
+        "telefono": "963543211",
+        "correo": "farmacia@uv.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -40,9 +40,9 @@ Facultades = [{
         "name": "Facultat de Matem&agrave;tiques",
         "name_ES": "Facultad de Matemáticas",
         "name_EN": "Faculty of Mathematics",
-        "web": "etse", 
-        "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "web": "matematiques", 
+        "telefono": "963543211",
+        "correo": "matematiques@uv.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -55,9 +55,9 @@ Facultades = [{
         "name": "Facultat de Ciencies Biol&ograve;giques",
         "name_ES": "Facultad de Ciencias Biológicas",
         "name_EN": "Faculty of Biological Sciencies",
-        "web": "etse", 
+        "web": "biologia", 
         "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "correo": "biologia@uv.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -70,9 +70,9 @@ Facultades = [{
         "name": "Facultat de F&iacute;sica",
         "name_ES": "Facultad de Física",
         "name_EN": "Faculty of Physics",
-        "web": "etse", 
+        "web": "fisica", 
         "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "correo": "fisica@uv.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
@@ -85,9 +85,9 @@ Facultades = [{
         "name": "Facultat de Qu&iacute;mica",
         "name_ES": "Facultad de Química",
         "name_EN": "Faculty of Chemistry",
-        "web": "etse", 
+        "web": "quimica", 
         "telefono": "666",
-        "correo": "asdfasd@asdfasd.es",
+        "correo": "quimica@uv.es",
         "popupContent": "This is where the Rockies play!"
     },
     "geometry": {

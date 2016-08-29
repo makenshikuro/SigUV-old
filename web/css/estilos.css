@@ -538,6 +538,8 @@ div#url {
     display: none;
 }
 
+
+
 .state-remove-markers,
 .state-add-markers{
   transition-duration: .5s;
@@ -742,7 +744,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     
     width: 396px;
     height: 30px;
-    padding: 8px 12px;
+    padding: 4px 12px;
     
     line-height: 30px;
     border: 2px solid #ccc;

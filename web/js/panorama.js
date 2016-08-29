@@ -1,5 +1,6 @@
 /* global THREE, THREEx */
 var object;
+var isPlay = false;
 function initPanorama(idPano) {
 
     var container, mesh;
@@ -91,12 +92,16 @@ function initPanorama(idPano) {
     WindowResize();
     //window.addEventListener('resize', onWindowResize, false);
     var html = '<div class="panorama-control">';
+        html +='<div id="iniR" title="Iniciar Rotaci&oacute;n" onclick="iniciaRotacion();" class="control-pano button"><i class="material-icons md-36">play_arrow</i></div>';
+        html +='<div id="stopR" title="Detener Rotaci&oacute;n" onclick="detenerRotacion();" class="control-pano button"><i class="material-icons md-36">stop</i></div>';
         html +='<div title="Activar Pantalla Completa" onclick="fullscreen();" class="control-pano button request"><i class="material-icons md-36">fullscreen</i></div>';
-        html +='<div title="Desactivar Pantalla Completa" onclick="cancelFullScreen;" class="control-pano button cancel"><i class="material-icons md-36">fullscreen_exit</i></div>';
+        html +='<div title="Desactivar Pantalla Completa" onclick="cancelFullScreen();" class="control-pano button cancel"><i class="material-icons md-36">fullscreen_exit</i></div>';
         html += '</div>';
         
      $('canvas').after(html);
-     $('panorama-control').css("width",(window.innerWidth / 2));
+     $('#stopR').hide();
+     //$('panorama-control').css("width",(window.innerWidth / 2));
+     isPlay = false;
      
     THREEx.FullScreen.bindKey({
         dblclick: true
@@ -157,10 +162,24 @@ function fullscreen() {
     camera.updateProjectionMatrix();
 
     $('.pano').css('max-width', (window.innerWidth));
+    $('.pano').css({width: '100%', height: 'auto'});
     //$('panorama-control').css("width",(window.innerWidth));
 
     renderer.setSize(window.innerWidth, window.innerHeight);
+    THREEx.FullScreen.request();
+}
 
+function iniciaRotacion(){
+    
+    $('#iniR').hide();
+    $('#stopR').show();
+    isPlay = true;
+    
+}
+function detenerRotacion(){
+    $('#stopR').hide();
+    $('#iniR').show();
+    isPlay = false;
 }
 
 
@@ -230,21 +249,25 @@ function animate() {
 }
 
 function update() {
+    
+    
+        
+    if (isPlay === true){
+        if (isUserInteracting === false) {
 
-    if (isUserInteracting === false) {
+                lon += 0.1;
 
-        lon += 0.1;
-
+            }
     }
 
     lat = Math.max(-85, Math.min(85, lat));
     phi = THREE.Math.degToRad(90 - lat);
     theta = THREE.Math.degToRad(lon);
-
+    
     camera.target.x = 500 * Math.sin(phi) * Math.cos(theta);
     camera.target.y = 500 * Math.cos(phi);
     camera.target.z = 500 * Math.sin(phi) * Math.sin(theta);
-
+    
     camera.lookAt(camera.target);
 
     renderer.render(scene, camera);
