@@ -916,93 +916,127 @@ function showLegend(){
 function showHelp(){ //cambiar contenido
 
      var html = '<h2>Ayuda</h2>';
-	html += '<div class="row">';
-        html += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">';
-          html += '  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">';
-             html += ' <div class="list-group">';
-             html += '   <a href="#" class="list-group-item active text-center">  <h4 class="fa fa-search fa-lg"></h4><br/>Localizar Recurso</a>';
-             html += '  <a href="#" class="list-group-item text-center"><h4 class="fa fa-bars fa-lg"></h4><br/>Interfaz</a>';             
-             html += ' <a href="#" class="list-group-item text-center"><h4 class="fa fa-picture-o fa-lg"></h4><br/>Panor&aacute;micas</a>';
-               
-             html += ' </div>';
-          html += '  </div>';
-          html += '  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">';
-            html += '    <!-- flight section -->';
-              html += '  <div class="bhoechie-tab-content active">';
-              html += '<ul class="nav nav-tabs">';
- html += '<li class="active"><a data-toggle="tab" href="#ayuda-pro">Por Profesor</a></li>';
-  html +='<li><a data-toggle="tab" href="#ayuda-asig">Por Asignatura</a></li>';
-  html +='<li><a data-toggle="tab" href="#ayuda-espacio">Por Espacio</a></li>';
-html +='</ul>';
+    html += '<div class="row">';
+    html += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">';
+    html += '  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">';
+    html += ' <div class="list-group">';
+    html += '   <a href="#" class="list-group-item active text-center">  <h4 class="fa fa-search fa-lg"></h4><br/>Localizar Recurso</a>';
+    html += '  <a href="#" class="list-group-item text-center"><h4 class="fa fa-bars fa-lg"></h4><br/>Interfaz</a>';
+    html += ' <a href="#" class="list-group-item text-center"><h4 class="fa fa-picture-o fa-lg"></h4><br/>Panor&aacute;micas</a>';
 
-html +='<div class="tab-content">';
-  html +='<div id="ayuda-pro" class="tab-pane fade in active">';
-    html +='<h3>B&uacute;squeda por Profesor</h3>';
-    html +='<p>Some content.</p>';
-  html +='</div>';
-  html +='<div id="ayuda-asig" class="tab-pane fade">';
-    html +='<h3>B&uacute;squeda por Asignatura</h3>';
-    html +='<p>Some content in menu 1.</p>';
-  html +='</div>';
-  html +='<div id="ayuda-espacio" class="tab-pane fade">';
-   html +=' <h3>B&uacute;squeda por Espacios</h3>';
-   html +=' <p>Some content in menu 2.</p>';
-  html +='</div>';
-html +='</div>';
+    html += ' </div>';
+    html += '  </div>';
+    html += '  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">';
+    html += '    <!-- flight section -->';
+    html += '  <div class="bhoechie-tab-content active">';
+    html += '<ul class="nav nav-tabs">';
+    html += '<li class="active"><a data-toggle="tab" href="#ayuda-pro">Por Profesor</a></li>';
+    html += '<li><a data-toggle="tab" href="#ayuda-asig">Por Asignatura</a></li>';
+    html += '<li><a data-toggle="tab" href="#ayuda-espacio">Por Espacio</a></li>';
+    html += '</ul>';
 
-              
-              html += '  </div>';
-            html += '    <!-- Interfaz section -->';
-            html += '    <div class="bhoechie-tab-content">';
-            html += '<ul class="nav nav-tabs">';
- html += '<li class="active"><a data-toggle="tab" href="#ayuda-proveedor">Proveedor</a></li>';
-  html +='<li><a data-toggle="tab" href="#ayuda-tema">Tema</a></li>';
-  html +='<li><a data-toggle="tab" href="#ayuda-topo">Top&oacute;nimos</a></li>';
-  html +='<li><a data-toggle="tab" href="#ayuda-icono">Iconos</a></li>';
-html +='</ul>';
+    html += '<div class="tab-content">';
+    html += '<div id="ayuda-pro" class="tab-pane fade in active">';
+    html += '<h3>B&uacute;squeda por Profesor</h3>';
+    html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Buscador <span class="fa fa-search fa-lg"></span> </li>';
+    html += '<li>Seleccionar Ficha Profesor <span class="fa fa-user fa-lg"></span> </li>';
+    html += '<li>Introducir el nombre del profesor </li>';
+    html += '<li>Seleccionar profesor deseado  </li>';
+    html += '<li>Pulsar en el botón Localizar  </li>';
+    html += '</ul></div>';
+    html += '<div id="ayuda-asig" class="tab-pane fade">';
+    html += '<h3>B&uacute;squeda por Asignatura</h3>';
+   html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Buscador <span class="fa fa-search fa-lg"></span> </li>';
+    html += '<li>Seleccionar Ficha Asignatura <span class="fa fa-graduation-cap fa-lg"></span> </li>';
+    html += '<li>Introducir el nombre de la asignatura </li>';
+    html += '<li>Seleccionar la asignatura deseada  </li>';
+    html += '<li>Seleccionar el profesor deseado de la lista  </li>';
+    html += '<li>Pulsar en el botón Localizar  </li>';
+    html += '</ul></div>';
+    html += '<div id="ayuda-espacio" class="tab-pane fade">';
+    html += ' <h3>B&uacute;squeda por Espacios</h3>';
+    html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Buscador <span class="fa fa-search fa-lg"></span> </li>';
+    html += '<li>Seleccionar Ficha Espacio <span class="fa fa-sitemap fa-lg"></span> </li>';
+    html += '<li>Introducir el nombre del espacio </li>';
+    html += '<li>Seleccionar espacio deseado  </li>';
+    html += '<li>Pulsar en el botón Localizar  </li>';
+    html += '</ul></div>';
+    html += '</div>';
 
-html +='<div class="tab-content">';
-  html +='<div id="ayuda-proveedor" class="tab-pane fade in active">';
-    html +='<h3>Proveedor de mapas</h3>';
-    html +='<p>Some content.</p>';
-  html +='</div>';
-  html +='<div id="ayuda-tema" class="tab-pane fade">';
-    html +='<h3>Tema</h3>';
-    html +='<p>Some content in menu 1.</p>';
-  html +='</div>';
-  html +='<div id="ayuda-topo" class="tab-pane fade">';
-   html +=' <h3>Top&oacute;nimo</h3>';
-   html +=' <p>Some content in menu 2.</p>';
-  html +='</div>';
-  html +='<div id="ayuda-icono" class="tab-pane fade">';
-   html +=' <h3>Iconos</h3>';
-   html +=' <p>Some content in menu 2.</p>';
-  html +='</div>';
-html +='</div>';
-              
-             html += '   </div>';
-    
-             
-             
-             html += '   <!-- Panoramas search -->';
-             html += '   <div class="bhoechie-tab-content">';
-              html +='<h3>Panoramas</h3>';
-          /*  html += '        <center>';
-            html += '          <h1 class="glyphicon glyphicon-home" style="font-size:12em;color:#55518a"></h1>';
-            html += '          <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>';
-             html += '         <h3 style="margin-top: 0;color:#55518a">Hotel Directory</h3>';
-             html += '       </center>';*/
-             html += '   </div>';
-                
-                
-          html += '  </div>';
-       html += ' </div>';
-  html += '</div>';
 
-	
-    
-    map.fire('modal',{content:html});
-    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+    html += '  </div>';
+    html += '    <!-- Interfaz section -->';
+    html += '    <div class="bhoechie-tab-content">';
+    html += '<ul class="nav nav-tabs">';
+    html += '<li class="active"><a data-toggle="tab" href="#ayuda-proveedor">Fondo</a></li>';
+    html += '<li><a data-toggle="tab" href="#ayuda-tema">Tema</a></li>';
+    html += '<li><a data-toggle="tab" href="#ayuda-topo">Top&oacute;nimo</a></li>';
+    html += '<li><a data-toggle="tab" href="#ayuda-icono">Iconos</a></li>';
+    html += '</ul>';
+
+    html += '<div class="tab-content">';
+    html += '<div id="ayuda-proveedor" class="tab-pane fade in active">';
+    html += '<h3>Fondo</h3>';
+    html += '<h5>Mediante este control podremos variar entre las vistas de plano y sat&eacute;lite:</h5>';
+    html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Capas <span class="fa fa-list-ul fa-lg"></span> </li>';
+    html += '<li>Ir al apartado Fondo</li>';
+    html += '<li>Seleccionar el fondo deseado</li>';
+    html += '</ul></div>';
+    html += '<div id="ayuda-tema" class="tab-pane fade">';
+    html += '<h3>Tema</h3>';
+    html += '<h5>Mediante este control podremos variar entre los planos b&aacute;sicos o categorizados:</h5>';
+    html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Capas <span class="fa fa-list-ul fa-lg"></span> </li>';
+    html += '<li>Ir al apartado Tema.</li>';
+    html += '<li>Seleccionar el tipo de plano deseado.</li>';
+    html += '</ul></div>';
+    html += '<div id="ayuda-topo" class="tab-pane fade">';
+    html += ' <h3>Top&oacute;nimo</h3>';
+    html += '<h5>Mediante este control podremos variar entre las vistas de c&oacute;digo de espacio o la descripci&oacute; del mismo:</h5>';
+    html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Capas <span class="fa fa-list-ul fa-lg"></span> </li>';
+    html += '<li>Ir al apartado Fondo</li>';
+    html += '<li>Seleccionar el top&oacute;nimo deseado</li>';
+    html += '</ul></div>';
+    html += '<div id="ayuda-icono" class="tab-pane fade">';
+    html += ' <h3>Iconos</h3>';
+    html += '<h5>Mediante este control podremos variar entre las vistas de c&oacute;digo de espacio o la descripci&oacute; del mismo:</h5>';
+    html += '<ul class="list-ayuda">';
+    html += '<li>Pulsar Capas <span class="fa fa-list-ul fa-lg"></span> </li>';
+    html += '<li>Ir al apartado Iconos</li>';
+    html += '<li>Seleccionar activar/desactivar los iconos</li>';
+    html += '</ul></div>';
+    html += '</div>';
+
+    html += '   </div>';
+
+
+
+    html += '   <!-- Panoramas search -->';
+    html += '   <div class="bhoechie-tab-content">';
+    html += '<h3>Panoramas</h3>';
+    html += '<h5>Mediante este control podremos variar entre las vistas de c&oacute;digo de espacio o la descripci&oacute; del mismo:</h5>';
+    html += '<ul class="list-ayuda">';
+    html += '<li><b>Arrastrar:</b> Deplazar la panor&aacute;mica </li>';
+    html += '<li><b>Play:</b> Activar rotaci&oacute;n autom&aacute;tica </li>';
+    html += '<li><b>Stop:</b> Desactivar rotaci&oacute;n autom&aacute;tica </li>';
+    html += '<li><b>Pantalla Completa:</b> Activar el modo pantalla completa </li>';
+    html += '</ul></div>';
+    html += '   </div>';
+
+
+    html += '  </div>';
+    html += ' </div>';
+    html += '</div>';
+
+
+
+    map.fire('modal', {content: html});
+    $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
         e.preventDefault();
         $(this).siblings('a.active').removeClass("active");
         $(this).addClass("active");
